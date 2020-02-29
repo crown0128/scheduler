@@ -1,19 +1,66 @@
 <template>
-  <v-app>
-<div id="app">
-  <!-- <h1>Welcome to the Slavin Scheduler!</h1> -->
-  <p>
-    <!-- use router-link component for navigation. -->
-    <!-- specify the link by passing the `to` prop. -->
-    <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
-    <router-link to="/">Home</router-link><br>
-    <router-link to="/volunteers">Volunteers</router-link><br>
-    <router-link to="/schedules">Schedules</router-link>
-  </p>
-  <!-- route outlet -->
-  <!-- component matched by the route will render here -->
-  <router-view></router-view>
-</div>
+  <v-app id="app">
+<!-- <div id="app" class="teal--text text--darken-4"> -->
+
+    <!-- <h1>Welcome to the Slavin Scheduler!</h1> -->
+    <div class="header">
+      <router-view></router-view>
+    </div>
+
+    <v-row no-gutters>
+      <v-col  
+        cols="6"
+      >
+        <v-card 
+          class="pa-2 bg-lightteal"
+          outlined
+          tile
+        >
+          <p>
+              Click to add, 
+              edit or delete information about your <strong>schedules</strong>.
+          </p>
+          <router-link to="/schedules">         
+            <v-btn class="mx-2" fab dark large color="teal">
+              <v-icon dark>mdi-calendar-multiselect</v-icon>
+            </v-btn>
+          </router-link>
+        </v-card>
+      </v-col>
+
+      <v-col  
+        cols="6"
+      >
+        <v-card 
+          class="pa-2 bg-lightteal"
+          outlined
+          tile
+        >
+          <p>
+            Click to add, 
+            edit or delete information about your <strong>volunteers</strong>.
+          </p>
+          <router-link to="/volunteers">         
+            <v-btn class="mx-2" fab dark large color="teal">
+              <v-icon dark>mdi-account-multiple</v-icon>
+            </v-btn>
+          </router-link>
+        </v-card>
+
+      </v-col>
+    </v-row>
+
+
+
+        <!-- use router-link component for navigation. -->
+        <!-- specify the link by passing the `to` prop. -->
+        <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
+      <!-- <router-link to="/">Home</router-link><br> -->
+
+      
+      <!-- route outlet -->
+      <!-- component matched by the route will render here -->
+
 
 
       <!-- <v-btn
@@ -49,30 +96,126 @@
 
 <script>
 import HelloHeader from './components/HelloHeader';
+import Schedules from './views/Schedules';
+import Volunteers from './views/Volunteers';
 
 export default {
   name: 'App',
 
   components: {
     HelloHeader,
+    Schedules,
+    Volunteers
   },
 
-  data: () => ({
-    //
-  }),
-};
+  data: function() {
+    return {
+      schedules: [
+        {
+          startDate: "2020-03-07",
+          endDate: "2020-05-31",
+          weeklyEvents: [
+            {
+              day: 7,
+              time: "17:00"
+            },
+            {
+              day: 1,
+              time: "09:00"
+            },
+            {
+              day: 7,
+              time: "11:15"
+            },
+          ],
+          events: [
+            {
+              when: "2020-03-07 17:00:00",
+              roles: [
+                {
+                  roleName: "Sacristan",
+                  numberVolunteersNeeded: 1
+                },
+                {
+                  roleName: "Lector",
+                  numberVolunteersNeeded: 1
+                },
+                {
+                  roleName: "Eucharistic minister",
+                  numberVolunteersNeeded: 3
+                },
+                {
+                  roleName: "Altar server",
+                  numberVolunteersNeeded: 1
+                },
+                {
+                  roleName: "Usher",
+                  numberVolunteersNeeded: 1
+                }
+              ]
+            },
+            {
+              when: "2020-03-08 09:00:00",
+              roles: [
+                {
+                  roleName: "Sacristan",
+                  numberVolunteersNeeded: 1
+                },
+                {
+                  roleName: "Lector",
+                  numberVolunteersNeeded: 1
+                },
+                {
+                  roleName: "Eucharistic minister",
+                  numberVolunteersNeeded: 3
+                },
+                {
+                  roleName: "Altar server",
+                  numberVolunteersNeeded: 2
+                },
+                {
+                  roleName: "Usher",
+                  numberVolunteersNeeded: 2
+                }
+              ]
+            },
+            {
+              when: "2020-03-08 11:15:00",
+              roles: [
+                {
+                  roleName: "Sacristan",
+                  numberVolunteersNeeded: 1
+                },
+                {
+                  roleName: "Lector",
+                  numberVolunteersNeeded: 1
+                },
+                {
+                  roleName: "Eucharistic minister",
+                  numberVolunteersNeeded: 3
+                },
+                {
+                  roleName: "Altar server",
+                  numberVolunteersNeeded: 2
+                },
+                {
+                  roleName: "Usher",
+                  numberVolunteersNeeded: 1
+                }
+              ] // roles
+            },  // an event
+          ]  // all events
+        } // a schedule
+      ]  // all schedules
+    }  // return
+  }, // anon fcn
+};  // export
 </script>
 
 <style>
-.circle {
-  color: red;
-  /* icon in a circle w/ Vuetify for these?? */
-  /* height: 300px;
-  width: 300px;
-  background-color: white;
-  border-color: #0216b0;
-  border-width: 3px;
-  border-radius: 90%; */
+.bg-lightteal {
+  background-color: #c4fff9 !important;
+  border-width: 0 !important;
 }
 
 #app {
@@ -80,7 +223,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #42b983;
+  color: teal;
+  background-color: #c4fff9;
 }
 
 #nav {
