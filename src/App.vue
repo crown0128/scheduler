@@ -1,17 +1,67 @@
 <template>
-  <div id="app">
-    <router-view/>
-    <div id="nav">
-      <router-link to="/">Home</router-link><br>
-      <div class="circle">
-        <router-link to="/volunteers">Volunteers</router-link>
-      </div>
-      <div class="circle">
-        <router-link to="/schedules">Schedules</router-link>
-      </div>
-    </div>
-  </div>
+  <v-app>
+<div id="app">
+  <!-- <h1>Welcome to the Slavin Scheduler!</h1> -->
+  <p>
+    <!-- use router-link component for navigation. -->
+    <!-- specify the link by passing the `to` prop. -->
+    <!-- `<router-link>` will be rendered as an `<a>` tag by default -->
+    <router-link to="/">Home</router-link><br>
+    <router-link to="/volunteers">Volunteers</router-link><br>
+    <router-link to="/schedules">Schedules</router-link>
+  </p>
+  <!-- route outlet -->
+  <!-- component matched by the route will render here -->
+  <router-view></router-view>
+</div>
+
+
+      <!-- <v-btn
+        href="/"
+        text
+      >
+        <span class="mr-2">Home</span>
+        <!-- <v-icon>mdi-open-in-new</v-icon> -->
+      <!-- </v-btn>
+
+      <v-btn
+        href="/volunteers"
+        text
+      >
+      <router-link to='/volunteers'></router-link>
+        <span class="mr-2">Volunteers</span>
+        <!-- <v-icon>mdi-open-in-new</v-icon> -->
+      <!-- </v-btn>
+   
+      <v-btn
+        href="/schedules"
+        text
+      >
+        <span class="mr-2">Schedules</span>
+        <!-- <v-icon>mdi-open-in-new</v-icon> -->
+      <!-- </v-btn> -->
+
+    <!-- <v-content>
+      <HelloHeader/>
+    </v-content> --> 
+  </v-app>
 </template>
+
+<script>
+import HelloHeader from './components/HelloHeader';
+
+export default {
+  name: 'App',
+
+  components: {
+    HelloHeader,
+  },
+
+  data: () => ({
+    //
+  }),
+};
+</script>
 
 <style>
 .circle {
