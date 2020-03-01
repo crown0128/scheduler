@@ -35,7 +35,7 @@ export default {
           firstName: "Dorothy",
           lastName: "P.",
           email: "dot@gmail.com",
-          image: "../images/312267_289510051082006_2093603433_n.jpg",
+          image: "312267_289510051082006_2093603433_n.jpg",
           roles: [
             "Sacristan",
             "Eucharistic minister",
@@ -45,7 +45,7 @@ export default {
           firstName: "Maura",
           lastName: "S.",
           email: "mauramslavin@gmail.com",
-          image: "../images/cuteface2.jpg",
+          image: "cuteface2.jpg",
           roles: [
             "Eucharistic minister",
           ],
@@ -57,7 +57,7 @@ export default {
           firstName: "Mike",
           lastName: "S.",
           email: "slavin@myfairpoint.net",
-          image: "../images/sneaker.png",
+          image: "sneaker.png",
           roles: [
             "Lector"
           ],
