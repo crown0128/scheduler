@@ -6,7 +6,9 @@
     <div class="header">
       <router-view></router-view>
     </div>
-
+    <router-link to='/' class='text-left pl-3'>
+      Home
+    </router-link>
     <v-row no-gutters>
       <v-col  
         cols="6"
@@ -106,109 +108,8 @@ export default {
     HelloHeader,
     Schedules,
     Volunteers
-  },
+  }
 
-  data: function() {
-    return {
-      schedules: [
-        {
-          startDate: "2020-03-07",
-          endDate: "2020-05-31",
-          weeklyEvents: [
-            {
-              day: 7,
-              time: "17:00"
-            },
-            {
-              day: 1,
-              time: "09:00"
-            },
-            {
-              day: 7,
-              time: "11:15"
-            },
-          ],
-          events: [
-            {
-              when: "2020-03-07 17:00:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 1
-                }
-              ]
-            },
-            {
-              when: "2020-03-08 09:00:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 2
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 2
-                }
-              ]
-            },
-            {
-              when: "2020-03-08 11:15:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 2
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 1
-                }
-              ] // roles
-            },  // an event
-          ]  // all events
-        } // a schedule
-      ]  // all schedules
-    }  // return
-  }, // anon fcn
 };  // export
 </script>
 
@@ -223,7 +124,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: teal;
+  color: #040e0f;
   background-color: #c4fff9;
 }
 
@@ -233,7 +134,7 @@ export default {
 
 #nav a {
   font-weight: bold;
-  color: #42b983;
+  color: #040e0f;
 }
 
 #nav a.router-link-exact-active {
