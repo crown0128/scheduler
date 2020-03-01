@@ -1,12 +1,13 @@
 <template>
-  <v-app id="app">
+<div id="app">
+  <v-app>
 <!-- <div id="app" class="teal--text text--darken-4"> -->
 
     <!-- <h1>Welcome to the Slavin Scheduler!</h1> -->
     <div class="header">
       <router-view></router-view>
     </div>
-    <router-link to='/' class='text-left pl-3'>
+    <router-link to='/' class='text-left pl-3 no-underscore'>
       Home
     </router-link>
     <v-row no-gutters>
@@ -94,6 +95,7 @@
       <HelloHeader/>
     </v-content> --> 
   </v-app>
+</div>
 </template>
 
 <script>
@@ -130,6 +132,7 @@ export default {
 
 #nav {
   padding: 30px;
+  text-decoration: none;
 }
 
 #nav a {
@@ -140,4 +143,9 @@ export default {
 #nav a.router-link-exact-active {
   color: #0216b0
 }
+
+.no-underscore {
+  text-decoration: none !important;
+}
+
 </style>

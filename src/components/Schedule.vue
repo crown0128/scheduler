@@ -1,11 +1,17 @@
 <template>
 
+<div>
 
   <v-row text-center class="justify-center">
-    <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1" supportingtext="true">
+    <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2" supportingtext="true">
 
-      <div class="v-card__text schedule-title">
-        Schedule:  {{schedule.startDate}} - {{schedule.endDate}}
+      <div class="v-card__text pb-0">
+        <span class="schedule-title">
+          Schedule:  {{schedule.startDate}} - {{schedule.endDate}}
+        </span>
+        <v-btn class="mr-0 ml-3" fab dark x-small color="teal">
+          <v-icon dark>mdi-delete-circle</v-icon>
+        </v-btn>
       </div>
 
       <div class="v-card__text pa-1">
@@ -17,7 +23,12 @@
 
           <div class="row">
             <div class="col-12 pa-0">
-            <h2 class="text-left col-12 py-0 pl-12">Weekly events</h2>
+              <h2 class="text-left col-12 py-0 pl-12">
+                Weekly events
+                <v-btn class="mr-0 ml-3" fab dark x-small color="teal">
+                  <v-icon dark>mdi-pencil</v-icon>
+                </v-btn>
+              </h2>
             </div>
           </div>
           
@@ -32,11 +43,16 @@
           </v-list>
         </v-col>
 
-        <v-col cols="6" class="v-card__text">
+        <v-col cols="6" class="v-card__text pb-5">
 
           <div class="row">
             <div class="col-12 pa-0">
-              <h2 class="text-left col-12 py-0">Roles needed</h2>
+              <h2 class="text-left col-12 py-0">
+                Roles needed
+                <v-btn class="mr-0 ml-3" fab dark x-small color="teal">
+                  <v-icon dark>mdi-pencil</v-icon>
+                </v-btn>
+              </h2>
             </div>
           </div>
 
@@ -53,42 +69,11 @@
         </v-col>
 
       </v-row>
+
     </div>
   </v-row>
 
-
-
-
-  <!-- <v-list-item class="bg-lightteal col-12 text-center">
-    <v-list-items class="col-12 pa-0">
-      <v-list-item class="col-12 pa-0">
-        <h1 class="text-center col-12 pa-0">Schedule:  {{schedule.startDate}} - {{schedule.endDate}}</h1>
-      </v-list-item>
-
-      <v-list-item class="col-12 pa-0">
-        <span class="text-center col-12 pa-0">(Number of times this schedule has been run:  {{schedule.version}})</span>
-      </v-list-item>
-
-      <v-list-item class="col-6 pa-0">
-        <div class="row">
-          <div class="col-12">
-           <h2 class="text-left col-12 py-0 pl-12">Weekly events:</h2>
-          </div>
-        </div>
-        
-        <v-list
-          v-for="(weeklyEvent, i) in schedule.weeklyEvents"
-          :key="i"
-          :weeklyEvent="weeklyEvent">
-          <v-list-item>
-            {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
-          </v-list-item>
-        </v-list>
-      </v-list-item>
-
-
-    </v-list-items>
-  </v-list-item> -->
+</div>
 </template>
 
 <script>

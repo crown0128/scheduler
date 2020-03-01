@@ -3,14 +3,20 @@
     <h1 cols="12" text-center>Schedules</h1>
 
 
-      <Schedule 
-        v-for="(schedule, i) in schedules"
-        :key="i"
-        :schedule="schedule"
-        mode="schedules"
-        class="pb-3"
-        v-on="$listeners"
-      />
+    <Schedule 
+      v-for="(schedule, i) in schedules"
+      :key="i"
+      :schedule="schedule"
+      mode="schedules"
+      class="pb-5"
+      v-on="$listeners"
+    />
+
+    <v-flex xs10 offset-xs1 py-2>
+      <!-- <v-col center-align> -->
+        <v-btn block dark rounded class="teal">Set up a new Schedule</v-btn>
+      <!-- </v-col> -->
+    </v-flex>
 
   </v-container>
 </template>
