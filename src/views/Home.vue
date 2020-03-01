@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <HelloHeader />
-    <img alt="Vue logo" src="../assets/logo.png">
+    <img alt="Scheduler logo" src="../assets/logo.png">
   </div>
 </template>
 

@@ -70,8 +70,19 @@
 
       </v-row>
 
+      <v-row>
+        <v-flex col-12 py-2>
+          <!-- <v-col center-align> -->
+            <v-btn block dark rounded class="teal">Run this Schedule to create a schedule document.</v-btn>
+          <!-- </v-col> -->
+        </v-flex>
+      </v-row>
+
     </div>
+
+
   </v-row>
+
 
 </div>
 </template>
