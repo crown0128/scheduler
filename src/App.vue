@@ -2,12 +2,13 @@
 <div id="app">
   <v-app>
 
-    <div class="header">
-      <router-view></router-view>
-    </div>
+
+<!-- test -->
+<!-- <router-link to="/volunteer/0">/Volunteer 0</router-link> -->
 
     <v-row no-gutters>
 
+      <!-- HOME button and link -->
       <v-col cols="4">
         <v-card class="pa-2 bg-lightteal" outlined tile>
           <router-link to="/">         
@@ -19,6 +20,7 @@
         </v-card>
       </v-col>
 
+      <!-- SCHEDULES button and link -->
       <v-col cols="4">
         <v-card class="pa-2 bg-lightteal" outlined tile>
           <router-link to="/schedules">         
@@ -30,6 +32,7 @@
         </v-card>
       </v-col>
 
+      <!-- VOLUNTEERS button and link -->
       <v-col cols="4">
         <v-card class="pa-2 bg-lightteal" outlined tile>
           <router-link to="/volunteers">         
@@ -43,58 +46,62 @@
 
     </v-row>
 
+    <div class="header">
+      <!-- This is where my component from the router gets loaded -->
+      <router-view></router-view>
+    </div>
   </v-app>
 </div>
 </template>
 
+
 <script>
-import HelloHeader from './components/HelloHeader';
-import Schedules from './views/Schedules';
-import Volunteers from './views/Volunteers';
+  import Schedules from './views/Schedules';
+  import Volunteers from './views/Volunteers';
 
-export default {
-  name: 'App',
+  export default {
+    name: 'App',
 
-  components: {
-    HelloHeader,
-    Schedules,
-    Volunteers
-  }
+    components: {
+      Schedules,
+      Volunteers
+    }
 
-};  // export
+  };  // end of export
 </script>
 
+
 <style>
-.bg-lightteal {
-  background-color: #c4fff9 !important;
-  border-width: 0 !important;
-}
+  .bg-lightteal {
+    background-color: #c4fff9 !important;
+    border-width: 0 !important;
+  }
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #040e0f;
-  background-color: #c4fff9;
-}
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #040e0f;
+    background-color: #c4fff9;
+  }
 
-#nav {
-  padding: 30px;
-  text-decoration: none;
-}
+  #nav {
+    padding: 30px;
+    text-decoration: none;
+  }
 
-#nav a {
-  font-weight: bold;
-  color: #040e0f;
-}
+  #nav a {
+    font-weight: bold;
+    color: #040e0f;
+  }
 
-#nav a.router-link-exact-active {
-  color: #0216b0
-}
+  #nav a.router-link-exact-active {
+    color: #0216b0
+  }
 
-.no-underscore {
-  text-decoration: none !important;
-}
+  .no-underscore {
+    text-decoration: none !important;
+  }
 
 </style>

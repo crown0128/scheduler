@@ -2,7 +2,7 @@
   <v-container cols="12" text-center>
     <h1 cols="12" text-center>Schedules</h1>
 
-
+    <!-- for each schedule, display a card with it's information -->
     <Schedule 
       v-for="(schedule, i) in schedules"
       :key="i"
@@ -12,14 +12,14 @@
       v-on="$listeners"
     />
 
+    <!-- NEW SCHEDULE button -->
     <v-flex xs10 offset-xs1 py-2>
-      <!-- <v-col center-align> -->
         <v-btn block dark rounded class="teal">Set up a new Schedule</v-btn>
-      <!-- </v-col> -->
     </v-flex>
 
   </v-container>
 </template>
+
 
 <script>
 import Schedule from '../components/Schedule';
@@ -31,6 +31,7 @@ export default {
     return {
       schedules: [
         {
+          _id: 0,
           startDate: "2020-03-07",
           endDate: "2020-05-31",
           roles: [
@@ -134,6 +135,7 @@ export default {
           ]  // all events
         }, // a schedule
         {
+          _id: 1,
           startDate: "2020-01-01",
           endDate: "2020-03-01",
           roles: [
@@ -241,11 +243,11 @@ export default {
 
     };  // return
   }  // anon fcn
-// props: ["schedules"]
+
 };
 
 </script>
 
-<style scoped>
 
+<style scoped>
 </style>

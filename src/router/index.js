@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Volunteers from '../views/Volunteers.vue'
 import Schedules from '../views/Schedules.vue'
+import NotFound from '../components/NotFound.vue'
+// test
+import EditVolunteer from '../components/EditVolunteer'
 
 Vue.use(VueRouter)
 
@@ -31,11 +34,40 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "Schedules" */ '../views/Schedules.vue')
     }
+  },
+  {
+    path: '/volunteer/:id', 
+    name: 'EditVolunteer',
+    component: function () {
+      return import('../components/EditVolunteer.vue')
+    }
+  },
+  {
+    path: '/schedule/weeklyevents/:id', 
+    name: 'EditWeeklyEvents',
+    component: function () {
+      return import('../components/EditWeeklyEvents.vue')
+    }
+  },
+  {
+    path: '/schedule/rolesneeded/:id', 
+    name: 'EditRolesNeeded',
+    component: function () {
+      return import('../components/EditRolesNeeded.vue')
+    }
+  },
+  {
+    path: '*', 
+    name: 'NotFound',
+    component: function () {
+      return import('../components/NotFound.vue')
+    }
   }
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  mode: 'history'
 })
 
 export default router
