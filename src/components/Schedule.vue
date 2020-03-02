@@ -25,29 +25,13 @@
         <!-- Weekly events in the schedule on the left side (with button to edit) -->
         <v-col cols="6" class="v-card__text">
 
-          <div class="row">
-            <div class="col-12 pa-0">
-              <h2 class="text-left col-12 py-0 pl-12">
-                Weekly events
-                <!-- <router-link to="/schedule/weeklyevents/0"> -->
-                  <v-btn class="mr-0 ml-3" fab dark x-small color="teal">
-                    <v-icon dark>mdi-pencil</v-icon>
-                  </v-btn>
-                <!-- </router-link> -->
-              </h2>
-            </div>
-          </div>
+
           
           <!-- List day of week and time of each weekly event -->
-          <v-list
-            v-for="(weeklyEvent, i) in schedule.weeklyEvents"
-            class="pl-12 py-0 weekly-event"
-            :key="i"
-            :weeklyEvent="weeklyEvent">
-            <v-list-item class="pa-0">
-              {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
-            </v-list-item>
-          </v-list>
+          <EditWeeklyEvents v-if="editWeekly"
+            :schedule="schedule" />
+          <WeeklyEvents v-else
+            :schedule="schedule" />
         </v-col>
 
         <!-- Roles needed in the schedule on the right side (with button to edit) -->
@@ -99,13 +83,19 @@
 
 
 <script>
+  import WeeklyEvents from '../components/WeeklyEvents';
   import EditWeeklyEvents from '../components/EditWeeklyEvents';
   import EditRolesNeeded from '../components/EditRolesNeeded';
 
   export default {
     name: "Schedule",
-    components: { EditWeeklyEvents, EditRolesNeeded },
+    components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents },
     props: ["schedule"],
+    data: function () {
+      return {
+        editWeekly: false
+      };
+    }
   };
 </script>
 
