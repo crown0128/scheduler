@@ -1,6 +1,4 @@
 <template>
-
-
 <div>
 
   <v-row>
@@ -58,13 +56,22 @@
 
     <!-- icon to save new weekly event -->
     <v-col cols="1" class="mt-3">
-      <v-btn class="mr-0 ml-3" fab dark x-small color="teal">
+      <v-btn 
+        class="mr-0 ml-3" 
+        fab dark x-small 
+        color="teal"
+      >
         <v-icon dark>mdi-content-save-outline</v-icon>
       </v-btn>
     </v-col>
     <!-- icon to return to schedules -->
     <v-col cols="1" class="mt-3 ml-3">
-      <v-btn class="mr-0 ml-3" fab dark x-small color="teal">
+      <v-btn 
+        class="mr-0 ml-3" 
+        fab dark x-small 
+        color="teal"
+        @click="rtnToSchedFromWkly(doEdit)"
+      >
         <v-icon dark>mdi-calendar-multiselect</v-icon>
       </v-btn>
     </v-col>
@@ -112,7 +119,7 @@
 <script>
 export default {
   name: "EditWeeklyEvents",
-  props: ["schedule"],
+  props: ["schedule", "doEdit"],
   data () {
     return {
       days: [
@@ -128,7 +135,13 @@ export default {
       // menu2: false,
       // modal2: false,
     }
-  },
+  }, // end data
+  methods: {
+    rtnToSchedFromWkly: function(doEdit) {
+      doEdit.weekly = false;
+      return doEdit
+    }
+  }
 };
 </script>
 

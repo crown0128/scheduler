@@ -6,7 +6,12 @@
       <h2 class="text-left col-12 py-0 pl-12">
         Weekly events
         <!-- <router-link to="/schedule/weeklyevents/0"> -->
-          <v-btn class="mr-0 ml-3" fab dark x-small color="teal">
+          <v-btn 
+            class="mr-0 ml-3" 
+            fab dark x-small 
+            color="teal"
+            @click="editWeeklyEvents(doEdit)"
+          >
             <v-icon dark>mdi-pencil</v-icon>
           </v-btn>
         <!-- </router-link> -->
@@ -32,7 +37,13 @@
 <script>
   export default {
     name: "WeeklyEvents",
-    props: ["schedule"],
+    props: ["schedule", "doEdit"],
+    methods: {
+      editWeeklyEvents: function(doEdit) {
+        doEdit.weekly = true;
+        return doEdit
+      }
+    }
   };
 </script>
 

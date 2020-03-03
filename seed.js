@@ -67,7 +67,8 @@ const data = [
                 'roles':
                     [
                         {'roleId': 3, 'numberVolunteersNeeded': 3},
-                        {'roleId': 4, 'numberVolunteersNeeded': 1}
+                        {'roleId': 4, 'numberVolunteersNeeded': 2},
+                        {'roleId': 5, 'numberVolunteersNeeded': 2}
                     ]
             },
             {
@@ -88,7 +89,8 @@ const data = [
                 'roles':
                     [
                         {'roleId': 3, 'numberVolunteersNeeded': 3},
-                        {'roleId': 4, 'numberVolunteersNeeded': 2}
+                        {'roleId': 4, 'numberVolunteersNeeded': 2},
+                        {'roleId': 5, 'numberVolunteersNeeded': 2}}
                     ]
             }
             
@@ -110,17 +112,20 @@ const data = [
             {
                 '_id': 3,
                 'scheduleId': 1,
-                'roleName': "Eucharistic minister"
+                'roleName': "Eucharistic minister",
+                'numberNeeded': 3
             },         
             {
                 '_id': 4,
                 'scheduleId': 1,
-                'roleName': "Altar server"
+                'roleName': "Altar server",
+                'numberNeeded': 2
             },         
             {
                 '_id': 5,
                 'scheduleId': 1,
-                'roleName': "Usher"
+                'roleName': "Usher",
+                'numberNeeded': 2
             },         
         ]
     },
@@ -148,15 +153,7 @@ const data = [
                 'prefTimes': [
                     {
                         'weeklyEventId':3, 
-                        'percentPreferred': 90
-                    },
-                    {
-                        'weeklyEventId':1, 
-                        'percentPreferred': 5
-                    },
-                    {
-                        'weeklyEventId':2, 
-                        'percentPreferred': 5
+                        'percentPreferred': 100
                     }
                 ],
                 'with': [3]
@@ -170,15 +167,7 @@ const data = [
                 'prefTimes': [
                     {
                         'weeklyEventId':3, 
-                        'percentPreferred': 90
-                    },
-                    {
-                        'weeklyEventId':1, 
-                        'percentPreferred': 5
-                    },
-                    {
-                        'weeklyEventId':2, 
-                        'percentPreferred': 5
+                        'percentPreferred': 100
                     }
                 ],
                 'with': [2]

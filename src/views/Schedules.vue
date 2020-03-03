@@ -11,6 +11,8 @@
       class="pb-5"
       v-on="$listeners"
     />
+      <!-- @delete-schedule="deleteSchedule"
+      @editRoles="editRoles" -->
 
     <!-- NEW SCHEDULE button -->
     <v-flex xs10 offset-xs1 py-2>
@@ -242,7 +244,19 @@ export default {
 
 
     };  // return
-  }  // anon fcn
+  },  // end data
+
+    // deleteSchedule: function(scheduleId) {
+    //   alert("Deleting schedule.")
+    //   this.schedule = this.schedule.filter(id => {
+    //     return id !== scheduleId;
+    //   });
+    // },
+
+
+    // editRoles: function(doEditRoles) {
+    //   doEditRoles = true;
+    // }
 
 };
 
