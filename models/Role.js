@@ -18,6 +18,11 @@ const RoleSchema = new Schema({
   roleName: {
     type: String,
     required: "Name of role is required."
+  },
+
+  numberNeeded: {
+    type: Number,
+    default: 1
   }
   
 });

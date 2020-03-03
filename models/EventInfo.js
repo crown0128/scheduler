@@ -2,25 +2,6 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-// id of schedule the event info belongs to
-// const ScheduleSchema = new Schema({
-//     scheduleId: {
-//         type: Schema.Types.ObjectId,
-//         ref: "Schedule"
-//     }
-// })
-
-// const roleSchema = new Schema({
-//   roleId: {
-//     type: Number,
-//     ref: "Role"
-//   },
-
-//   numberVolunteersNeeded: {
-//     type: Number
-//   }
-// });
-
 const EventInfoSchema = new Schema({
   _id: {
     type: Number,
@@ -42,6 +23,7 @@ const EventInfoSchema = new Schema({
 
   // what roles are needed, and how many of each
   // roles: [roleSchema]
+  // if missing, use what's in the roles collection
   roles: [
     {
       roleId: {
@@ -50,7 +32,8 @@ const EventInfoSchema = new Schema({
       },
 
       numberVolunteersNeeded: {
-        type: Number
+        type: Number,
+        default: 1
       }
     }
   ]

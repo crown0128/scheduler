@@ -37,11 +37,26 @@ export default {
           startDate: "2020-03-07",
           endDate: "2020-05-31",
           roles: [
-            "Sacristan",
-            "Lector",
-            "Eucharistic minister",
-            "Altar server",
-            "Usher"
+            {
+              roleName: "Sacristan",
+              numberNeeded: 1
+            },
+            {
+              roleName: "Lector",
+              numberNeeded: 1
+            },
+            {
+              roleName: "Eucharistic minister",
+              numberNeeded: 3
+            },
+            {
+              roleName: "Altar server",
+              numberNeeded: 2
+            },
+            {
+              roleName: "Usher",
+              numberNeeded: 2
+            }
           ],
           version: 0,
           weeklyEvents: [
@@ -60,79 +75,13 @@ export default {
           ],
           events: [
             {
-              when: "2020-03-07 17:00:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 1
-                }
-              ]
+              when: "2020-03-07 17:00:00"
             },
             {
-              when: "2020-03-08 09:00:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 2
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 2
-                }
-              ]
+              when: "2020-03-08 09:00:00"
             },
             {
-              when: "2020-03-08 11:15:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 2
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 1
-                }
-              ] // roles
+              when: "2020-03-08 11:15:00"
             },  // an event
           ]  // all events
         }, // a schedule
@@ -141,11 +90,26 @@ export default {
           startDate: "2020-01-01",
           endDate: "2020-03-01",
           roles: [
-            "Sacristan",
-            "Lector",
-            "Eucharistic minister",
-            "Altar server",
-            "Usher"
+            {
+              roleName: "Sacristan",
+              numberNeeded: 1
+            },
+            {
+              roleName: "Lector",
+              numberNeeded: 1
+            },
+            {
+              roleName: "Eucharistic minister",
+              numberNeeded: 3
+            },
+            {
+              roleName: "Altar server",
+              numberNeeded: 2
+            },
+            {
+              roleName: "Usher",
+              numberNeeded: 2
+            }
           ],
           version: 0,
           weeklyEvents: [
@@ -164,79 +128,13 @@ export default {
           ],
           events: [
             {
-              when: "2020-03-07 17:00:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 1
-                }
-              ]
+              when: "2020-03-07 17:00:00"
             },
             {
-              when: "2020-03-08 09:00:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 2
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 2
-                }
-              ]
+              when: "2020-03-08 09:00:00"
             },
             {
-              when: "2020-03-08 11:15:00",
-              roles: [
-                {
-                  roleName: "Sacristan",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Lector",
-                  numberVolunteersNeeded: 1
-                },
-                {
-                  roleName: "Eucharistic minister",
-                  numberVolunteersNeeded: 3
-                },
-                {
-                  roleName: "Altar server",
-                  numberVolunteersNeeded: 2
-                },
-                {
-                  roleName: "Usher",
-                  numberVolunteersNeeded: 1
-                }
-              ] // roles
+              when: "2020-03-08 11:15:00"
             },  // an event
           ]  // all events
         } // a schedule

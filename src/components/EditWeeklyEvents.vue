@@ -148,19 +148,13 @@ export default {
 <style scoped>
 
   #edit-weekly {
-    background-color: palegoldenrod;
+    background-color: #dbfffa;
   }
 
   .weekly-event {
     font-size: 14px;
     background-color: #c4fff9 !important;
     height: 20px;
-  }
-
-  .weekly-input {
-    text-decoration: none !important;
-    border: 1px;
-    height: 16px;
   }
 
   .select {

@@ -13,7 +13,7 @@
             <span class="schedule-title">
               Schedule:  {{schedule.startDate}} - {{schedule.endDate}}
             </span>
-              <!-- @click="$emit('delete-schedule')"  -->
+            
             <!-- For information, just because we have it. :) -->
             <div class="v-card__text pa-0">
               (Number of times this schedule has been run:  {{schedule.version}})
@@ -32,7 +32,7 @@
       </div>
 
 
-      <v-row>
+      <v-row class="wide">
 
         <!-- Weekly events in the schedule on the left side (with button to edit) -->
         <v-col cols="6" class="v-card__text">
@@ -55,27 +55,19 @@
         <!-- Roles needed in the schedule on the right side (with button to edit) -->
         <v-col cols="6" class="v-card__text pb-5">
 
-          <div class="row">
-            <div class="col-12 pa-0">
-              <h2 class="text-left col-12 py-0">
-                Roles needed
-                <v-btn class="mr-0 ml-3" fab dark x-small color="teal">
-                  <v-icon dark>mdi-pencil</v-icon>
-                </v-btn>
-              </h2>
-            </div>
-          </div>
-
-          <!-- List names of each role -->
-          <v-list
-            v-for="(role, i) in schedule.roles"
-            class="py-0 px-4 weekly-event"
-            :key="i"
-            :role="role">
-            <v-list-item class="pa-0">
-              {{ role }}            
-            </v-list-item>
-          </v-list>
+          <!-- List day of week and time of each weekly event -->
+            <!-- @delete-weekly="deleteWeekly"
+            @save-weekly="saveWeekly" -->
+            <!-- v-on:chgWeekly='updWeekly($event)' -->
+          <EditRolesNeeded 
+            v-if="doEdit.roles"
+            :schedule="schedule"
+            :doEdit="doEdit"
+          />
+          <RolesNeeded v-else
+            :schedule="schedule" 
+            :doEdit="doEdit"
+          />
 
         </v-col>
 
@@ -103,18 +95,18 @@
 <script>
   import WeeklyEvents from '../components/WeeklyEvents';
   import EditWeeklyEvents from '../components/EditWeeklyEvents';
+  import RolesNeeded from '../components/RolesNeeded';
   import EditRolesNeeded from '../components/EditRolesNeeded';
 
   export default {
     name: "Schedule",
-    components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents },
+    components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded },
     props: ["schedule"],
     data: function () {
       return {
         doEdit: {
           weekly: false,
           roles: false
-        // doEditRoles: false
         }
       };
     },
@@ -151,4 +143,5 @@
     background-color:  #c4fff9 !important;
     height: 20px;
   }
+  
 </style>

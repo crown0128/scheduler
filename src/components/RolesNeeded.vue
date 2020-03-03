@@ -4,12 +4,12 @@
   <div class="row">
     <div class="col-12 pa-0">
       <h2 class="text-left col-12 py-0 pl-12">
-        Weekly events
-        <v-btn 
+        Roles needed
+         <v-btn 
           class="mr-0 ml-3" 
           fab dark x-small 
           color="teal"
-          @click="editWeeklyEvents(doEdit)"
+          @click="editRolesNeeded(doEdit)"
         >
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
@@ -17,14 +17,14 @@
     </div>
   </div>
   
-  <!-- List day of week and time of each weekly event -->
+  <!-- List each role and number of people needed -->
   <v-list
-      v-for="(weeklyEvent, i) in schedule.weeklyEvents"
-      class="pl-12 py-0 weekly-event"
+      v-for="(role, i) in schedule.roles"
+      class="py-0 pl-12 weekly-event"
       :key="i"
-      :weeklyEvent="weeklyEvent">
+      :role="role">
           <v-list-item class="pa-0">
-              {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
+              {{ role.roleName }}: {{ role.numberNeeded }}
           </v-list-item>
   </v-list>
 
@@ -34,11 +34,11 @@
 
 <script>
   export default {
-    name: "WeeklyEvents",
+    name: "RolesNeeded",
     props: ["schedule", "doEdit"],
     methods: {
-      editWeeklyEvents: function(doEdit) {
-        doEdit.weekly = true;
+      editRolesNeeded: function(doEdit) {
+        doEdit.roles = true;
         return doEdit
       }
     }

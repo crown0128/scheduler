@@ -90,10 +90,9 @@ const data = [
                     [
                         {'roleId': 3, 'numberVolunteersNeeded': 3},
                         {'roleId': 4, 'numberVolunteersNeeded': 2},
-                        {'roleId': 5, 'numberVolunteersNeeded': 2}}
+                        {'roleId': 5, 'numberVolunteersNeeded': 2}
                     ]
-            }
-            
+            },
         ]
     },
     {
