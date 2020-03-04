@@ -20,7 +20,7 @@
         </v-card-title> -->
         <v-card-text class="py-0 px-1 inputCard">
           <v-form>
-            <v-text-field label="New Role Name" class="py-0" v-model="newRole">
+            <v-text-field label="New Role Name" class="py-0" v-model="newRole" autofocus>
             </v-text-field>
           </v-form>
         </v-card-text>

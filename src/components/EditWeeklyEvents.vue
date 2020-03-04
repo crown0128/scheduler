@@ -19,39 +19,41 @@
         v-model="day"
         :items="days"
         menu-props="auto"
-        label="day"
+        label="Day"
+        autofocus
         single-line
       ></v-select>
     </v-col>
 
     <!-- choose time of day -->
     <v-col cols="3" height="10px">
-      <v-menu
-        ref="menu"
-        v-model="time"
-        no-title
-        :close-on-content-click="false"
-        :nudge-right="40"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="100px"
+    <!-- <v-col cols="11" sm="5"> -->
+  <v-dialog
+        ref="dialog"
+        v-model="modal2"
+        :return-value.sync="time"
+        persistent
+        width="290px"
       >
         <template v-slot:activator="{ on }">
           <v-text-field
             v-model="time"
-            no-title
-            label="time"
+            label="Start time"
             readonly
             v-on="on"
           ></v-text-field>
         </template>
         <v-time-picker
+          v-if="modal2"
           v-model="time"
-          no-title
-          @click:minute="$refs.menu.save(time-picked)"
-        ></v-time-picker>
-      </v-menu>
+          full-width
+          color="teal"
+        >
+          <v-spacer></v-spacer>
+          <v-btn text color="teal" @click="modal2 = false">Cancel</v-btn>
+          <v-btn text color="teal" @click="$refs.dialog.save(time)">OK</v-btn>
+        </v-time-picker>
+      </v-dialog>
     </v-col>
 
     <!-- icon to save new weekly event -->
@@ -132,8 +134,8 @@ export default {
         'Saturday',
       ],
       time: null,
-      // menu2: false,
-      // modal2: false,
+      menu2: false,
+      modal2: false,
     }
   }, // end data
   methods: {
