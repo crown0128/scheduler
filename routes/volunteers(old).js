@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const volunteersController = require("../../controllers/volunteersController");
+const volunteersController = require("../controllers/volunteersController");
 
 router  
     .route("/api/volunteers")

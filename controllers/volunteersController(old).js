@@ -13,7 +13,7 @@ module.exports = {
 //       .catch(err => res.status(422).json(err));
 //   },
   create: function(req, res) {
-    db.Volunteers.create(req.body)
+    db.Volunteer.create(req.body)
       .then(dbVolunteers => res.json(dbVolunteers))
       .catch(err => res.status(422).json(err));
   },
@@ -23,7 +23,7 @@ module.exports = {
 //       .catch(err => res.status(422).json(err));
 //   },
   remove: function(req, res) {
-    db.Book.findById({ _id: req.params.id })
+    db.Volunteer.findById({ _id: req.params.id })
       .then(dbVolunteers => dbVolunteers.remove())
       .then(dbVolunteers => res.json(dbVolunteers))
       .catch(err => res.status(422).json(err));
