@@ -1,18 +1,37 @@
 <template>
-  <v-container cols="12" text-center>
+  <v-container cols="12" text-center align="center" justify="center" class="pt-0">
     <h1 cols="12" text-center>Volunteers</h1>
 
 <!-- ***** ADD A SEARCH BOX HERE, if time -->
 
-    <!-- for each volunteer, display a card with their information & buttons -->
-    <Volunteer
-      v-for="(volunteer, i) in volunteers"
-      :key="i"
-      :volunteer="volunteer"
-      mode="volunteers"
-      class="pb-5"
-      v-on="$listeners"
-    />
+    <template>
+
+      <v-data-table align="center" justify="center"
+        :headers="headers"
+        :items="volunteers"
+        class="elevation-1"
+      >
+        <template v-slot:item.image="{ item }">
+          <!-- <div class="p-2"> -->
+          <v-btn icon  >
+              <v-avatar>
+                <v-img 
+                  :src="require('../../public/images/' + item.image )" :alt="item.firstName" height="30px">
+                </v-img>
+              </v-avatar>
+          </v-btn>
+          <!-- </div> -->
+        </template>
+        <template #item.action>
+          <v-btn class="mx-1 my-1" @click="editVolunteer(item.volunteer)" fab right dark x-small color="teal">
+            <v-icon dark>mdi-pencil</v-icon>
+          </v-btn>
+          <v-btn class="mx-1 my-1" @click="deleteVolunteer(item.volunteer)" fab right dark x-small color="teal">
+            <v-icon dark>mdi-delete-circle</v-icon>
+          </v-btn>
+        </template>
+      </v-data-table>
+    </template>
 
     <!-- NEW VOLUNTEER button -->
     <v-flex xs10 offset-xs1 py-2>
@@ -24,55 +43,76 @@
 
 
 <script>
-  import Volunteer from '../components/Volunteer';
+  import axios from 'axios';
+
 
   export default {
     name: 'Volunteers',
-    components: { Volunteer },
+
     data: function() {
       return {
-        volunteers: [
-          {
-            _id: 0,
-            firstName: "Dorothy",
-            lastName: "P.",
-            email: "dot@gmail.com",
-            image: "312267_289510051082006_2093603433_n.jpg",
-            roles: [
-              "Sacristan",
-              "Eucharistic minister",
-            ]
-          },
-          {
-            _id: 1,
-            firstName: "Maura",
-            lastName: "S.",
-            email: "mauramslavin@gmail.com",
-            image: "cuteface2.jpg",
-            roles: [
-              "Eucharistic minister",
-            ],
-            with: ["Mike S."],
-            notAvailable: ["2020-03-21", "2020-03-22", "2020-05-30", "2020-05-31"]
-          },
-          {
-            _id: 2,
-            firstName: "Mike",
-            lastName: "S.",
-            email: "slavin@myfairpoint.net",
-            image: "sneaker.png",
-            roles: [
-              "Lector"
-            ],
-            with: ["Maura S."],
-            notAvailable: ["2020-03-21", "2020-03-22", "2020-05-30", "2020-05-31"]
-          },
+        volunteers: []
+      };
+    },
 
-        ]  // all volunteers
+    created() {
+      console.log("in created (in watch)");
+        // return this.volunteers = this.getVolunteers();
+      this.getVolunteers();
+      // console.log("Volunteers (created):");
+      // console.log(volunteers);
+    },
 
+    methods: {
+      getVolunteers() {
+        console.log("in getVolunteers");
+        axios.get('/api/volunteers')
+        .then(response => {
+          console.log(".then");
+          console.log(response.data);
+          this.volunteers=response.data;
+          console.log("image: " + this.volunteers[0].image);
+          console.log("image: " + this.volunteers[1].image);
+          console.log("image: " + this.volunteers[2].image);
+        // })
+        // .then((response) => {
+        //   console.log("Volunteers (getVolunteers):");
+        //   // console.log(this.volunteers);
+        //   console.log(this.volunteers);
+        });
+      },
 
-      };  // return
-    }  // anon fcn
+      // editVolunteer(volunteer) {
+      //   console.log("Edit" + volunteer.firstName);
+      // },
+
+      // deleteVolunteer(volunteer) {
+      //   console.log("Delete" + volunteer.firstName);
+      // },
+
+      // initialize() {
+      //   // alert("in initialize");
+      //   this.getVolunteers();
+      // },
+
+    },
+
+    computed: {
+      headers(){
+        return [
+          {
+              text: 'Image',
+              align: 'start',
+              value: 'image',
+              width: '100px',
+              sortable: false
+          },
+          { text: 'Name', value: 'firstName', sortable: true },
+          { text: 'Roles', value: 'roles', sortable: true },
+          { text: 'Actions', value: 'action', align: 'center', sortable: false },
+        ];
+      },
+    }
 
   };
 

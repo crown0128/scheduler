@@ -2,10 +2,6 @@
 <div id="app">
   <v-app>
 
-
-<!-- test -->
-<!-- <router-link to="/volunteer/0">/Volunteer 0</router-link> -->
-
     <v-row no-gutters>
 
       <!-- HOME button and link -->

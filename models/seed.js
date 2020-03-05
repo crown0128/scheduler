@@ -136,7 +136,7 @@ const data = [
                 'firstName': 'Dorothy',
                 'lastName': 'Pecce',
                 'email': 'dot@gmail.com',
-                'image': '312267_289510051082006_2093603433_n.jpg',
+                'image': 'dot.jpg',
                 'roles': [1, 3],
                 'prefTimes': [{
                     'weeklyEventId':3, 

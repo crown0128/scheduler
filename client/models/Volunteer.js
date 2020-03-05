@@ -88,9 +88,7 @@ const VolunteerSchema = new Schema({
 
 });
 
-VolunteerSchema.statics.fullName = function(firstName, lastName) {
-  return firstName + " " + lastName;
-}
+
 
 // first & last name combination must be unique
 VolunteerSchema.index({ "firstName": 1, "lastName": 1 }, { unique: true });
