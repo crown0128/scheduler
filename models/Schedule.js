@@ -31,10 +31,9 @@ const WeeklyEventSchema = new Schema({
   // one document for each week (day/time)
   // 1 for Sunday... 7 for Saturday
   day: {
-    type: Number,
+    type: String,
     required: "Date / time of event is required.",
-    min: 1,
-    max: 7
+    enum: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   },
 
   // time of weekly event 

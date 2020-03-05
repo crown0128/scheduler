@@ -24,7 +24,7 @@
       :key="i"
       :weeklyEvent="weeklyEvent">
           <v-list-item class="pa-0">
-              {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
+              {{ weeklyEvent.day }} at {{ timeToDate(weeklyEvent.time) | moment( "h:mm a") }}            
           </v-list-item>
   </v-list>
 
@@ -40,8 +40,12 @@
       editWeeklyEvents: function(doEdit) {
         doEdit.weekly = true;
         return doEdit
+      },
+
+      timeToDate: function(time) {
+        return new Date("March 16, 2020 " + time);
       }
-    }
+    },
   };
 </script>
 

@@ -27,25 +27,25 @@ const data = [
                 '_id': ObjectId("5e4c7f67f3a9883274f622fa"),
                 'startDate': '2020-03-07',
                 'endDate': '2020-05-31',
-                'WeeklyEvents': 
+                'WeeklyEvent': 
                 [
                     {
                         '_id': ObjectId("5e4c7f67f3a9883274f622fb"),
-                        'day': 7,
+                        'day': "Saturday",
                         'time': '17:00'
                     },           
                     {
                         '_id': ObjectId("5e4c7f67f3a9883274f622fc"),
-                        'day': 1,
+                        'day': "Sunday",
                         'time': '09:00'
                     },             
                     {
                         '_id': ObjectId("5e4c7f67f3a9883274f622fd"),
-                        'day': 1,
+                        'day': "Sunday",
                         'time': '11:15'
                     }             
                 ],
-                'Roles': 
+                'Role': 
                 [
                     {
                         '_id': ObjectId("5e4c7f67f3a9883274f62301"),

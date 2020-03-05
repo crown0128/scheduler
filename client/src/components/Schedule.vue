@@ -10,8 +10,11 @@
         <v-row>
 
           <v-col cols="11">
+            <!-- <span class="schedule-title">
+              Schedule:  {{ schedule.startDate }} - {{ schedule.endDate }}
+            </span> -->
             <span class="schedule-title">
-              Schedule:  {{schedule.startDate}} - {{schedule.endDate}}
+              Schedule:  {{ schedule.startDate | moment("MMM Do YYYY") }} - {{ schedule.endDate  | moment("MMM Do YYYY") }}
             </span>
             
             <!-- For information, just because we have it. :) -->
@@ -110,7 +113,8 @@
         }
       };
     },
-    // methods: {
+
+       // methods: {
     //   updWeekly: function(doWeekly) {
     //     this.doEditWeekly = doWeekly;
     //   }
