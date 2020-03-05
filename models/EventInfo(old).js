@@ -4,13 +4,13 @@ const Schema = mongoose.Schema;
 
 const EventInfoSchema = new Schema({
   _id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
 
   // what schedule does this belong to
   scheduleId: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Schedule"
   },
 
@@ -27,7 +27,7 @@ const EventInfoSchema = new Schema({
   roles: [
     {
       roleId: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Role"
       },
 

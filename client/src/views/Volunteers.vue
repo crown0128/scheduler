@@ -6,9 +6,24 @@
 
     <template>
 
+
+    <v-card-title>
+      
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+
+
+    </v-card-title>
       <v-data-table align="center" justify="center"
         :headers="headers"
         :items="volunteers"
+        :search="search"
         class="elevation-1"
       >
         <template v-slot:item.image="{ item }">
@@ -22,6 +37,7 @@
           </v-btn>
           <!-- </div> -->
         </template>
+
         <template #item.action>
           <v-btn class="mx-1 my-1" @click="editVolunteer(item.volunteer)" fab right dark x-small color="teal">
             <v-icon dark>mdi-pencil</v-icon>
@@ -45,13 +61,13 @@
 <script>
   import axios from 'axios';
 
-
   export default {
     name: 'Volunteers',
 
     data: function() {
       return {
-        volunteers: []
+        volunteers: [],
+        search: '',
       };
     },
 
@@ -70,10 +86,8 @@
         .then(response => {
           console.log(".then");
           console.log(response.data);
-          this.volunteers=response.data;
-          console.log("image: " + this.volunteers[0].image);
-          console.log("image: " + this.volunteers[1].image);
-          console.log("image: " + this.volunteers[2].image);
+          this.volunteers = response.data;
+          
         // })
         // .then((response) => {
         //   console.log("Volunteers (getVolunteers):");
@@ -107,7 +121,8 @@
               width: '100px',
               sortable: false
           },
-          { text: 'Name', value: 'firstName', sortable: true },
+          { text: 'Last Name', value: 'lastName', sortable: true },
+          { text: 'First Name', value: 'firstName', sortable: true },
           { text: 'Roles', value: 'roles', sortable: true },
           { text: 'Actions', value: 'action', align: 'center', sortable: false },
         ];

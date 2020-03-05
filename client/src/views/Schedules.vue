@@ -24,6 +24,7 @@
 
 
 <script>
+import axios from 'axios';
 import Schedule from '../components/Schedule';
 
 export default {
@@ -31,118 +32,134 @@ export default {
   components: { Schedule },
   data: function() {
     return {
-      schedules: [
-        {
-          _id: 0,
-          startDate: "2020-03-07",
-          endDate: "2020-05-31",
-          roles: [
-            {
-              roleName: "Sacristan",
-              numberNeeded: 1
-            },
-            {
-              roleName: "Lector",
-              numberNeeded: 1
-            },
-            {
-              roleName: "Eucharistic minister",
-              numberNeeded: 3
-            },
-            {
-              roleName: "Altar server",
-              numberNeeded: 2
-            },
-            {
-              roleName: "Usher",
-              numberNeeded: 2
-            }
-          ],
-          version: 0,
-          weeklyEvents: [
-            {
-              day: "Saturday",
-              time: "17:00"
-            },
-            {
-              day: "Sunday",
-              time: "09:00"
-            },
-            {
-              day: "Sunday",
-              time: "11:15"
-            },
-          ],
-          events: [
-            {
-              when: "2020-03-07 17:00:00"
-            },
-            {
-              when: "2020-03-08 09:00:00"
-            },
-            {
-              when: "2020-03-08 11:15:00"
-            },  // an event
-          ]  // all events
-        }, // a schedule
-        {
-          _id: 1,
-          startDate: "2020-01-01",
-          endDate: "2020-03-01",
-          roles: [
-            {
-              roleName: "Sacristan",
-              numberNeeded: 1
-            },
-            {
-              roleName: "Lector",
-              numberNeeded: 1
-            },
-            {
-              roleName: "Eucharistic minister",
-              numberNeeded: 3
-            },
-            {
-              roleName: "Altar server",
-              numberNeeded: 2
-            },
-            {
-              roleName: "Usher",
-              numberNeeded: 2
-            }
-          ],
-          version: 0,
-          weeklyEvents: [
-            {
-              day: "Saturday",
-              time: "17:00"
-            },
-            {
-              day: "Sunday",
-              time: "09:00"
-            },
-            {
-              day: "Sunday",
-              time: "11:15"
-            },
-          ],
-          events: [
-            {
-              when: "2020-03-07 17:00:00"
-            },
-            {
-              when: "2020-03-08 09:00:00"
-            },
-            {
-              when: "2020-03-08 11:15:00"
-            },  // an event
-          ]  // all events
-        } // a schedule
-      ]  // all schedules
+      schedules: [],
+      // schedules: [
+      //   {
+      //     _id: 0,
+      //     startDate: "2020-03-07",
+      //     endDate: "2020-05-31",
+      //     roles: [
+      //       {
+      //         roleName: "Sacristan",
+      //         numberNeeded: 1
+      //       },
+      //       {
+      //         roleName: "Lector",
+      //         numberNeeded: 1
+      //       },
+      //       {
+      //         roleName: "Eucharistic minister",
+      //         numberNeeded: 3
+      //       },
+      //       {
+      //         roleName: "Altar server",
+      //         numberNeeded: 2
+      //       },
+      //       {
+      //         roleName: "Usher",
+      //         numberNeeded: 2
+      //       }
+      //     ],
+      //     version: 0,
+      //     weeklyEvents: [
+      //       {
+      //         day: "Saturday",
+      //         time: "17:00"
+      //       },
+      //       {
+      //         day: "Sunday",
+      //         time: "09:00"
+      //       },
+      //       {
+      //         day: "Sunday",
+      //         time: "11:15"
+      //       },
+      //     ],
+      //     events: [
+      //       {
+      //         when: "2020-03-07 17:00:00"
+      //       },
+      //       {
+      //         when: "2020-03-08 09:00:00"
+      //       },
+      //       {
+      //         when: "2020-03-08 11:15:00"
+      //       },  // an event
+      //     ]  // all events
+      //   }, // a schedule
+      //   {
+      //     _id: 1,
+      //     startDate: "2020-01-01",
+      //     endDate: "2020-03-01",
+      //     roles: [
+      //       {
+      //         roleName: "Sacristan",
+      //         numberNeeded: 1
+      //       },
+      //       {
+      //         roleName: "Lector",
+      //         numberNeeded: 1
+      //       },
+      //       {
+      //         roleName: "Eucharistic minister",
+      //         numberNeeded: 3
+      //       },
+      //       {
+      //         roleName: "Altar server",
+      //         numberNeeded: 2
+      //       },
+      //       {
+      //         roleName: "Usher",
+      //         numberNeeded: 2
+      //       }
+      //     ],
+      //     version: 0,
+      //     weeklyEvents: [
+      //       {
+      //         day: "Saturday",
+      //         time: "17:00"
+      //       },
+      //       {
+      //         day: "Sunday",
+      //         time: "09:00"
+      //       },
+      //       {
+      //         day: "Sunday",
+      //         time: "11:15"
+      //       },
+      //     ],
+      //     events: [
+      //       {
+      //         when: "2020-03-07 17:00:00"
+      //       },
+      //       {
+      //         when: "2020-03-08 09:00:00"
+      //       },
+      //       {
+      //         when: "2020-03-08 11:15:00"
+      //       },  // an event
+      //     ]  // all events
+      //   } // a schedule
+      // ]  // all schedules
 
 
     };  // return
   },  // end data
+
+  created() {
+    console.log("in created (in Schedules)");
+    this.getSchedules();
+  },
+
+  methods: {
+    getSchedules() {
+      axios.get('/api/schedules')
+      .then(response => {
+        this.schedules = response.data;
+        console.log(response.data);
+      });
+    },
+  },
 
     // deleteSchedule: function(scheduleId) {
     //   alert("Deleting schedule.")

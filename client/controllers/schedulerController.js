@@ -31,7 +31,11 @@ module.exports = {
 
   findAllVolunteers: function(req, res) {
     db.Volunteer.find(req.query)
-      .then(dbVolunteers => res.json(dbVolunteers))
+      .then(dbVolunteers => {
+        console.log("in findAllVolunteers");
+        console.log(dbVolunteers);
+        res.json(dbVolunteers);
+      })
       .catch(err => res.status(422).json(err));
   },
 //   findById: function(req, res) {
@@ -69,3 +73,25 @@ module.exports = {
     // .catch(({ message }) => {
     //     console.log(message);
     // });
+
+    // app.post("/submit", ({ body }, res) => {
+//   db.Note.create(body)
+//     .then(({ _id }) => db.User.findOneAndUpdate({}, { $push: { notes: _id } }, { new: true }))
+//     .then(dbUser => {
+//       res.json(dbUser);
+//     })
+//     .catch(err => {
+//       res.json(err);
+//     });
+// });
+
+// app.get("/populateduser", (req, res) => {
+//   db.User.find({})
+//     .populate("notes")
+//     .then(dbUser => {
+//       res.json(dbUser);
+//     })
+//     .catch(err => {
+//       res.json(err);
+//     });
+// });

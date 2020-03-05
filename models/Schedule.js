@@ -2,9 +2,56 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const RoleSchema = new Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+
+  // start date of Role
+  roleName: {
+    type: String,
+    required: "Name of role is required."
+  },
+
+  numberNeeded: {
+    type: Number,
+    default: 1
+  }
+  
+});
+
+const WeeklyEventSchema = new Schema({
+  _id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+    
+  // when does the event happen each week
+  // one document for each week (day/time)
+  // 1 for Sunday... 7 for Saturday
+  day: {
+    type: Number,
+    required: "Date / time of event is required.",
+    min: 1,
+    max: 7
+  },
+
+  // time of weekly event 
+  // so can't use time stamp / date datatype
+  time: {
+    type: String,
+    required: true
+  },
+
+});
+
+// day, time combination must be unique
+WeeklyEventSchema.index({ "day": 1, "time": 1 }, { unique: true });
+
 const ScheduleSchema = new Schema({
     _id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
     
@@ -24,7 +71,11 @@ const ScheduleSchema = new Schema({
   version: {
     type: Number,
     default: 0
-  }
+  },
+
+  roles: [RoleSchema],
+
+  weeklyEvents: [WeeklyEventSchema],
   
 });
 

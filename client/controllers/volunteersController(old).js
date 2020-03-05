@@ -4,6 +4,11 @@ const db = require("../models");
 module.exports = {
   findAll: function(req, res) {
     db.Volunteer.find(req.query)
+      .populate('roles')
+      .exec(function (err, volunteers) {
+        if (err) return handleError(err);
+      console.log(volunteers)
+      })
       .then(dbVolunteers => res.json(dbVolunteers))
       .catch(err => res.status(422).json(err));
   },

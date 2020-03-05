@@ -3,10 +3,9 @@ require('mongoose-type-email');
 
 const Schema = mongoose.Schema;
 
-const prefTimesSchema = new Schema(
-{
+const prefTimesSchema = new Schema({
   weeklyEventId: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "WeeklyEvent"
   },
 
@@ -19,9 +18,16 @@ const prefTimesSchema = new Schema(
   
 })
 
+// const roleSchema = new Schema({
+//   roleName: {
+//     type: String,
+//     required: true
+//   }
+// })
+
 const VolunteerSchema = new Schema({
   _id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
     
@@ -48,13 +54,7 @@ const VolunteerSchema = new Schema({
   },
 
   // array of roles by role id the volunteer can do
-  roles: [
-    {
-        type: Number,
-        ref: "Role",
-        required: true
-    }
-  ],
+  roles: [String],
 
   // weekly event times preferred
   //   & % each event is preferred 
@@ -65,7 +65,7 @@ const VolunteerSchema = new Schema({
   // arrays of volunteer Ids the volunteer wants to be scheduled with
   with: [
     {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Volunteer"
     }
   ],
@@ -73,27 +73,19 @@ const VolunteerSchema = new Schema({
   // arrays of volunteer Ids the volunteer should NOT be scheduled with
   notWith: [
     {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Volunteer"
     }
   ],
 
   // array of eventInfo ids when the volunteer is NOT available
-  notAvailable: [
-    {
-        type: Number,
-        ref: "EventInfo"
-    }
-  ]
+  notAvailable: [{ type: Date }]
 
 });
 
-VolunteerSchema.statics.fullName = function(firstName, lastName) {
-  return firstName + " " + lastName;
-}
-
 // first & last name combination must be unique
 VolunteerSchema.index({ "firstName": 1, "lastName": 1 }, { unique: true });
+
 
 const Volunteer = mongoose.model("Volunteer", VolunteerSchema);
 

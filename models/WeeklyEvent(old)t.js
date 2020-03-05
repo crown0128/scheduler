@@ -5,13 +5,13 @@ const Schema = mongoose.Schema;
 
 const WeeklyEventSchema = new Schema({
   _id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
     
 // id of schedule the event info belongs to
   scheduleId: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Schedule"
   },
     

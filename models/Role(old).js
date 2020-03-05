@@ -4,13 +4,13 @@ const Schema = mongoose.Schema;
 
 const RoleSchema = new Schema({
   _id: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
     
   // what schedule the role belongs to
   scheduleId: {
-    type: Number,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Schedule"
   },
 
