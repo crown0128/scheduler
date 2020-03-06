@@ -28,7 +28,7 @@
     <v-col cols="3" height="10px">
 
       <!-- Need to figure out why time is not being displayed formatted as am/pm -->
-      
+
       <v-dialog
         ref="dialog"
         v-model="showTimePicker"
@@ -65,6 +65,7 @@
         class="mr-0 ml-3" 
         fab dark x-small 
         color="teal"
+        @click="handleSaveWeeklyEvent()"
       >
         <v-icon dark>mdi-content-save-outline</v-icon>
       </v-btn>
@@ -157,6 +158,12 @@ export default {
     getAmPm: function(time) {
       time = this.timeToDate(time);
       return moment(time, "h:mm a");
+    },
+
+// needs to be modularized since it's used in more than one place
+    handleSaveWeeklyEvent() {
+      console.log(this.schedules);
+      console.log()
     }
   },
 

@@ -4,31 +4,35 @@
   
   <!-- card for one schedule with information -->
   <v-row text-center class="justify-center">
-    <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2" supportingtext="true">
+    <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2" id="addsched" supportingtext="true">
 
+
+      <v-row>
+        <GetSchedDates
+          v-if="!doEdit.haveSchedDates"
+          :doEdit="doEdit"
+          :schedule="schedule"
+        />
+      </v-row>
+
+      <v-row class="wide" v-if="doEdit.haveSchedDates">
       <div class="v-card__text pb-0">
-        <v-row>
+        <h2 >
 
-          <span class="title">
-            Set up a new schedule
+          <span class="title mr-3">
+            Choose the weekly times and roles needed for the new schedule.  Click the save icon to save.
           </span>
+          <div>
+            {{ schedule.startDate | moment("MMM Do, YYYY") }} through {{ schedule.endDate | moment("MMM Do, YYYY") }}
+            
+          </div>
 
-          <v-col cols="1" text-left>
-            <v-btn 
-              fab dark x-small color="teal"
-            >
-              <v-icon dark>mdi-content-save</v-icon>
-            </v-btn>
-          </v-col>
-
-        </v-row>
+        </h2>
       </div>
 
-
-      <v-row class="wide">
-
         <!-- Weekly events in the schedule on the left side (with button to edit) -->
-        <v-col cols="6" class="v-card__text">
+        <v-col cols="6" class="v-card__text ml-5">
+
 
           <!-- List day of week and time of each weekly event -->
             <!-- @delete-weekly="deleteWeekly"
@@ -38,14 +42,14 @@
             :schedule="schedule"
             :doEdit="doEdit"
           />
-          <!-- <WeeklyEvents v-else
+          <!-- <WeeklyEvents
             :schedule="schedule" 
             :doEdit="doEdit"
           /> -->
         </v-col>
 
         <!-- Roles needed in the schedule on the right side (with button to edit) -->
-        <v-col cols="6" class="v-card__text pb-5">
+        <v-col cols="5" class="v-card__text">
 
           <!-- List day of week and time of each weekly event -->
             <!-- @delete-weekly="deleteWeekly"
@@ -64,15 +68,6 @@
 
       </v-row>
 
-      <!-- Button to run the schedule to create a document with the volunteer assignments -->
-      <v-row>
-        <v-flex col-12 py-2>
-          <!-- <v-col center-align> -->
-            <v-btn block dark rounded class="teal">Run this Schedule to create a schedule document.</v-btn>
-          <!-- </v-col> -->
-        </v-flex>
-      </v-row>
-
     </div>
 
 
@@ -88,17 +83,19 @@
   import EditWeeklyEvents from './EditWeeklyEvents';
   import RolesNeeded from './RolesNeeded';
   import EditRolesNeeded from './EditRolesNeeded';
+  import GetSchedDates from './GetSchedDates';
 
   export default {
     name: "AddSchedule",
-    components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded },
+    components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded, GetSchedDates },
     props: ["schedules", "addSched"],
     data: function () {
       return {
         schedule: [],
         doEdit: {
           weekly: false,
-          roles: false
+          roles: false,
+          haveSchedDates: false
         }
       };
     },
@@ -126,8 +123,8 @@
 
   .title {
     color:blue;
-    text-decoration-line: underline;
-    font-size: 2em;
+    text-decoration-line: none;
+    font-size: 3em;
     padding: 20px 0 0;
   }
 

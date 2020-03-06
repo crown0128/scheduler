@@ -15,12 +15,12 @@
       />
       <!-- NEW SCHEDULE button -->
       <v-flex xs10 offset-xs1 py-2>
-          <v-btn 
-            block dark rounded 
-            @click="handleClickAddSchedule"
-            class="teal">
-            Set up a new Schedule
-            </v-btn>
+        <v-btn 
+          block dark rounded 
+          @click="handleClickAddSchedule"
+          class="teal">
+          Set up a new Schedule
+          </v-btn>
       </v-flex>
     </div>
  
@@ -28,6 +28,7 @@
       <AddSchedule
         v-if="addSched"
         :schedules="schedules"
+        :addSched="addSched"
       />
     </div>
 
