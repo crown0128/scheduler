@@ -26,32 +26,37 @@
 
     <!-- choose time of day -->
     <v-col cols="3" height="10px">
-      <v-menu
-        ref="menu"
-        v-model="time"
-        no-title
-        :close-on-content-click="false"
-        :nudge-right="40"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="100px"
+
+      <!-- Need to figure out why time is not being displayed formatted as am/pm -->
+      
+      <v-dialog
+        ref="dialog"
+        v-model="showTimePicker"
+        :return-value.sync="formattedTime"
+        persistent
+        width="290px"
       >
         <template v-slot:activator="{ on }">
           <v-text-field
-            v-model="time"
-            no-title
+            v-model="newTime"
             label="time"
             readonly
             v-on="on"
           ></v-text-field>
         </template>
+
         <v-time-picker
-          v-model="time"
-          no-title
-          @click:minute="$refs.menu.save(time-picked)"
-        ></v-time-picker>
-      </v-menu>
+          v-if="showTimePicker"
+          v-model="newTime"
+          full-width
+          color="teal"
+        >
+          <v-spacer></v-spacer>
+          <v-btn text color="teal" @click="showTimePicker = false">Cancel</v-btn>
+          <!-- <v-btn text color="teal" format="ampm" @click="newTime = $refs.dialog.save( getAmPm(newTime) )">OK</v-btn> -->
+          <v-btn text color="teal" format="ampm" @click="$refs.dialog.save( newTime )">OK</v-btn>
+        </v-time-picker>
+      </v-dialog>
     </v-col>
 
     <!-- icon to save new weekly event -->
@@ -83,30 +88,30 @@
   <div class="pb-4">
     <!-- List day of week and time of each weekly event -->
     <!-- with delete buttom -->
-    <v-list
-      v-for="(weeklyEvent, i) in schedule.weeklyEvents"
-      class="pl-12 pt-0 weekly-event"
-      :key="i"
-      :weeklyEvent="weeklyEvent">
+    <div v-if="schedule.length > 0">
+      <v-list
+        v-for="(weeklyEvent, i) in schedule.weeklyEvents"
+        class="pl-12 pt-0 weekly-event"
+        :key="i"
+        :weeklyEvent="weeklyEvent">
 
-      <v-row>
-        <v-col cols="6" class="offset-sm-1 mt-0">
-          <v-list-item class="pa-0">
-              {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
-          </v-list-item>
-        </v-col>
+        <v-row>
+          <v-col cols="6" class="offset-sm-1 mt-0">
+            <v-list-item class="pa-0">
+                {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
+            </v-list-item>
+          </v-col>
 
-        <v-col cols="1">
-          <v-btn class="mr-0 small-dlt mt-3" fab dark color="teal">
-            <v-icon dark>mdi-delete-circle</v-icon>
-          </v-btn>
-        </v-col>
+          <v-col cols="1">
+            <v-btn class="mr-0 small-dlt mt-3" fab dark color="teal">
+              <v-icon dark>mdi-delete-circle</v-icon>
+            </v-btn>
+          </v-col>
 
-      </v-row>
-      <v-row class="space">
-           <span></span>
-      </v-row>
-    </v-list>
+        </v-row>
+        <v-spacer></v-spacer>
+      </v-list>
+    </div>
 
   </div>
 
@@ -117,6 +122,8 @@
 
 
 <script>
+import format from 'date-fns/format'
+
 export default {
   name: "EditWeeklyEvents",
   props: ["schedule", "doEdit"],
@@ -131,16 +138,39 @@ export default {
         'Friday',
         'Saturday',
       ],
-      time: null,
+      newTime: "12:00",
+      day: 'Saturday',
       // menu2: false,
-      // modal2: false,
+      showTimePicker: false,
     }
   }, // end data
   methods: {
     rtnToSchedFromWkly: function(doEdit) {
       doEdit.weekly = false;
       return doEdit
+    },
+
+    timeToDate: function(time) {
+      return new Date("March 16, 2020 " + time);
+    },
+
+    getAmPm: function(time) {
+      time = this.timeToDate(time);
+      return moment(time, "h:mm a");
     }
+  },
+
+  computed: {
+    formattedTime() {
+      console.log(this.newTime);
+      console.log(this.timeToDate(this.newTime));
+      let time = this.timeToDate(this.newTime);
+      time = time ? format(time, 'h:mm aaaa') : '';
+      console.log("Time: " + time);
+      return time;
+      // return time ? format(time, 'h:mm aaaa') : '';
+    }
+
   }
 };
 </script>

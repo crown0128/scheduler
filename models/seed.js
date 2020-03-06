@@ -27,7 +27,7 @@ const data = [
                 '_id': ObjectId("5e4c7f67f3a9883274f622fa"),
                 'startDate': '2020-03-07',
                 'endDate': '2020-05-31',
-                'WeeklyEvent': 
+                'weeklyEvents': 
                 [
                     {
                         '_id': ObjectId("5e4c7f67f3a9883274f622fb"),
@@ -45,7 +45,7 @@ const data = [
                         'time': '11:15'
                     }             
                 ],
-                'Role': 
+                'roles': 
                 [
                     {
                         '_id': ObjectId("5e4c7f67f3a9883274f62301"),

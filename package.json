@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "date-fns": "^2.10.0",
     "express": "^4.17.1",
     "mongoose": "^5.9.3",
     "mongoose-seed": "^0.6.0",
