@@ -76,13 +76,14 @@ export default {
                 this.message = "Start date must be before end date.";
                 return schedules;
             } else {
+                const name = Date.now().toString();
                 const schedule = {
                     startDate: startDate,
                     endDate: endDate,
                     version: 0,
                     roles: [],
                     weeklyEvents: [],
-                    name: Date.now()
+                    name: name
                 };
                 schedules.push(schedule);
                 this.message = '';

@@ -9,7 +9,8 @@ router
 
 // for "/api/schedules/:id"    
 router 
-    .route("/api/schedules/:id")
+    .route("/api/schedules/id")
+    .post(schedulerController.updateSchedule)
     .delete(schedulerController.removeSchedule);
 
 // router

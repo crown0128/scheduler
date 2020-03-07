@@ -18,7 +18,7 @@
 
       <v-row class="wide" v-if="flags.haveSchedDates">
 
-        <v-col cols="10">
+        <v-col cols="10" offset="1">
           <h2 >
 
             <span class="title mr-3">
@@ -30,7 +30,7 @@
 
           </h2>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="1">
           <v-btn
             class="mr-0 ml-3" 
             fab dark x-small 

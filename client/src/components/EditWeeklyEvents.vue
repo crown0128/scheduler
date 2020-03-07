@@ -124,7 +124,8 @@
 
 
 <script>
-import format from 'date-fns/format'
+import format from 'date-fns/format';
+import axios from 'axios';
 
 export default {
   name: "EditWeeklyEvents",
@@ -170,13 +171,19 @@ export default {
       });
       console.log("updated schedules");
       console.log(schedules);
+      this.updateSchedule(schedules[scheduleIndex]);
 
       return schedules;
-      // ******************   **********need to write to database!!  ****************************
-      // ******************   **********need to write to database!!  ****************************
-      // ******************   **********need to write to database!!  ****************************
-      // ******************   **********need to write to database!!  ****************************
+    },
 
+    updateSchedule: function(schedule) {
+      axios.post('/api/schedules/id', schedule)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      });
     }
   },
 

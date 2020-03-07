@@ -105,6 +105,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "EditRolesNeeded",
   props: ["schedules", "scheduleIndex", "flags"],
@@ -126,7 +128,7 @@ export default {
         roleName: newRole,
         numberNeeded: newNumNeeded
       });
-      updateSchedule(schedule[scheduleIndex]);
+      this.updateSchedule(schedules[scheduleIndex]);
       console.log("updated schedules");
       console.log(schedules);
       return schedules;
