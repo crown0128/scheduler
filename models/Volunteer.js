@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const prefTimesSchema = new Schema({
   weeklyEventId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: "WeeklyEvent"
   },
 
@@ -61,7 +61,7 @@ const VolunteerSchema = new Schema({
   // arrays of volunteer Ids the volunteer wants to be scheduled with
   with: [
     {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Volunteer"
     }
   ],
@@ -69,7 +69,7 @@ const VolunteerSchema = new Schema({
   // arrays of volunteer Ids the volunteer should NOT be scheduled with
   notWith: [
     {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Volunteer"
     }
   ],

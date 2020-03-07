@@ -58,7 +58,7 @@ import axios from 'axios'
 
 export default {
     name: "GetSchedDates",
-    props: ["schedules", "scheduleIndex", "flags"],
+    props: ["schedules", "scheduleIndex", "flags", "addSched"],
     data () {
         return {
             startDate: '',

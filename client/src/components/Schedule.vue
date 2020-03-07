@@ -4,7 +4,7 @@
   
   <!-- card for one schedule with information -->
   <v-row text-center class="justify-center">
-    <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2" supportingtext="true">
+    <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2 sched-width" supportingtext="true">
 
       <div class="v-card__text pb-0">
         <v-row>
@@ -149,6 +149,10 @@
     font-size: 14px;
     background-color:  #c4fff9 !important;
     height: 20px;
+  }
+
+  .sched-width {
+    width: 80%;
   }
   
 </style>

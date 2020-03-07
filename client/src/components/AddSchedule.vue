@@ -13,6 +13,7 @@
           :flags="flags"
           :schedules="schedules"
           :scheduleIndex="scheduleIndex"
+          :addSched="addSched"
         />
       </v-row>
 
@@ -30,16 +31,16 @@
 
           </h2>
         </v-col>
-        <v-col cols="1">
+        <!-- <v-col cols="1">
           <v-btn
             class="mr-0 ml-3" 
             fab dark x-small 
             color="teal"
+            @click="AddSched = false;"
           >
-            <!-- @click=" " -->
             <v-icon dark>mdi-arrow-left</v-icon>
           </v-btn>
-        </v-col>
+        </v-col> -->
 
         <!-- Weekly events in the schedule on the left side (with button to edit) -->
         <v-col cols="6" class="v-card__text ml-5">

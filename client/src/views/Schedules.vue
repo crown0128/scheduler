@@ -25,13 +25,11 @@
       </v-flex>
     </div>
  
-    <div v-if="addSched">
-      <AddSchedule
-        v-if="addSched"
-        :schedules="schedules"
-        :addSched="addSched"
-      />
-    </div>
+    <AddSchedule
+      v-if="addSched"
+      :schedules="schedules"
+      :addSched="addSched"
+    />
 
   </v-container>
 </template>

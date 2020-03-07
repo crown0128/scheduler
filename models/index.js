@@ -2,5 +2,7 @@
 
 module.exports = {
   Schedule: require("./Schedule"),
-  Volunteer: require("./Volunteer")
+  Volunteer: require("./Volunteer"),
+  Role: require("./Role"),
+  WeeklyEvent: require("./WeeklyEvent")
 };
