@@ -76,7 +76,7 @@
         class="mr-0 ml-3" 
         fab dark x-small 
         color="teal"
-        @click="rtnToSchedFromWkly(doEdit)"
+        @click="rtnToSchedFromWkly(flags)"
       >
         <v-icon dark>mdi-calendar-multiselect</v-icon>
       </v-btn>
@@ -89,7 +89,7 @@
   <div class="pb-4">
     <!-- List day of week and time of each weekly event -->
     <!-- with delete buttom -->
-    <div v-if="(schedules[scheduleIndex].length > 0) && (schedules[scheduleIndex].weeklyEvents.length > 0)">
+    <!-- <div v-if="(schedules[scheduleIndex].length > 0) && (schedules[scheduleIndex].weeklyEvents.length > 0)"> -->
       <v-list
         v-for="(weeklyEvent, i) in schedules[scheduleIndex].weeklyEvents"
         class="pl-12 pt-0 weekly-event"
@@ -112,7 +112,7 @@
         </v-row>
         <v-spacer></v-spacer>
       </v-list>
-    </div>
+    <!-- </div> -->
 
   </div>
 
@@ -127,7 +127,7 @@ import format from 'date-fns/format'
 
 export default {
   name: "EditWeeklyEvents",
-  props: ["scheduleIndex", "doEdit", "schedules"],
+  props: ["scheduleIndex", "flags", "schedules"],
   data () {
     return {
       days: [
@@ -146,9 +146,9 @@ export default {
     }
   }, // end data
   methods: {
-    rtnToSchedFromWkly: function(doEdit) {
-      doEdit.weekly = false;
-      return doEdit
+    rtnToSchedFromWkly: function(flags) {
+      flags.weekly = false;
+      return flags
     },
 
     timeToDate: function(time) {

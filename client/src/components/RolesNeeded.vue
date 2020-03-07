@@ -9,7 +9,7 @@
           class="mr-0 ml-3" 
           fab dark x-small 
           color="teal"
-          @click="editRolesNeeded(doEdit)"
+          @click="editRolesNeeded(flags)"
         >
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
@@ -35,11 +35,11 @@
 <script>
   export default {
     name: "RolesNeeded",
-    props: ["schedules", "scheduleIndex", "doEdit"],
+    props: ["schedules", "scheduleIndex", "flags"],
     methods: {
-      editRolesNeeded: function(doEdit) {
-        doEdit.roles = true;
-        return doEdit
+      editRolesNeeded: function(flags) {
+        flags.roles = true;
+        return flags
       }
     }
   };

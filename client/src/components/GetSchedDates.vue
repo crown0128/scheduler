@@ -58,7 +58,7 @@ import axios from 'axios'
 
 export default {
     name: "GetSchedDates",
-    props: ["schedules", "scheduleIndex", "doEdit"],
+    props: ["schedules", "scheduleIndex", "flags"],
     data () {
         return {
             startDate: '',
@@ -88,7 +88,7 @@ export default {
                 // schedules[scheduleIndex].roles = [];
                 // schedules[scheduleIndex].weeklyEvents = [];
                 this.message = '';
-                this.doEdit.haveSchedDates = true;
+                this.flags.haveSchedDates = true;
                 // this.insertSchedule(schedule);
                 return schedules;
             };

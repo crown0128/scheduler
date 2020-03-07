@@ -79,8 +79,8 @@ export default {
     // },
 
 
-    // editRoles: function(doEditRoles) {
-    //   doEditRoles = true;
+    // editRoles: function(flagsRoles) {
+    //   flagsRoles = true;
     // }
 
 };

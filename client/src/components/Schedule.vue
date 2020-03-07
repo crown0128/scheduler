@@ -43,15 +43,15 @@
             @save-weekly="saveWeekly" -->
             <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditWeeklyEvents 
-            v-if="doEdit.weekly"
+            v-if="flags.weekly"
             :schedules="schedules"
             :scheduleIndex="scheduleIndex"
-            :doEdit="doEdit"
+            :flags="flags"
           />
           <WeeklyEvents v-else
             :schedules="schedules" 
             :scheduleIndex="scheduleIndex"
-            :doEdit="doEdit"
+            :flags="flags"
           />
         </v-col>
 
@@ -63,15 +63,15 @@
             @save-weekly="saveWeekly" -->
             <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditRolesNeeded 
-            v-if="doEdit.roles"
+            v-if="flags.roles"
             :schedules="schedules"
             :scheduleIndex="scheduleIndex"
-            :doEdit="doEdit"
+            :flags="flags"
           />
           <RolesNeeded v-else
             :schedules="schedules" 
             :scheduleIndex="scheduleIndex"
-            :doEdit="doEdit"
+            :flags="flags"
           />
 
         </v-col>
@@ -109,7 +109,7 @@
     props: ["scheduleIndex", "schedules"],
     data: function () {
       return {
-        doEdit: {
+        flags: {
           weekly: false,
           roles: false
         }
@@ -118,11 +118,11 @@
 
        // methods: {
     //   updWeekly: function(doWeekly) {
-    //     this.doEditWeekly = doWeekly;
+    //     this.flagsWeekly = doWeekly;
     //   }
       
-    //   // rtnToSchedFromWkly: function(doEditWeekly) {
-    //   //   this.doEditWeekly = false;
+    //   // rtnToSchedFromWkly: function(flagsWeekly) {
+    //   //   this.flagsWeekly = false;
     //   // }
     // }
     

@@ -9,7 +9,7 @@
           class="mr-0 ml-3" 
           fab dark x-small 
           color="teal"
-          @click="editWeeklyEvents(doEdit)"
+          @click="editWeeklyEvents(flags)"
         >
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
@@ -35,11 +35,11 @@
 <script>
   export default {
     name: "WeeklyEvents",
-    props: ["schedules", "scheduleIndex", "doEdit"],
+    props: ["schedules", "scheduleIndex", "flags"],
     methods: {
-      editWeeklyEvents: function(doEdit) {
-        doEdit.weekly = true;
-        return doEdit
+      editWeeklyEvents: function(flags) {
+        flags.weekly = true;
+        return flags
       },
 
       timeToDate: function(time) {

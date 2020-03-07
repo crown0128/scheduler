@@ -9,14 +9,14 @@
 
       <v-row>
         <GetSchedDates
-          v-if="!doEdit.haveSchedDates"
-          :doEdit="doEdit"
+          v-if="!flags.haveSchedDates"
+          :flags="flags"
           :schedules="schedules"
           :scheduleIndex="scheduleIndex"
         />
       </v-row>
 
-      <v-row class="wide" v-if="doEdit.haveSchedDates">
+      <v-row class="wide" v-if="flags.haveSchedDates">
       <div class="v-card__text pb-0">
         <h2 >
 
@@ -42,13 +42,13 @@
           <EditWeeklyEvents 
             :scheduleIndex="scheduleIndex"
             :schedules="schedules"
-            :doEdit="doEdit"
+            :flags="flags"
           />
           <!-- <WeeklyEvents
             v-if="schedule.weeklyEvents.length > 0"
             :schedules="schedules" 
             :scheduleIndex="scheduleIndex"
-            :doEdit="doEdit"
+            :flags="flags"
           /> -->
         </v-col>
 
@@ -62,12 +62,12 @@
           <EditRolesNeeded 
             :scheduleIndex="scheduleIndex"
             :schedules="schedules"
-            :doEdit="doEdit"
+            :flags="flags"
           />
           <!-- <RolesNeeded v-else
             :key="key"
             :schedules="schedules"
-            :doEdit="doEdit"
+            :flags="flags"
           /> -->
 
         </v-col>
@@ -97,7 +97,7 @@
     props: ["schedules", "addSched"],
     data: function () {
       return {
-        doEdit: {
+        flags: {
           weekly: true,
           roles: true,
           haveSchedDates: false
@@ -108,11 +108,11 @@
 
        // methods: {
     //   updWeekly: function(doWeekly) {
-    //     this.doEditWeekly = doWeekly;
+    //     this.flagsWeekly = doWeekly;
     //   }
       
-    //   // rtnToSchedFromWkly: function(doEditWeekly) {
-    //   //   this.doEditWeekly = false;
+    //   // rtnToSchedFromWkly: function(flagsWeekly) {
+    //   //   this.flagsWeekly = false;
     //   // }
     // }
     

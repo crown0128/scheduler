@@ -60,7 +60,7 @@
         class="mr-1" 
         fab dark x-small 
         color="teal"
-        @click="rtnToSchedFromRole(doEdit)"
+        @click="rtnToSchedFromRole(flags)"
       >
         <v-icon dark>mdi-calendar-multiselect</v-icon>
       </v-btn>
@@ -106,7 +106,7 @@
 <script>
 export default {
   name: "EditRolesNeeded",
-  props: ["schedules", "scheduleIndex", "doEdit"],
+  props: ["schedules", "scheduleIndex", "flags"],
   data () {
     return {
       newRole: '',
@@ -114,16 +114,16 @@ export default {
     }
   },
   methods: {
-    rtnToSchedFromRole: function(doEdit) {
-      doEdit.roles = false;
-      return doEdit
+    rtnToSchedFromRole: function(flags) {
+      flags.roles = false;
+      return flags
     },
 
     handleSaveNewRole: function(schedules, scheduleIndex, newRole, newNumNeeded) {
       console.log("in HandleSaveNewRole in EditRolesNeeded component");
       schedules[scheduleIndex].roles.push({
         roleName: newRole,
-        numNeeded: newNumNeeded
+        numberNeeded: newNumNeeded
       });
       console.log("updated schedules");
       console.log(schedules);
