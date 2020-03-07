@@ -26,8 +26,8 @@ const data = [
             {
                 '_id': ObjectId("5e4c7f67f3a9883274f622fa"),
                 'name': 'Spring schedule',
-                'startDate': '2020-03-07',
-                'endDate': '2020-05-31',
+                'startDate': '2020-03-07 12:00',
+                'endDate': '2020-05-31 12:00',
                 'weeklyEvents': 
                 [
                     {

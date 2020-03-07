@@ -4,20 +4,18 @@ const schedulerController = require("../controllers/schedulerController");
 
 router  
     .route("/api/schedules")
-    .get(schedulerController.findAllSchedules);
-    // .post(schedulerController.createSchedule);
+    .get(schedulerController.findAllSchedules)
+    .post(schedulerController.createSchedule);
 
 // for "/api/schedules/:id"    
 router 
     .route("/api/schedules/:id")
     .delete(schedulerController.removeSchedule);
 
-router
-    // .route("/api/schedules/:startDate&endDate=:endDate&version=:version&roles=:roles&weeklyEvents=:weeklyEvents")
-    .route("/api/schedules")
-    // .post(schedulerController.createSchedule(req.body.schedule));
-    .post(schedulerController.createSchedule);
-    // .post(schedulerController.createSchedule);
+// router
+//     .route("/api/schedules")
+//     .post(schedulerController.createSchedule);
+//     // .post(schedulerController.createSchedule);
 
 router  
     .route("/api/volunteers")

@@ -126,9 +126,20 @@ export default {
         roleName: newRole,
         numberNeeded: newNumNeeded
       });
+      updateSchedule(schedule[scheduleIndex]);
       console.log("updated schedules");
       console.log(schedules);
       return schedules;
+    },
+
+    updateSchedule: function(schedule) {
+      axios.post('/api/schedules/id', schedule)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      });
     }
   }
 

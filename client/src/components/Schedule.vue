@@ -10,9 +10,9 @@
         <v-row>
 
           <v-col cols="11">
-
+            
             <span class="schedule-title">
-              Schedule:  {{ schedules[scheduleIndex].startDate | moment("MMM Do YYYY") }} through {{ schedules[scheduleIndex].endDate  | moment("MMM Do YYYY") }}
+              Schedule:  {{ schedules[scheduleIndex].startDate | moment("add", "7 hours", "MMM Do YYYY") }} through {{ schedules[scheduleIndex].endDate  | moment("add", "7 hours", "MMM Do YYYY") }}
             </span>
             
             <!-- For information, just because we have it. :) -->

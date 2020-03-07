@@ -100,7 +100,7 @@ export default {
             .catch(err => {
                 console.log("Error in GetSchedDates inserting new Schedule.");
                 throw err;
-            })
+            });
         },
 
         // datesFilledOK: function () {
