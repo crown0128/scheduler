@@ -65,7 +65,7 @@
         class="mr-0 ml-3" 
         fab dark x-small 
         color="teal"
-        @click="handleSaveWeeklyEvent()"
+        @click="schedules = handleSaveWeeklyEvent(schedules, scheduleIndex)"
       >
         <v-icon dark>mdi-content-save-outline</v-icon>
       </v-btn>
@@ -89,9 +89,9 @@
   <div class="pb-4">
     <!-- List day of week and time of each weekly event -->
     <!-- with delete buttom -->
-    <div v-if="schedule.length > 0">
+    <div v-if="(schedules[scheduleIndex].length > 0) && (schedules[scheduleIndex].weeklyEvents.length > 0)">
       <v-list
-        v-for="(weeklyEvent, i) in schedule.weeklyEvents"
+        v-for="(weeklyEvent, i) in schedules[scheduleIndex].weeklyEvents"
         class="pl-12 pt-0 weekly-event"
         :key="i"
         :weeklyEvent="weeklyEvent">
@@ -127,7 +127,7 @@ import format from 'date-fns/format'
 
 export default {
   name: "EditWeeklyEvents",
-  props: ["schedule", "doEdit"],
+  props: ["scheduleIndex", "doEdit", "schedules"],
   data () {
     return {
       days: [
@@ -161,23 +161,21 @@ export default {
     },
 
 // needs to be modularized since it's used in more than one place
-    handleSaveWeeklyEvent() {
-      console.log("In handleSaveWeeklyEvent");
-      console.log("this.schedule:");
-      console.log(this.schedule);
-      console.log("this.newtime:");
-      console.log(this.newTime);
-      console.log('this.day');
-      console.log(this.day);
-
-      console.log("About to do push");
-      this.schedule.weeklyEvents.push({
+    handleSaveWeeklyEvent(schedules, scheduleIndex) {
+      console.log("in handleSaveWeeklyEvent");
+      schedules[scheduleIndex].weeklyEvents.push({
         day: this.day,
         time: this.newTime
       });
-      console.log("done with push");
-      console.log("new schedule:");
-      console.log(this.schedule);
+      console.log("updated schedules");
+      console.log(schedules);
+
+      return schedules;
+      // ******************   **********need to write to database!!  ****************************
+      // ******************   **********need to write to database!!  ****************************
+      // ******************   **********need to write to database!!  ****************************
+      // ******************   **********need to write to database!!  ****************************
+
     }
   },
 

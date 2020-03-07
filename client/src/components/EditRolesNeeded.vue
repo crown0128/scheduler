@@ -48,6 +48,7 @@
         class="mr-1" 
         fab dark x-small 
         color="teal"
+        @click="schedules = handleSaveNewRole(schedules, scheduleIndex, newRole, newNumNeeded)"
       >
         <v-icon dark>mdi-content-save-outline</v-icon>
       </v-btn>
@@ -73,7 +74,7 @@
     <!-- List day of week and time of each weekly event -->
     <!-- with delete buttom -->
     <v-list
-      v-for="(role, i) in schedule.roles"
+      v-for="(role, i) in schedules[scheduleIndex].roles"
       class="pl-12 pt-0 role-event"
       :key="i"
       :role="role">
@@ -105,16 +106,28 @@
 <script>
 export default {
   name: "EditRolesNeeded",
-  props: ["schedule", "doEdit"],
+  props: ["schedules", "scheduleIndex", "doEdit"],
   data () {
     return {
       newRole: '',
+      newNumNeeded: 1,
     }
   },
   methods: {
     rtnToSchedFromRole: function(doEdit) {
       doEdit.roles = false;
       return doEdit
+    },
+
+    handleSaveNewRole: function(schedules, scheduleIndex, newRole, newNumNeeded) {
+      console.log("in HandleSaveNewRole in EditRolesNeeded component");
+      schedules[scheduleIndex].roles.push({
+        roleName: newRole,
+        numNeeded: newNumNeeded
+      });
+      console.log("updated schedules");
+      console.log(schedules);
+      return schedules;
     }
   }
 

@@ -19,7 +19,7 @@
   
   <!-- List each role and number of people needed -->
   <v-list
-      v-for="(role, i) in schedule.roles"
+      v-for="(role, i) in schedules[scheduleIndex].roles"
       class="py-0 pl-12 weekly-event"
       :key="i"
       :role="role">
@@ -35,7 +35,7 @@
 <script>
   export default {
     name: "RolesNeeded",
-    props: ["schedule", "doEdit"],
+    props: ["schedules", "scheduleIndex", "doEdit"],
     methods: {
       editRolesNeeded: function(doEdit) {
         doEdit.roles = true;

@@ -10,16 +10,14 @@
         <v-row>
 
           <v-col cols="11">
-            <!-- <span class="schedule-title">
-              Schedule:  {{ schedule.startDate }} - {{ schedule.endDate }}
-            </span> -->
+
             <span class="schedule-title">
-              Schedule:  {{ schedule.startDate | moment("MMM Do YYYY") }} through {{ schedule.endDate  | moment("MMM Do YYYY") }}
+              Schedule:  {{ schedules[scheduleIndex].startDate | moment("MMM Do YYYY") }} through {{ schedules[scheduleIndex].endDate  | moment("MMM Do YYYY") }}
             </span>
             
             <!-- For information, just because we have it. :) -->
             <div class="v-card__text pa-0">
-              (Number of times this schedule has been run:  {{schedule.version}})
+              (Number of times this schedule has been run:  {{schedules[scheduleIndex].version}})
             </div>
           </v-col>
 
@@ -46,11 +44,13 @@
             <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditWeeklyEvents 
             v-if="doEdit.weekly"
-            :schedule="schedule"
+            :schedules="schedules"
+            :scheduleIndex="scheduleIndex"
             :doEdit="doEdit"
           />
           <WeeklyEvents v-else
-            :schedule="schedule" 
+            :schedules="schedules" 
+            :scheduleIndex="scheduleIndex"
             :doEdit="doEdit"
           />
         </v-col>
@@ -64,11 +64,13 @@
             <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditRolesNeeded 
             v-if="doEdit.roles"
-            :schedule="schedule"
+            :schedules="schedules"
+            :scheduleIndex="scheduleIndex"
             :doEdit="doEdit"
           />
           <RolesNeeded v-else
-            :schedule="schedule" 
+            :schedules="schedules" 
+            :scheduleIndex="scheduleIndex"
             :doEdit="doEdit"
           />
 
@@ -104,7 +106,7 @@
   export default {
     name: "Schedule",
     components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded },
-    props: ["schedule"],
+    props: ["scheduleIndex", "schedules"],
     data: function () {
       return {
         doEdit: {

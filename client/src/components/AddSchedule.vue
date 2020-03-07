@@ -11,7 +11,8 @@
         <GetSchedDates
           v-if="!doEdit.haveSchedDates"
           :doEdit="doEdit"
-          :schedule="schedule"
+          :schedules="schedules"
+          :scheduleIndex="scheduleIndex"
         />
       </v-row>
 
@@ -23,7 +24,7 @@
             Choose the weekly times and roles needed for the new schedule.  Click the save icon to save.
           </span>
           <div>
-            {{ schedule.startDate | moment("MMM Do, YYYY") }} through {{ schedule.endDate | moment("MMM Do, YYYY") }}
+            {{ schedules[scheduleIndex].startDate | moment("MMM Do, YYYY") }} through {{ schedules[scheduleIndex].endDate | moment("MMM Do, YYYY") }}
             
           </div>
 
@@ -39,11 +40,14 @@
             @save-weekly="saveWeekly" -->
             <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditWeeklyEvents 
-            :schedule="schedule"
+            :scheduleIndex="scheduleIndex"
+            :schedules="schedules"
             :doEdit="doEdit"
           />
           <!-- <WeeklyEvents
-            :schedule="schedule" 
+            v-if="schedule.weeklyEvents.length > 0"
+            :schedules="schedules" 
+            :scheduleIndex="scheduleIndex"
             :doEdit="doEdit"
           /> -->
         </v-col>
@@ -56,11 +60,13 @@
             @save-weekly="saveWeekly" -->
             <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditRolesNeeded 
-            :schedule="schedule"
+            :scheduleIndex="scheduleIndex"
+            :schedules="schedules"
             :doEdit="doEdit"
           />
           <!-- <RolesNeeded v-else
-            :schedule="schedule" 
+            :key="key"
+            :schedules="schedules"
             :doEdit="doEdit"
           /> -->
 
@@ -91,12 +97,12 @@
     props: ["schedules", "addSched"],
     data: function () {
       return {
-        schedule: [],
         doEdit: {
-          weekly: false,
-          roles: false,
+          weekly: true,
+          roles: true,
           haveSchedDates: false
-        }
+        },
+        scheduleIndex: this.schedules.length,
       };
     },
 

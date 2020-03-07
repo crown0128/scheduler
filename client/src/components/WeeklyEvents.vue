@@ -19,7 +19,7 @@
   
   <!-- List day of week and time of each weekly event -->
   <v-list
-      v-for="(weeklyEvent, i) in schedule.weeklyEvents"
+      v-for="(weeklyEvent, i) in schedules[scheduleIndex].weeklyEvents"
       class="pl-12 py-0 weekly-event"
       :key="i"
       :weeklyEvent="weeklyEvent">
@@ -35,7 +35,7 @@
 <script>
   export default {
     name: "WeeklyEvents",
-    props: ["schedule", "doEdit"],
+    props: ["schedules", "scheduleIndex", "doEdit"],
     methods: {
       editWeeklyEvents: function(doEdit) {
         doEdit.weekly = true;

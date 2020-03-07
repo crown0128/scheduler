@@ -35,7 +35,7 @@
                 class="mr-0 ml-3" 
                 fab dark small 
                 color="teal"
-                @click="schedule = saveSchedDates(startDate, endDate, schedule)"
+                @click="schedules = saveSchedDates(startDate, endDate, schedules, scheduleIndex)"
             >
                 <v-icon dark>mdi-content-save-outline</v-icon>
             </v-btn>
@@ -58,7 +58,7 @@ import axios from 'axios'
 
 export default {
     name: "GetSchedDates",
-    props: ["schedule", "doEdit"],
+    props: ["schedules", "scheduleIndex", "doEdit"],
     data () {
         return {
             startDate: '',
@@ -68,21 +68,29 @@ export default {
     },
 
     methods: {
-        saveSchedDates: function(startDate, endDate, schedule) {
+        saveSchedDates: function(startDate, endDate, schedules, scheduleIndex) {
             if (startDate === '' | endDate === '') {
                 this.message = "Please choose a start and an end date.";
             } else if (endDate < startDate) {
                 this.message = "Start date must be before end date.";
             } else {
-                schedule.startDate = this.startDate;
-                schedule.endDate = this.endDate;
-                schedule.version = 0;
-                schedule.roles = [];
-                schedule.weeklyEvents = [];
+                const schedule = {
+                    startDate: startDate,
+                    endDate: endDate,
+                    version: 0,
+                    roles: [],
+                    weeklyEvents: []
+                };
+                schedules.push(schedule);
+                // schedules[scheduleIndex].startDate = this.startDate;
+                // schedules[scheduleIndex].endDate = this.endDate;
+                // schedules[scheduleIndex].version = 0;
+                // schedules[scheduleIndex].roles = [];
+                // schedules[scheduleIndex].weeklyEvents = [];
                 this.message = '';
                 this.doEdit.haveSchedDates = true;
                 // this.insertSchedule(schedule);
-                return schedule;
+                return schedules;
             };
         },
             

@@ -7,7 +7,8 @@
       <Schedule 
         v-for="(schedule, i) in schedules"
         :key="i"
-        :schedule="schedule"
+        :scheduleIndex="i"
+        :schedules="schedules"
         :addSched="addSched"
         mode="schedules"
         class="pb-5"
@@ -61,6 +62,7 @@ export default {
       axios.get('/api/schedules')
       .then(response => {
         this.schedules = response.data;
+        console.log("schedules loaded from databas.");
         console.log(response.data);
       });
     },
