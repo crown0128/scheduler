@@ -17,9 +17,11 @@ module.exports = {
 //       .catch(err => res.status(444).json(err));
 //   },
   createSchedule: function(req, res) {
+    console.log("in createSchedule");
+    console.log(req.body);
     db.Schedule.create(req.body)
       .then(dbSchedules => res.json(dbSchedules))
-      .catch(err => res.status(444).json(err));
+      .catch(err => console.log(err));
   },
 //   update: function(req, res) {
 //     db.Book.findOneAndUpdate({ _id: req.params.id }, req.body)

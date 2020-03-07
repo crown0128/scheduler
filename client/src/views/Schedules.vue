@@ -62,7 +62,7 @@ export default {
       axios.get('/api/schedules')
       .then(response => {
         this.schedules = response.data;
-        console.log("schedules loaded from databas.");
+        console.log("schedules loaded from database.");
         console.log(response.data);
       });
     },

@@ -45,15 +45,16 @@ const WeeklyEventSchema = new Schema({
 
 });
 
-// day, time combination must be unique
-WeeklyEventSchema.index({ "day": 1, "time": 1 }, { unique: true });
 
 const ScheduleSchema = new Schema({
-    _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
     
+  // start date of schedule
+  name: {
+    type: String,
+    required: Date.now,
+    unique: true
+  },
+
   // start date of schedule
   startDate: {
     type: Date,

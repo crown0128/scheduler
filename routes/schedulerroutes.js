@@ -13,8 +13,11 @@ router
     .delete(schedulerController.removeSchedule);
 
 router
-    .route("/api/schedules/startDate=:startDate&endDate=:endDate&version=:version&roles=:roles&weeklyEvents=:weeklyEvents)
+    // .route("/api/schedules/:startDate&endDate=:endDate&version=:version&roles=:roles&weeklyEvents=:weeklyEvents")
+    .route("/api/schedules")
+    // .post(schedulerController.createSchedule(req.body.schedule));
     .post(schedulerController.createSchedule);
+    // .post(schedulerController.createSchedule);
 
 router  
     .route("/api/volunteers")

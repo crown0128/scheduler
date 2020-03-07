@@ -26,10 +26,6 @@ const prefTimesSchema = new Schema({
 // })
 
 const VolunteerSchema = new Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
     
   // first name of Volunteer
   firstName: {

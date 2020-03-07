@@ -81,18 +81,19 @@ export default {
                     endDate: endDate,
                     version: 0,
                     roles: [],
-                    weeklyEvents: []
+                    weeklyEvents: [],
+                    name: Date.now()
                 };
                 schedules.push(schedule);
                 this.message = '';
                 this.flags.haveSchedDates = true;
-                // this.insertSchedule(schedule);
+                this.insertSchedule(schedule);
                 return schedules;
             };
         },
             
         insertSchedule(schedule) {
-            axios.post(`/api/schedules/?${schedule}`)
+            axios.post(`/api/schedules`, schedule )
             .then(response => {
                 console.log(response.data);
             })
