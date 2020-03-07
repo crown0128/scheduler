@@ -71,8 +71,10 @@ export default {
         saveSchedDates: function(startDate, endDate, schedules, scheduleIndex) {
             if (startDate === '' | endDate === '') {
                 this.message = "Please choose a start and an end date.";
+                 return schedules;
             } else if (endDate < startDate) {
                 this.message = "Start date must be before end date.";
+                return schedules;
             } else {
                 const schedule = {
                     startDate: startDate,
@@ -82,11 +84,6 @@ export default {
                     weeklyEvents: []
                 };
                 schedules.push(schedule);
-                // schedules[scheduleIndex].startDate = this.startDate;
-                // schedules[scheduleIndex].endDate = this.endDate;
-                // schedules[scheduleIndex].version = 0;
-                // schedules[scheduleIndex].roles = [];
-                // schedules[scheduleIndex].weeklyEvents = [];
                 this.message = '';
                 this.flags.haveSchedDates = true;
                 // this.insertSchedule(schedule);

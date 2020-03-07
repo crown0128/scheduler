@@ -38,7 +38,7 @@
     props: ["schedules", "scheduleIndex", "flags"],
     methods: {
       editRolesNeeded: function(flags) {
-        flags.roles = true;
+        flags.edittingRoles = true;
         return flags
       }
     }

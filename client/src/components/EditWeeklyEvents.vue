@@ -72,13 +72,14 @@
     </v-col>
     <!-- icon to return to schedules -->
     <v-col cols="1" class="mt-3 ml-3">
-      <v-btn 
+      <v-btn
+        v-if="!flags.addingNewSchedule" 
         class="mr-0 ml-3" 
         fab dark x-small 
         color="teal"
         @click="rtnToSchedFromWkly(flags)"
       >
-        <v-icon dark>mdi-calendar-multiselect</v-icon>
+        <v-icon dark>mdi-arrow-left</v-icon>
       </v-btn>
     </v-col>
 
@@ -147,7 +148,7 @@ export default {
   }, // end data
   methods: {
     rtnToSchedFromWkly: function(flags) {
-      flags.weekly = false;
+      flags.edittingWeeklyEvents = false;
       return flags
     },
 

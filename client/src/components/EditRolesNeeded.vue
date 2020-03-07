@@ -57,12 +57,13 @@
     <!-- icon to return to schedules -->
     <v-col cols="1" class="mt-3 ml-3">
       <v-btn 
+        v-if="!flags.addingNewSchedule" 
         class="mr-1" 
         fab dark x-small 
         color="teal"
         @click="rtnToSchedFromRole(flags)"
       >
-        <v-icon dark>mdi-calendar-multiselect</v-icon>
+        <v-icon dark>mdi-arrow-left</v-icon>
       </v-btn>
     </v-col>
 
@@ -115,7 +116,7 @@ export default {
   },
   methods: {
     rtnToSchedFromRole: function(flags) {
-      flags.roles = false;
+      flags.edittingRoles = false;
       return flags
     },
 

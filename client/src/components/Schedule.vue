@@ -43,7 +43,7 @@
             @save-weekly="saveWeekly" -->
             <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditWeeklyEvents 
-            v-if="flags.weekly"
+            v-if="flags.edittingWeeklyEvents"
             :schedules="schedules"
             :scheduleIndex="scheduleIndex"
             :flags="flags"
@@ -63,7 +63,7 @@
             @save-weekly="saveWeekly" -->
             <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditRolesNeeded 
-            v-if="flags.roles"
+            v-if="flags.edittingRoles"
             :schedules="schedules"
             :scheduleIndex="scheduleIndex"
             :flags="flags"
@@ -110,8 +110,9 @@
     data: function () {
       return {
         flags: {
-          weekly: false,
-          roles: false
+          edittingWeeklyEvents: false,
+          edittingRoles: false,
+          addingNewSchedule: false
         }
       };
     },

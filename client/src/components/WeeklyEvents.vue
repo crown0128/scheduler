@@ -38,7 +38,7 @@
     props: ["schedules", "scheduleIndex", "flags"],
     methods: {
       editWeeklyEvents: function(flags) {
-        flags.weekly = true;
+        flags.edittingWeeklyEvents = true;
         return flags
       },
 

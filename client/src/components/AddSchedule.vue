@@ -17,19 +17,29 @@
       </v-row>
 
       <v-row class="wide" v-if="flags.haveSchedDates">
-      <div class="v-card__text pb-0">
-        <h2 >
 
-          <span class="title mr-3">
-            Choose the weekly times and roles needed for the new schedule.  Click the save icon to save.
-          </span>
-          <div>
-            {{ schedules[scheduleIndex].startDate | moment("MMM Do, YYYY") }} through {{ schedules[scheduleIndex].endDate | moment("MMM Do, YYYY") }}
-            
-          </div>
+        <v-col cols="10">
+          <h2 >
 
-        </h2>
-      </div>
+            <span class="title mr-3">
+              Choose the weekly times and roles needed for the new schedule.  Click the save icon to save.
+            </span>
+            <div>
+              {{ schedules[scheduleIndex].startDate | moment("MMM Do, YYYY") }} through {{ schedules[scheduleIndex].endDate | moment("MMM Do, YYYY") }}
+            </div>
+
+          </h2>
+        </v-col>
+        <v-col cols="2">
+          <v-btn
+            class="mr-0 ml-3" 
+            fab dark x-small 
+            color="teal"
+          >
+            <!-- @click=" " -->
+            <v-icon dark>mdi-arrow-left</v-icon>
+          </v-btn>
+        </v-col>
 
         <!-- Weekly events in the schedule on the left side (with button to edit) -->
         <v-col cols="6" class="v-card__text ml-5">
@@ -98,9 +108,10 @@
     data: function () {
       return {
         flags: {
-          weekly: true,
-          roles: true,
-          haveSchedDates: false
+          edittingWeeklyEvents: true,
+          edittingRoles: true,
+          haveSchedDates: false,
+          addingNewSchedule: true,
         },
         scheduleIndex: this.schedules.length,
       };
