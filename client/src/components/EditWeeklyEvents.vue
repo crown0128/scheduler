@@ -32,7 +32,7 @@
       <v-dialog
         ref="dialog"
         v-model="showTimePicker"
-        :return-value.sync="formattedTime"
+        :return-value.sync="newTime"
         persistent
         width="290px"
       >
@@ -162,23 +162,37 @@ export default {
 
 // needs to be modularized since it's used in more than one place
     handleSaveWeeklyEvent() {
-      console.log(this.schedules);
-      console.log()
+      console.log("In handleSaveWeeklyEvent");
+      console.log("this.schedule:");
+      console.log(this.schedule);
+      console.log("this.newtime:");
+      console.log(this.newTime);
+      console.log('this.day');
+      console.log(this.day);
+
+      console.log("About to do push");
+      this.schedule.weeklyEvents.push({
+        day: this.day,
+        time: this.newTime
+      });
+      console.log("done with push");
+      console.log("new schedule:");
+      console.log(this.schedule);
     }
   },
 
-  computed: {
-    formattedTime() {
-      console.log(this.newTime);
-      console.log(this.timeToDate(this.newTime));
-      let time = this.timeToDate(this.newTime);
-      time = time ? format(time, 'h:mm aaaa') : '';
-      console.log("Time: " + time);
-      return time;
-      // return time ? format(time, 'h:mm aaaa') : '';
-    }
+  // computed: {
+  //   formattedTime() {
+  //     console.log(this.newTime);
+  //     console.log(this.timeToDate(this.newTime));
+  //     let time = this.timeToDate(this.newTime);
+  //     time = time ? format(time, 'h:mm aaaa') : '';
+  //     console.log("Time: " + time);
+  //     return time;
+  //     // return time ? format(time, 'h:mm aaaa') : '';
+  //   }
+  // }
 
-  }
 };
 </script>
 

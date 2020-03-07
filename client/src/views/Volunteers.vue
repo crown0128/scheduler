@@ -72,20 +72,15 @@
     },
 
     created() {
-      console.log("in created (in Volunteers)");
-        // return this.volunteers = this.getVolunteers();
       this.getVolunteers();
-      // console.log("Volunteers (created):");
-      // console.log(volunteers);
+
     },
 
     methods: {
       getVolunteers() {
-        console.log("in getVolunteers");
         axios.get('/api/volunteers')
         .then(response => {
-          console.log(".then");
-          console.log(response.data);
+
           this.volunteers = response.data;
           
         // })

@@ -10,8 +10,6 @@
         </h2>
 
     <v-row>
-    <!-- <p>Need date picker for begin and end of schedule</p>
-    <p>Schedule: {{ schedule }}</p> -->
 
         <v-col cols="4" offset="2">
        
@@ -37,7 +35,7 @@
                 class="mr-0 ml-3" 
                 fab dark small 
                 color="teal"
-                @click="saveSchedDates(startDate, endDate, schedule)"
+                @click="schedule = saveSchedDates(startDate, endDate, schedule)"
             >
                 <v-icon dark>mdi-content-save-outline</v-icon>
             </v-btn>
@@ -71,8 +69,6 @@ export default {
 
     methods: {
         saveSchedDates: function(startDate, endDate, schedule) {
-            console.log("schedule");
-            console.log(schedule);
             if (startDate === '' | endDate === '') {
                 this.message = "Please choose a start and an end date.";
             } else if (endDate < startDate) {
@@ -81,11 +77,24 @@ export default {
                 schedule.startDate = this.startDate;
                 schedule.endDate = this.endDate;
                 schedule.version = 0;
+                schedule.roles = [];
+                schedule.weeklyEvents = [];
                 this.message = '';
                 this.doEdit.haveSchedDates = true;
-                console.log(schedule);
+                // this.insertSchedule(schedule);
+                return schedule;
             };
-            // make axios call to write schedule to db
+        },
+            
+        insertSchedule(schedule) {
+            axios.post(`/api/schedules/?${schedule}`)
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(err => {
+                console.log("Error in GetSchedDates inserting new Schedule.");
+                throw err;
+            })
         },
 
         // datesFilledOK: function () {

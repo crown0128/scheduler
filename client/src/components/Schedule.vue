@@ -14,7 +14,7 @@
               Schedule:  {{ schedule.startDate }} - {{ schedule.endDate }}
             </span> -->
             <span class="schedule-title">
-              Schedule:  {{ schedule.startDate | moment("MMM Do YYYY") }} - {{ schedule.endDate  | moment("MMM Do YYYY") }}
+              Schedule:  {{ schedule.startDate | moment("MMM Do YYYY") }} through {{ schedule.endDate  | moment("MMM Do YYYY") }}
             </span>
             
             <!-- For information, just because we have it. :) -->
@@ -138,7 +138,7 @@
   .schedule-title {
     color:blue;
     text-decoration-line: underline;
-    font-size: 2em;
+    font-size: 1.6em;
     padding: 20px 0 0;
   }
 

@@ -9,6 +9,8 @@ import EditVolunteer from '../components/EditVolunteer'
 
 Vue.use(VueRouter)
 
+// Client side routes, NOT api routes!
+
 const routes = [
   {
     path: '/',
@@ -25,6 +27,13 @@ const routes = [
       return import(/* webpackChunkName: "volunteers" */ '../views/Volunteers.vue')
     }
   },
+  // {
+  //   path: '/volunteer/:id', 
+  //   name: 'EditVolunteer',
+  //   component: function () {
+  //     return import('../components/EditVolunteer.vue')
+  //   }
+  // },
   {
     path: '/schedules',
     name: 'Schedules',
@@ -35,27 +44,25 @@ const routes = [
       return import(/* webpackChunkName: "Schedules" */ '../views/Schedules.vue')
     }
   },
-  {
-    path: '/volunteer/:id', 
-    name: 'EditVolunteer',
-    component: function () {
-      return import('../components/EditVolunteer.vue')
-    }
-  },
-  {
-    path: '/schedule/weeklyevents/:id', 
-    name: 'EditWeeklyEvents',
-    component: function () {
-      return import('../components/EditWeeklyEvents.vue')
-    }
-  },
-  {
-    path: '/schedule/rolesneeded/:id', 
-    name: 'EditRolesNeeded',
-    component: function () {
-      return import('../components/EditRolesNeeded.vue')
-    }
-  },
+  // path: '/schedules/:schedule',
+  // name: 'AddSchedule',
+  // component: function () {
+  //   return import()
+  // }
+  // {
+  //   path: '/schedule/weeklyevents/:id', 
+  //   name: 'EditWeeklyEvents',
+  //   component: function () {
+  //     return import('../components/EditWeeklyEvents.vue')
+  //   }
+  // },
+  // {
+  //   path: '/schedule/rolesneeded/:id', 
+  //   name: 'EditRolesNeeded',
+  //   component: function () {
+  //     return import('../components/EditRolesNeeded.vue')
+  //   }
+  // },
   {
     path: '*', 
     name: 'NotFound',
