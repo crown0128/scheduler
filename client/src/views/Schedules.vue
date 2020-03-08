@@ -2,26 +2,41 @@
   <v-container cols="12" text-center>
     <h1 cols="12" text-center>Schedules</h1>
 
-    <!-- for each schedule, display a card with it's information -->
     <div v-if="!addSched">
-      <Schedule 
-        v-for="(schedule, i) in schedules"
-        :key="schedule._id"
-        :scheduleIndex="i"
-        :schedules="schedules"
-        :addSched="addSched"
-        mode="schedules"
-        class="pb-5"
-        v-on="$listeners"
-      />
+    <!-- for each schedule, display a card with it's information -->
+      <div v-for="(schedule, i) in schedules"
+        v-bind:key="schedule._id"
+      >
+        <v-row>
+          <v-col cols="11">
+            <Schedule 
+              :scheduleIndex="i"
+              :schedules="schedules"
+              :addSched="addSched"
+              mode="schedules"
+              class="pb-5"
+              v-on="$listeners"
+            />
+          </v-col>
+          <v-col cols="1" text-left>
+                        <v-btn 
+              fab dark x-small color="teal"
+              @click="schedules = handleDeleteSchedule(schedules, i)"
+            >
+              <v-icon dark>mdi-delete-circle</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
+        
       <!-- NEW SCHEDULE button -->
       <v-flex xs10 offset-xs1 py-2>
         <v-btn 
           block dark rounded 
           @click="handleClickAddSchedule"
-          class="teal">
-          Set up a new Schedule
-          </v-btn>
+          class="teal"
+        >Set up a new Schedule
+        </v-btn>
       </v-flex>
     </div>
  
@@ -69,10 +84,41 @@ export default {
       this.addSched = true;
     },
 
+    handleDeleteSchedule: function(schedules, scheduleIndex) {
+      console.log("in handledeleteschedule");
+      console.log('schedules');
+      console.log(schedules);
+      console.log('scheduleIndex');
+      console.log(scheduleIndex);
+      console.log('schedules[scheduleIndex]:');
+      console.log(schedules[scheduleIndex]);
+      const id = schedules[scheduleIndex]._id;
+      console.log("id: " + id);
+      schedules = schedules.filter( schedule => 
+        schedule._id != id);
+      console.log("new schedules after delete");
+      console.log(schedules);
+      this.deleteSchedule(id);
+      return schedules;
+    },
+
+    deleteSchedule: function(id) {
+      axios.delete(`/api/schedules/id/${id}`)
+      .then(response => {
+          console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
     // getIndex(schedules, schedule) {
     //   return schedules.map( sched => sched._id ).indexOf(schedule.id);
     // }
   },
+
+  computed: {
+
+  }
 
     // deleteSchedule: function(scheduleId) {
     //   alert("Deleting schedule.")

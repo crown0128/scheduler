@@ -21,15 +21,6 @@
             </div>
           </v-col>
 
-          <v-col cols="1" text-left>
-            <v-btn 
-              fab dark x-small color="teal"
-              @click="schedules = handleDeleteSchedule(schedules, scheduleIndex)"
-            >
-              <v-icon dark>mdi-delete-circle</v-icon>
-            </v-btn>
-          </v-col>
-
         </v-row>
       </div>
 
@@ -120,34 +111,7 @@
     },
 
     methods: {
-      handleDeleteSchedule: function(schedules, scheduleIndex) {
-        console.log("in handledeleteschedule");
-        console.log('schedules');
-        console.log(schedules);
-        console.log('scheduleIndex');
-        console.log(scheduleIndex);
-        console.log('schedules[scheduleIndex]:');
-        console.log(schedules[scheduleIndex]);
-        const id = schedules[scheduleIndex]._id;
-        console.log("id: " + id);
-        const newSchedules = schedules.filter( (schedule) => {
-          console.log("in loop, schedule._id: " + schedule._id );
-          schedule._id != id;
 
-        });
-        this.deleteSchedule(id);
-        return newSchedules;
-      },
-
-      deleteSchedule: function(id) {
-        axios.delete(`/api/schedules/id/${id}`)
-        .then(response => {
-            console.log(response);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      }
       
       // rtnToSchedFromWkly: function(flagsWeekly) {
       //   this.flagsWeekly = false;
