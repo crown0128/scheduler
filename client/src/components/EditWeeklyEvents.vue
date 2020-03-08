@@ -70,6 +70,7 @@
         <v-icon dark>mdi-content-save-outline</v-icon>
       </v-btn>
     </v-col>
+
     <!-- icon to return to schedules -->
     <v-col cols="1" class="mt-3 ml-3">
       <v-btn
@@ -84,12 +85,10 @@
     </v-col>
 
   </v-row>
-          
-
 
   <div class="pb-4">
     <!-- List day of week and time of each weekly event -->
-    <!-- with delete buttom -->
+    <!-- with delete button -->
     <!-- <div v-if="(schedules[scheduleIndex].length > 0) && (schedules[scheduleIndex].weeklyEvents.length > 0)"> -->
       <v-list
         v-for="(weeklyEvent, i) in schedules[scheduleIndex].weeklyEvents"
@@ -105,8 +104,16 @@
           </v-col>
 
           <v-col cols="1">
-            <v-btn class="mr-0 small-dlt mt-3" fab dark color="teal">
-              <v-icon dark>mdi-delete-circle</v-icon>
+            <v-btn 
+              class="mr-0 small-dlt mt-3" 
+              fab dark color="teal"
+              @click="handleDeleteWeeklyEvent(schedules, scheduleIndex, i)"
+            >
+            <v-icon 
+              dark
+            >
+              mdi-delete-circle
+            </v-icon>
             </v-btn>
           </v-col>
 
@@ -162,7 +169,16 @@ export default {
       return moment(time, "h:mm a");
     },
 
-// needs to be modularized since it's used in more than one place
+    handleDeleteWeeklyEvent: function(schedules, scheduleIndex, i) {
+      const id = schedules[scheduleIndex].weeklyEvents[i]._id;
+      schedules[scheduleIndex].weeklyEvents = 
+        schedules[scheduleIndex].weeklyEvents.filter( 
+          weeklyEvent => ( weeklyEvent._id != id ));
+      this.updateSchedule(schedules[scheduleIndex]);
+      return schedules;
+    },
+
+// Is this used other places?  Should it be modularized?
     handleSaveWeeklyEvent(schedules, scheduleIndex) {
       console.log("in handleSaveWeeklyEvent");
       schedules[scheduleIndex].weeklyEvents.push({
@@ -177,7 +193,7 @@ export default {
     },
 
     updateSchedule: function(schedule) {
-      axios.post('/api/schedules/id', schedule)
+      axios.post('/api/schedules/sched', schedule)
       .then(response => {
         console.log(response)
       })

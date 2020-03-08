@@ -8,7 +8,7 @@
         v-bind:key="schedule._id"
       >
         <v-row>
-          <v-col cols="11">
+          <v-col cols="8" offset="2">
             <Schedule 
               :scheduleIndex="i"
               :schedules="schedules"
@@ -85,19 +85,9 @@ export default {
     },
 
     handleDeleteSchedule: function(schedules, scheduleIndex) {
-      console.log("in handledeleteschedule");
-      console.log('schedules');
-      console.log(schedules);
-      console.log('scheduleIndex');
-      console.log(scheduleIndex);
-      console.log('schedules[scheduleIndex]:');
-      console.log(schedules[scheduleIndex]);
       const id = schedules[scheduleIndex]._id;
-      console.log("id: " + id);
       schedules = schedules.filter( schedule => 
         schedule._id != id);
-      console.log("new schedules after delete");
-      console.log(schedules);
       this.deleteSchedule(id);
       return schedules;
     },
