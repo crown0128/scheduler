@@ -7,12 +7,18 @@ router
     .get(schedulerController.findAllSchedules)
     .post(schedulerController.createSchedule);
 
-// for "/api/schedules/:id"    
+// for "/api/schedules/sched"    
 router 
-    .route("/api/schedules/id")
-    .post(schedulerController.updateSchedule)
+    .route("/api/schedules/sched")
+    .post(schedulerController.updateSchedule);
+
+router  
+    .route("/api/schedules/id/:id")
     .delete(schedulerController.removeSchedule);
 
+// router  
+//     .route("/api/schedules/id")
+    
 // router
 //     .route("/api/schedules")
 //     .post(schedulerController.createSchedule);

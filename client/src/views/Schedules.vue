@@ -6,7 +6,7 @@
     <div v-if="!addSched">
       <Schedule 
         v-for="(schedule, i) in schedules"
-        :key="i"
+        :key="schedule._id"
         :scheduleIndex="i"
         :schedules="schedules"
         :addSched="addSched"
@@ -64,9 +64,14 @@ export default {
         console.log(response.data);
       });
     },
+
     handleClickAddSchedule() {
       this.addSched = true;
-    }
+    },
+
+    // getIndex(schedules, schedule) {
+    //   return schedules.map( sched => sched._id ).indexOf(schedule.id);
+    // }
   },
 
     // deleteSchedule: function(scheduleId) {

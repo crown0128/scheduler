@@ -4,11 +4,24 @@ require('mongoose-type-email');
 const Schema = mongoose.Schema;
 
 const prefTimesSchema = new Schema({
-  weeklyEventId: {
-    type: Schema.Types.ObjectId,
-    ref: "WeeklyEvent"
+
+  // day of week
+  day: {
+    type: String,
+    required: "Date / time of event is required.",
+    enum: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   },
 
+  // time of weekly event 
+  // so can't use time stamp / date datatype
+  time: {
+    type: String,
+    required: true
+  },
+
+  // This is always 100% for the initial release.
+  // For a future release, volunteers can choose multiple
+  //   preferences, and total should equal 100%
   percentPreferred: {
     type: Number,
     min: 0,
@@ -17,13 +30,6 @@ const prefTimesSchema = new Schema({
   }
   
 })
-
-// const roleSchema = new Schema({
-//   roleName: {
-//     type: String,
-//     required: true
-//   }
-// })
 
 const VolunteerSchema = new Schema({
     
@@ -52,7 +58,7 @@ const VolunteerSchema = new Schema({
   // array of roles by role id the volunteer can do
   roles: [String],
 
-  // weekly event times preferred
+  // weekly event times (day of week, and time of day) preferred
   //   & % each event is preferred 
   //   (if willing to volunteer at more than one)
   //   %s should sum to 100 for each volunteer
@@ -61,7 +67,7 @@ const VolunteerSchema = new Schema({
   // arrays of volunteer Ids the volunteer wants to be scheduled with
   with: [
     {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Volunteer"
     }
   ],
@@ -69,7 +75,7 @@ const VolunteerSchema = new Schema({
   // arrays of volunteer Ids the volunteer should NOT be scheduled with
   notWith: [
     {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Volunteer"
     }
   ],
@@ -81,7 +87,6 @@ const VolunteerSchema = new Schema({
 
 // first & last name combination must be unique
 VolunteerSchema.index({ "firstName": 1, "lastName": 1 }, { unique: true });
-
 
 const Volunteer = mongoose.model("Volunteer", VolunteerSchema);
 

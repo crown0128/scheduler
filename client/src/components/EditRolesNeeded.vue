@@ -135,7 +135,7 @@ export default {
     },
 
     updateSchedule: function(schedule) {
-      axios.post('/api/schedules/id', schedule)
+      axios.post('/api/schedules/sched', schedule)
       .then(response => {
         console.log(response)
       })
