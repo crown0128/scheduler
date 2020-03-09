@@ -67,6 +67,46 @@ const data = [
                     },         
                 ]
             },
+            {
+                '_id': ObjectId("5e4c7f67f3a9883274f111fa"),
+                'name': 'Winter schedule',
+                'startDate': '2020-01-01 12:00',
+                'endDate': '2020-03-07 12:00',
+                'weeklyEvents': 
+                [
+                    {
+                        'day': "Sunday",
+                        'time': '07:00'
+                    },             
+                    {
+                        'day': "Sunday",
+                        'time': '10:30'
+                    }             
+                ],
+                'roles': 
+                [
+                    {
+                        'roleName': "Sacristan",
+                        'numberNeeded': 1
+                    },         
+                    {
+                        'roleName': "Lector",
+                        'numberNeeded': 1
+                    },         
+                    {
+                        'roleName': "Eucharistic minister",
+                        'numberNeeded': 1
+                    },         
+                    {
+                        'roleName': "Altar server",
+                        'numberNeeded': 2
+                    },         
+                    {
+                        'roleName': "Usher",
+                        'numberNeeded': 1
+                    },         
+                ]
+            },
         ]
     },
     

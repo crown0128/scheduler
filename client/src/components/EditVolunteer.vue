@@ -121,21 +121,32 @@
     <v-row>
       <!-- choose roles & preferred times -->
       <v-col cols="6">
-        <div v-for="(role, roleIndex) in roles"
+        <p class="text-left">Choose role(s):</p>
+        <v-checkbox class="ml-2"
+          v-for="(role, roleIndex) in roles"
           v-bind:key="roleIndex"
-        >
+          v-model="rolesChosen"
+          :value="`${role}`"
+          :label="`${role}`"
+          color="teal"
+        ></v-checkbox>
+        <p>{{ rolesChosen }}</p>
 
-          <p>{{ role }}</p>
-        </div>
       </v-col>
 
       <v-col cols="6">
-        <div v-for="(eventTime, eventIndex) in eventTimes"
-          v-bind:key="eventIndex"
-        >
+        <p class="text-left">Choose a preferred time slot (pick one in the next schedule to be run):</p>
+        <v-radio-group class="ml-2"
+          v-model="preferredTime"
+        ><v-radio
+            v-for="(timeSlot, slotIndex) in timeSlots"
+            v-bind:key="slotIndex"
+            :label="`${timeSlot}`"
+            :value="`${timeSlot}`"
+          ></v-radio>
+        </v-radio-group>
 
-          <p>{{ eventTime.day }} - {{ eventTime.time}} </p>
-        </div>
+        <p>{{ preferredTime }}</p>
       </v-col>
 
     </v-row>
@@ -205,7 +216,7 @@
 <script>
 export default {
   name: "EditVolunteer",
-  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules"],
+  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots"],
   data: function() {
     return {
       firstName: "",
@@ -220,8 +231,9 @@ export default {
       badDates: [],
       showNotAvailablePicker: false,
 
-      roles: [],
       eventTimes: [],
+      rolesChosen: [],
+      preferredTime: ""
 
       // title: "Image Upload",
       // dialog: false,
@@ -263,14 +275,6 @@ export default {
       }
     },
 
-    GetRoles: function() {
-      return [
-        "Sacristan",
-        "Lector",
-        "EM"
-      ]
-    },
-
     GetEventTimes: function() {
       return [
         {
@@ -303,12 +307,11 @@ export default {
     // }
   },
 
-  created() {
-    console.log("created");
+  // created() {
+  mounted() {
+    console.log("mounted");
     console.log("volunteerIndex");
     console.log(this.volunteerIndex);
-    console.log("this.roles");
-    console.log(this.roles);
     console.log("volunteers");
     console.log(this.volunteers);
     console.log("schedules");
@@ -317,7 +320,6 @@ export default {
       this.volunteers = this.volunteers.push([]);
       this.volunteerIndex = this.volunteers.length;
     };
-    this.roles = this.GetRoles();
     this.eventTimes = this.GetEventTimes();
   }
 

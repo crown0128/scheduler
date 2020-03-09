@@ -8,6 +8,8 @@
       :volunteerIndex="-1"
       :volunteerMode="volunteerMode"
       :schedules="schedules"
+      :roles="roles"
+      :timeSlots="timeSlots"
     ></EditVolunteer>
 
     <template>
@@ -79,7 +81,9 @@
         volunteers: [],
         search: '',
         volunteerMode: "Add",
-        schedules: []
+        schedules: [],
+        roles: [],
+        timeSlots: []
       };
     },
 
@@ -110,7 +114,28 @@
           this.schedules = response.data;
           console.log("schedules loaded from database.");
           console.log(response.data);
-        });
+        })
+        .then(response => {
+          // Get all role names from schedules, remove dups & alphabetize
+          this.schedules.forEach((schedule, index) => {
+            this.roles[index] = schedule.roles;
+            this.roles[index] = this.roles[index].map(role => role.roleName);
+          });
+          // flatten array, so only one level deep
+          this.roles = [].concat.apply([], this.roles);
+          // remove duplicates
+          this.roles = this.roles.filter((a, b) => this.roles.indexOf(a) === b);
+          // sort the array
+          this.roles = this.roles.sort();
+          
+          // Get all time slots from schedules, sort by schedule
+          this.schedules.forEach((schedule, index) => {
+    
+            this.timeSlots[index] = schedule.name + ":  " + schedule.weeklyEvents[index].day + " at " + schedule.weeklyEvents[index].time;
+          });
+          // Shouldn't be duplicates, so sort & done.
+          this.timeSlots = this.timeSlots.sort();
+        })
       },
       // editVolunteer(volunteer) {
       //   console.log("Edit" + volunteer.firstName);
