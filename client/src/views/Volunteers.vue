@@ -128,28 +128,37 @@
           // sort the array
           this.roles = this.roles.sort();
           
+          let nth = 0;
           // Get all time slots from schedules, sort by schedule
           this.schedules.forEach((schedule, index) => {
-    
-            this.timeSlots[index] = schedule.name + ":  " + schedule.weeklyEvents[index].day + " at " + schedule.weeklyEvents[index].time;
+            schedule.weeklyEvents.forEach((weeklyEvent, i) => {
+              console.log("forEach schedule... slot, this.timeSlots");
+              console.log(this.timeSlots);
+              const slot = {
+                index: nth++,
+                scheduleName: schedule.name, 
+                day: weeklyEvent.day,
+                time: weeklyEvent.time
+              };
+              console.log(slot);
+              if (this.timeSlots.length === 0) {
+                this.timeSlots = [slot]
+              } else {
+                this.timeSlots.push(slot);
+              };
+            });
+            console.log("in Volunteers.vue - getschedules:");
+            console.log(this.timeSlots);
           });
-          // Shouldn't be duplicates, so sort & done.
-          this.timeSlots = this.timeSlots.sort();
-        })
-      },
-      // editVolunteer(volunteer) {
-      //   console.log("Edit" + volunteer.firstName);
-      // },
+        });
+
 
       // deleteVolunteer(volunteer) {
       //   console.log("Delete" + volunteer.firstName);
       // },
 
-      // initialize() {
-      //   // alert("in initialize");
-      //   this.getVolunteers();
-      // },
 
+      },
     },
 
     computed: {

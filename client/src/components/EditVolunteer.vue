@@ -139,10 +139,10 @@
         <v-radio-group class="ml-2"
           v-model="preferredTime"
         ><v-radio
-            v-for="(timeSlot, slotIndex) in timeSlots"
-            v-bind:key="slotIndex"
-            :label="`${timeSlot}`"
-            :value="`${timeSlot}`"
+            v-for="(timeSlot in timeSlots"
+            v-bind:key="timeSlot.index"
+            :label="`${timeSlot.day} at ${timeSlot.time} in schedule: ${timeSlot.scheduleName}`"
+            :value="`${timeSlot.index}`"
           ></v-radio>
         </v-radio-group>
 
