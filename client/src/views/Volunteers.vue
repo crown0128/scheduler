@@ -2,24 +2,30 @@
   <v-container cols="12" text-center align="center" justify="center" class="pt-0">
     <h1 cols="12" text-center>Volunteers</h1>
 
-<!-- ***** ADD A SEARCH BOX HERE, if time -->
+    <!-- ***** ADD A SEARCH BOX HERE, if time -->
+    <EditVolunteer
+      :volunteers="volunteers"
+      :volunteerIndex="-1"
+      :volunteerMode="volunteerMode"
+      :schedules="schedules"
+    ></EditVolunteer>
 
     <template>
 
 
-    <v-card-title>
+      <v-card-title>
       
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
 
+      </v-card-title>
 
-    </v-card-title>
       <v-data-table align="center" justify="center"
         :headers="headers"
         :items="volunteers"
@@ -47,6 +53,7 @@
           </v-btn>
         </template>
       </v-data-table>
+
     </template>
 
     <!-- NEW VOLUNTEER button -->
@@ -60,19 +67,25 @@
 
 <script>
   import axios from 'axios';
+  import EditVolunteer from '../components/EditVolunteer';
+
 
   export default {
     name: 'Volunteers',
+    components: { EditVolunteer },
 
     data: function() {
       return {
         volunteers: [],
         search: '',
+        volunteerMode: "Add",
+        schedules: []
       };
     },
 
     created() {
       this.getVolunteers();
+      this.getSchedules();
 
     },
 
@@ -91,6 +104,14 @@
         });
       },
 
+      getSchedules() {
+        axios.get('/api/schedules')
+        .then(response => {
+          this.schedules = response.data;
+          console.log("schedules loaded from database.");
+          console.log(response.data);
+        });
+      },
       // editVolunteer(volunteer) {
       //   console.log("Edit" + volunteer.firstName);
       // },

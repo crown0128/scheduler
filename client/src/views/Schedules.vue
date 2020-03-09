@@ -19,7 +19,7 @@
             />
           </v-col>
           <v-col cols="1" text-left>
-                        <v-btn 
+            <v-btn 
               fab dark x-small color="teal"
               @click="schedules = handleDeleteSchedule(schedules, i)"
             >

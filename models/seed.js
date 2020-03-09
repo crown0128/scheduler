@@ -78,7 +78,7 @@ const data = [
                 'firstName': 'Dorothy',
                 'lastName': 'P.',
                 'email': 'dot@gmail.com',
-                'image': 'dot.jpg',
+                'image': 'cat.jpg',
                 'roles': ["Sacristan", "Eucharistic Minister"],
                 'prefTimes': [{
                     'day': "Sunday",
@@ -91,7 +91,7 @@ const data = [
                 'firstName': 'Maura',
                 'lastName': 'S.',
                 'email': 'slavin@myfairpoint.net',
-                'image': 'maura.jpg',
+                'image': 'dog.jpg',
                 'roles': ["Eucharistic Minister"],
                 'prefTimes': [{
                     'day': "Sunday",
@@ -105,7 +105,7 @@ const data = [
                 'firstName': 'Mike',
                 'lastName': 'S.',
                 'email': 'slavin@myfairpoint.net',
-                'image': 'mike.jpg',
+                'image': 'sneaker.jpg',
                 'roles': ["Lector"],
                 'prefTimes': [{
                     'day': "Sunday",
