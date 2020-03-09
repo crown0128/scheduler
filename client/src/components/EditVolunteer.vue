@@ -1,5 +1,5 @@
 <template>
-<v-app id="inspire">
+<v-app class="bg-lightteal">
 <!-- ********* does this go in Volunteer when edit is clicked ?? ***** -->
   <v-container cols="12" text-center align="center" justify="center" class="pt-0">
     <!-- volunteer #{{ $route.params.id }}. -->
@@ -9,8 +9,15 @@
       </v-col>
 
       <v-col cols="2">
-          <!-- save button and back button -->
-          <p>buttons</p>
+        <!-- save button and back button -->
+        <!-- <v-btn class="mx-1 my-1" @click="xxxxxxxxx" fab right dark x-small color="teal"> -->
+        <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
+          <v-icon dark>mdi-content-save-outline</v-icon>
+        </v-btn>
+        <!-- <v-btn class="mx-1 my-1" @click="xxxxxxxxxxx" fab right dark x-small color="teal"> -->
+        <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
+          <v-icon dark>mdi-arrow-left</v-icon>
+        </v-btn>
       </v-col>
 
     </v-row>
@@ -120,9 +127,9 @@
 
     <v-row>
       <!-- choose roles & preferred times -->
-      <v-col cols="6">
+      <v-col cols="6" class="white">
         <p class="text-left">Choose role(s):</p>
-        <v-checkbox class="ml-2"
+        <v-checkbox class="ml-2 my-0 list-height"
           v-for="(role, roleIndex) in roles"
           v-bind:key="roleIndex"
           v-model="rolesChosen"
@@ -134,12 +141,13 @@
 
       </v-col>
 
-      <v-col cols="6">
+      <v-col cols="6" class="white">
         <p class="text-left">Choose a preferred time slot (pick one in the next schedule to be run):</p>
         <v-radio-group class="ml-2"
           v-model="preferredTime"
         ><v-radio
-            v-for="(timeSlot in timeSlots"
+            class = "my-0 list-height"
+            v-for="timeSlot in timeSlots"
             v-bind:key="timeSlot.index"
             :label="`${timeSlot.day} at ${timeSlot.time} in schedule: ${timeSlot.scheduleName}`"
             :value="`${timeSlot.index}`"
@@ -161,7 +169,6 @@
             <v-dialog
               ref="dialog"
               v-model="showNotAvailablePicker"
-              :return-value.sync="badDates"
               persistent
               width="290px"
             >
@@ -200,8 +207,37 @@
 
     <v-row>
         <!-- choose who to schedule with (or not) -->
-            <p>choose who to be scheduled with or not</p>
+ 
+                   <!-- choose roles & preferred times -->
+      <v-col cols="6" class="white">
+        <p class="text-left">Choose volunteers to schedule this person with:</p>
+        <v-checkbox class="ml-2 my-0 list-height"
+          v-for="(volunteer, volIndex) in volunteerNames"
+          v-bind:key="volIndex"
+          v-model="schedWith"
+          :value="`${volunteer.id}`"
+          :label="`${volunteer.name}`"
+          multiple
+          color="teal"
+        ></v-checkbox>
+        <p>{{ schedWith }}</p>
 
+      </v-col>
+
+      <v-col cols="6" class="white">
+        <p class="text-left">Choose volunteers to AVOID scheduling this person with:</p>
+        <v-checkbox class="ml-2 my-0 list-height"
+          v-for="(volunteer, volIndex) in volunteerNames"
+          v-bind:key="volIndex"
+          v-model="notWith"
+          :value="`${volunteer.id}`"
+          :label="`${volunteer.name}`"
+          multiple
+          color="teal"
+        ></v-checkbox>
+        <p>{{ notWith }}</p>
+
+      </v-col>
     </v-row>
 
     <!-- volunteers[ {{ $route.params.id }} ].firstName  -->
@@ -216,7 +252,7 @@
 <script>
 export default {
   name: "EditVolunteer",
-  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots"],
+  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
   data: function() {
     return {
       firstName: "",
@@ -233,7 +269,9 @@ export default {
 
       eventTimes: [],
       rolesChosen: [],
-      preferredTime: ""
+      preferredTime: "",
+      schedWith: [],
+      notWith: []
 
       // title: "Image Upload",
       // dialog: false,
@@ -370,10 +408,13 @@ export default {
 
 <style scoped>
 
-/* .bg-lightteal {
+.bg-lightteal {
   background-color: #c4fff9 !important;
-  border-width: 0 !important;
-} */
+}
+
+.list-height {
+  height: 1.5em;
+}
 
 .volunteer-name {
   color:blue;
