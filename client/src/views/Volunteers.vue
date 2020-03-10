@@ -2,8 +2,8 @@
   <v-container cols="12" text-center align="center" justify="center" class="pt-0">
     <h1 cols="12" text-center>Volunteers</h1>
 
-    <!-- ***** ADD A SEARCH BOX HERE, if time -->
     <EditVolunteer
+      v-if="edittingVolunteer"
       :volunteers="volunteers"
       :volunteerIndex="-1"
       :volunteerMode="volunteerMode"
@@ -11,59 +11,20 @@
       :roles="roles"
       :timeSlots="timeSlots"
       :volunteerNames="volunteerNames"
+      :edittingVolunteer="edittingVolunteer"
     ></EditVolunteer>
 
-    <template>
-
-
-      <v-card-title>
-      
-        <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
-
-      </v-card-title>
-
-      <v-data-table align="center" justify="center"
-        :headers="headers"
-        :items="volunteers"
-        :search="search"
-        class="elevation-1"
-      >
-        <template v-slot:item.image="{ item }">
-          <!-- <div class="p-2"> -->
-          <v-btn icon  >
-              <v-avatar>
-                <v-img 
-                  :src="require('../../public/images/' + item.image )" :alt="item.firstName" height="30px">
-                </v-img>
-              </v-avatar>
-          </v-btn>
-          <!-- </div> -->
-        </template>
-
-        <template #item.action>
-          <v-btn class="mx-1 my-1" @click="editVolunteer(item.volunteer)" fab right dark x-small color="teal">
-            <v-icon dark>mdi-pencil</v-icon>
-          </v-btn>
-          <v-btn class="mx-1 my-1" @click="deleteVolunteer(item.volunteer)" fab right dark x-small color="teal">
-            <v-icon dark>mdi-delete-circle</v-icon>
-          </v-btn>
-        </template>
-      </v-data-table>
-
-    </template>
+    <VolunteerList
+      v-if="!edittingVolunteer"
+      :volunteers="volunteers"
+      :volunteerIndex="volunteerIndex"
+      :edittingVolunteer="edittingVolunteer"
+    ></VolunteerList>
 
     <!-- NEW VOLUNTEER button -->
-    <v-flex xs10 offset-xs1 py-2>
-        <v-btn block dark rounded class="teal">Add a new volunteer</v-btn>
+    <v-flex v-if="!edittingVolunteer" xs10 offset-xs1 py-2>
+        <v-btn @click="edittingVolunteer = true" block dark rounded class="teal">Add a new volunteer</v-btn>
     </v-flex>
-
   </v-container>
 </template>
 
@@ -71,11 +32,12 @@
 <script>
   import axios from 'axios';
   import EditVolunteer from '../components/EditVolunteer';
+  import VolunteerList from '../components/VolunteerList';
 
 
   export default {
     name: 'Volunteers',
-    components: { EditVolunteer },
+    components: { EditVolunteer, VolunteerList },
 
     data: function() {
       return {
@@ -85,7 +47,9 @@
         schedules: [],
         roles: [],
         timeSlots: [],
-        volunteerNames: []
+        volunteerNames: [],
+        edittingVolunteer: false,
+        volunteerIndex: -1
       };
     },
 
@@ -184,25 +148,6 @@
 
       },
     },
-
-    computed: {
-      headers(){
-        return [
-          {
-              text: 'Image',
-              align: 'start',
-              value: 'image',
-              width: '100px',
-              sortable: false
-          },
-          { text: 'Last Name', value: 'lastName', sortable: true },
-          { text: 'First Name', value: 'firstName', sortable: true },
-          { text: 'Roles', value: 'roles', sortable: true },
-          { text: 'Actions', value: 'action', align: 'center', sortable: false },
-        ];
-      },
-    }
-
   };
 
 </script>

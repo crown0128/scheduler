@@ -252,7 +252,7 @@
 <script>
 export default {
   name: "EditVolunteer",
-  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
+  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames", "edittingVolunteer"],
   data: function() {
     return {
       firstName: "",
