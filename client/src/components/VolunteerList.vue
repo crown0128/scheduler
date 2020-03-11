@@ -52,6 +52,12 @@ export default {
     name: 'VolunteerList',
     props: ["volunteers", "volunteerIndex", "edittingVolunteer"],
 
+    data: function() {
+        return {
+            search: '',
+        };
+    },
+
     computed: {
       headers(){
         return [

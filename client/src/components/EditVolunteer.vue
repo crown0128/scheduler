@@ -12,10 +12,9 @@
         <!-- save button and back button -->
         <!-- <v-btn class="mx-1 my-1" @click="xxxxxxxxx" fab right dark x-small color="teal"> -->
         <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
-          <v-icon dark>mdi-content-save-outline</v-icon>
+          <v-icon dark @click="handleSaveNewVolunteer(volunteers, volunteerIndex);"> mdi-content-save-outline</v-icon>
         </v-btn>
-        <!-- <v-btn class="mx-1 my-1" @click="xxxxxxxxxxx" fab right dark x-small color="teal"> -->
-        <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
+        <v-btn class="mx-1 my-1" @click="handleReturnToVolunteerList();" fab right dark x-small color="teal">
           <v-icon dark>mdi-arrow-left</v-icon>
         </v-btn>
       </v-col>
@@ -30,7 +29,7 @@
             <v-card-text class="py-0 px-1 inputCard">
               <v-form>
                 <v-text-field 
-                  label="Enter Volunteer's First Name" 
+                  label="First Name" 
                   class="py-0" 
                   v-model="firstName" 
                   autofocus
@@ -47,7 +46,7 @@
             <v-card-text class="py-0 px-1 inputCard">
               <v-form>
                 <v-text-field 
-                  label="Enter Volunteer's Last Name" 
+                  label="Last Name" 
                   class="py-0" 
                   v-model="lastName" 
                   clearable
@@ -63,7 +62,7 @@
             <v-card-text class="py-0 px-1 inputCard">
               <v-form>
                 <v-text-field 
-                  label="Enter Volunteer's email" 
+                  label="Email" 
                   class="py-0" 
                   v-model="email" 
                   clearable
@@ -250,11 +249,16 @@
 
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "EditVolunteer",
-  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames", "edittingVolunteer"],
+  // props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames", "edittingVolunteer"],
+  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
   data: function() {
     return {
+
+      volunteer: {},
       firstName: "",
       lastName: "",
       email: "",
@@ -280,6 +284,7 @@ export default {
       // imageFile: ''
     }
   },
+
 
   methods: {
     // importImage() {
@@ -324,6 +329,70 @@ export default {
           time: "11:15"
         }
       ]
+    },
+
+    handleReturnToVolunteerList: function() {
+      console.log("in updateEdittingVolunteer");
+      this.$emit("updateEdittingVolunteer", false);
+    },
+
+    handleSaveNewVolunteer: function(volunteers, volunteerIndex) {
+      console.log("In handleSaveNewVolunteer");
+      console.log("firstName: ");
+      console.log(this.firstName);
+      console.log("lastName: ");
+      console.log(this.lastName);
+      console.log("email: ");
+      console.log(this.email);
+      console.log("image: ");
+      console.log(this.image);
+      console.log("rolesChosen: ");
+      console.log(this.rolesChosen);
+      console.log("preferredTime: ");
+      console.log(this.preferredTime);
+      console.log("timeslots");
+      console.log(this.timeSlots);
+      
+      console.log("badDates:");
+      console.log(this.badDates);
+      console.log("schedWith:");
+      console.log(this.schedWith);
+      console.log("notWith:");
+      console.log(this.notWith);
+      console.log("volunteers");
+      console.log(volunteers);
+      console.log(volunteerIndex);
+      this.volunteer = {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        image: this.image.name,
+        roles: this.rolesChosen,
+        prefTimes: {
+          day: this.timeSlots[this.preferredTime].day,
+          time: this.timeSlots[this.preferredTime].time,
+          percentPreferred: 100
+
+        },
+        notAvailable: this.badDates,
+        with: this.schedWith,
+        notWith: this.notWith
+      };
+      console.log("new volunteer");
+      console.log(this.volunteer);
+      this.createVolunteer(this.volunteer);
+      this.handleReturnToVolunteerList();
+    },
+
+    createVolunteer: function(volunteer) {
+      console.log("in createVolunteer");
+      axios.post('/api/volunteers', volunteer)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(err => {
+        console.log(err)
+      });
     }
 
 // to format date in input box...  ??
@@ -354,10 +423,12 @@ export default {
     console.log(this.volunteers);
     console.log("schedules");
     console.log(this.schedules);
-    if (this.volunteerIndex === -1) {
-      this.volunteers = this.volunteers.push([]);
-      this.volunteerIndex = this.volunteers.length;
-    };
+    // push when save new volunteer, otherwise
+    //  might have added a blank volunteer that never gets saved.
+    // if (this.volunteerIndex === -1) {
+    //   this.volunteers = this.volunteers.push([]);
+    //   this.volunteerIndex = this.volunteers.length;
+    // };
     this.eventTimes = this.GetEventTimes();
   }
 

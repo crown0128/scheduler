@@ -58,9 +58,12 @@ module.exports = {
 //       .catch(err => res.status(50).json(err));
 //   },
   createVolunteer: function(req, res) {
+    console.log("in createVolunteer");
+    console.log(req.body);
     db.Volunteer.create(req.body)
       .then(dbVolunteers => res.json(dbVolunteers))
-      .catch(err => res.status(504).json(err));
+      .catch(err => console.log(err));
+      // .catch(err => res.status(504).json(err));
   },
 //   update: function(req, res) {
 //     db.Book.findOneAndUpdate({ _id: req.params.id }, req.body)

@@ -29,7 +29,10 @@ router
     .get(schedulerController.findAllVolunteers)
     .post(schedulerController.createVolunteer);
 
-// for "/api/volunteers/:id"    
+// router  
+//     .route("/api/volunteer")
+//     .post(schedulerController.createVolunteer);
+// // for "/api/volunteers/:id"    
 router 
     .route("/api/volunteers/:id")
     .delete(schedulerController.removeVolunteer);

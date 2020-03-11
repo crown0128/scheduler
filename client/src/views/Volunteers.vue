@@ -3,6 +3,7 @@
     <h1 cols="12" text-center>Volunteers</h1>
 
     <EditVolunteer
+      v-on:updateEdittingVolunteer="updateEdittingVolunteer($event)"
       v-if="edittingVolunteer"
       :volunteers="volunteers"
       :volunteerIndex="-1"
@@ -11,7 +12,6 @@
       :roles="roles"
       :timeSlots="timeSlots"
       :volunteerNames="volunteerNames"
-      :edittingVolunteer="edittingVolunteer"
     ></EditVolunteer>
 
     <VolunteerList
@@ -42,7 +42,6 @@
     data: function() {
       return {
         volunteers: [],
-        search: '',
         volunteerMode: "Add",
         schedules: [],
         roles: [],
@@ -147,6 +146,11 @@
 
 
       },
+
+      updateEdittingVolunteer: function(newEdittingVolunteer) {
+        this.edittingVolunteer = newEdittingVolunteer;
+      },
+    
     },
   };
 
