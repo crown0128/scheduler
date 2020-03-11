@@ -7,6 +7,7 @@ const db = require("../models");
 // Defining methods for the BooksController
 module.exports = {
   findAllSchedules: function(req, res) {
+    console.log("findAllSchedules");
     db.Schedule.find(req.query)
       .then(dbSchedules => res.json(dbSchedules))
       .catch(err => res.status(500).json(err));
@@ -17,6 +18,7 @@ module.exports = {
 //       .catch(err => res.status(50).json(err));
 //   },
   createSchedule: function(req, res) {
+    console.log("createSchedule");
     db.Schedule.create(req.body)
       .then(dbSchedules => res.json(dbSchedules))
       .catch(err => res.status(501).json(err));
@@ -46,6 +48,7 @@ module.exports = {
   },
 
   findAllVolunteers: function(req, res) {
+    console.log("findAllVolunteers");
     db.Volunteer.find(req.query)
       .then(dbVolunteers => {
         res.json(dbVolunteers);
@@ -71,11 +74,19 @@ module.exports = {
 //       .catch(err => res.status(50).json(err));
 //   },
   removeVolunteer: function(req, res) {
-    db.Volunteer.findById({ _id: req.params.id })
-      .then(dbVolunteers => dbVolunteers.remove())
+    console.log("in removeVolunteer");
+    console.log("req.params.id:");
+    console.log(req.params);
+      db.Volunteer.findOneAndDelete({ _id: req.params.id } )
       .then(dbVolunteers => res.json(dbVolunteers))
-      .catch(err => res.status(505).json(err));
-  }
+      .catch(err => console.log(err));
+      // .catch(err => res.status(502).json(err));
+  },
+  //   db.Volunteer.findById({ _id: req.params.id })
+  //     .then(dbVolunteers => dbVolunteers.remove())
+  //     .then(dbVolunteers => res.json(dbVolunteers))
+  //     .catch(err => res.status(505).json(err));
+  // }
 };
 
     // db.Role.create({ 

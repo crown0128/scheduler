@@ -21,7 +21,6 @@
     class="elevation-1"
     >
     <template v-slot:item.image="{ item }">
-        <!-- <div class="p-2"> -->
         <v-btn icon  >
             <v-avatar>
                 <v-img 
@@ -29,18 +28,23 @@
                 </v-img>
             </v-avatar>
         </v-btn>
-        <!-- </div> -->
-    </template>
 
-    <template #item.action>
-        {{ item }}
-        <v-btn class="mx-1 my-1" @click="editVolunteer(item)" fab right dark x-small color="teal">
+
+    </template>
+    <template v-slot:item.action="{ item }">
+
+        <v-btn class="mx-1 my-1" @click="editVolunteer(item._id)" fab right dark x-small color="teal">
             <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn class="mx-1 my-1" @click="deleteVolunteer(item)" fab right dark x-small color="teal">
+
+        <v-btn class="mx-1 my-1" @click="handleDeleteVolunteer(item._id)" fab right dark x-small color="teal">
             <v-icon dark>mdi-delete-circle</v-icon>
         </v-btn>
+
+
     </template>
+
+
     </v-data-table>
 
 </div>
@@ -56,19 +60,36 @@ export default {
     data: function() {
         return {
             search: '',
+            item: '',
+            id: ''
         };
     },
 
     methods: {
 
-        deleteVolunteer: function(volunteer) {
-            console.log("in deleteVolunteer");
-            console.log("volunteer");
-            console.log(volunteer);
+        handleDeleteVolunteer: function(id) {
+            console.log("volunteer...");
+            console.log(this.volunteers);
+            this.volunteers = this.volunteers.filter( volunteer => 
+                volunteer._id != id);
+            this.deleteVolunteer(id);
+            return this.volunteers;
         },
 
-        editVolunteer: function(volunteer) {
+        deleteVolunteer: function(id) {
+            alert("Id: " + id + ".  don't forget to delete from 'with' & 'notWith' ");
+            axios.delete(`/api/volunteers/id/${id}`)
+            .then(response => {
+                console.log(response)
+            })
+            .catch(err => {
+                console.log(err)
+            });
+        },
+
+        editVolunteer: function(id) {
             console.log("in editVolunteer");
+            alert("Edit volunteer button not working, yet.")
         }
 
     },
@@ -77,7 +98,7 @@ export default {
       headers(){
         return [
           {
-              text: 'Image',
+              text: ' ',
               align: 'start',
               value: 'image',
               width: '100px',

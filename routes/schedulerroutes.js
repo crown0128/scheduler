@@ -23,18 +23,19 @@ router
 //     .route("/api/schedules")
 //     .post(schedulerController.createSchedule);
 //     // .post(schedulerController.createSchedule);
+router 
+    .route("/api/volunteers/id/:id")
+    .delete(schedulerController.removeVolunteer);
 
 router  
     .route("/api/volunteers")
     .get(schedulerController.findAllVolunteers)
     .post(schedulerController.createVolunteer);
+    // .delete(schedulerController.removeVolunteer);
 
 // router  
 //     .route("/api/volunteer")
 //     .post(schedulerController.createVolunteer);
 // // for "/api/volunteers/:id"    
-router 
-    .route("/api/volunteers/:id")
-    .delete(schedulerController.removeVolunteer);
 
 module.exports = router;
