@@ -24,20 +24,21 @@
         <!-- <div class="p-2"> -->
         <v-btn icon  >
             <v-avatar>
-            <v-img 
-                :src="require('../../public/images/' + item.image )" :alt="item.firstName" height="30px">
-            </v-img>
+                <v-img 
+                    :src="require('../../public/images/' + item.image )" :alt="item.firstName" height="30px">
+                </v-img>
             </v-avatar>
         </v-btn>
         <!-- </div> -->
     </template>
 
     <template #item.action>
-        <v-btn class="mx-1 my-1" @click="editVolunteer(item.volunteer)" fab right dark x-small color="teal">
-        <v-icon dark>mdi-pencil</v-icon>
+        {{ item }}
+        <v-btn class="mx-1 my-1" @click="editVolunteer(item)" fab right dark x-small color="teal">
+            <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
-        <v-btn class="mx-1 my-1" @click="deleteVolunteer(item.volunteer)" fab right dark x-small color="teal">
-        <v-icon dark>mdi-delete-circle</v-icon>
+        <v-btn class="mx-1 my-1" @click="deleteVolunteer(item)" fab right dark x-small color="teal">
+            <v-icon dark>mdi-delete-circle</v-icon>
         </v-btn>
     </template>
     </v-data-table>
@@ -56,6 +57,20 @@ export default {
         return {
             search: '',
         };
+    },
+
+    methods: {
+
+        deleteVolunteer: function(volunteer) {
+            console.log("in deleteVolunteer");
+            console.log("volunteer");
+            console.log(volunteer);
+        },
+
+        editVolunteer: function(volunteer) {
+            console.log("in editVolunteer");
+        }
+
     },
 
     computed: {

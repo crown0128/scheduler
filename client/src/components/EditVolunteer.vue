@@ -8,16 +8,12 @@
           <h1>{{ volunteerMode }} a volunteer</h1>
       </v-col>
 
-      <v-col cols="2">
-        <!-- save button and back button -->
-        <!-- <v-btn class="mx-1 my-1" @click="xxxxxxxxx" fab right dark x-small color="teal"> -->
-        <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
-          <v-icon dark @click="handleSaveNewVolunteer(volunteers, volunteerIndex);"> mdi-content-save-outline</v-icon>
-        </v-btn>
+      <!-- <v-col cols="2">
+
         <v-btn class="mx-1 my-1" @click="handleReturnToVolunteerList();" fab right dark x-small color="teal">
           <v-icon dark>mdi-arrow-left</v-icon>
         </v-btn>
-      </v-col>
+      </v-col> -->
 
     </v-row>
 
@@ -208,7 +204,7 @@
         <!-- choose who to schedule with (or not) -->
  
                    <!-- choose roles & preferred times -->
-      <v-col cols="6" class="white">
+      <v-col cols="4" class="white">
         <p class="text-left">Choose volunteers to schedule this person with:</p>
         <v-checkbox class="ml-2 my-0 list-height"
           v-for="(volunteer, volIndex) in volunteerNames"
@@ -223,7 +219,7 @@
 
       </v-col>
 
-      <v-col cols="6" class="white">
+      <v-col cols="4" offset="1" class="white">
         <p class="text-left">Choose volunteers to AVOID scheduling this person with:</p>
         <v-checkbox class="ml-2 my-0 list-height"
           v-for="(volunteer, volIndex) in volunteerNames"
@@ -237,6 +233,14 @@
         <p>{{ notWith }}</p>
 
       </v-col>
+
+      <v-col cols="1" offset="1">
+              <!-- save button and back button -->
+        <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
+          <v-icon dark @click="handleSaveNewVolunteer(volunteers, volunteerIndex);"> mdi-content-save-outline</v-icon>
+        </v-btn>
+      </v-col>
+
     </v-row>
 
     <!-- volunteers[ {{ $route.params.id }} ].firstName  -->
@@ -337,31 +341,7 @@ export default {
     },
 
     handleSaveNewVolunteer: function(volunteers, volunteerIndex) {
-      console.log("In handleSaveNewVolunteer");
-      console.log("firstName: ");
-      console.log(this.firstName);
-      console.log("lastName: ");
-      console.log(this.lastName);
-      console.log("email: ");
-      console.log(this.email);
-      console.log("image: ");
-      console.log(this.image);
-      console.log("rolesChosen: ");
-      console.log(this.rolesChosen);
-      console.log("preferredTime: ");
-      console.log(this.preferredTime);
-      console.log("timeslots");
-      console.log(this.timeSlots);
-      
-      console.log("badDates:");
-      console.log(this.badDates);
-      console.log("schedWith:");
-      console.log(this.schedWith);
-      console.log("notWith:");
-      console.log(this.notWith);
-      console.log("volunteers");
-      console.log(volunteers);
-      console.log(volunteerIndex);
+    
       this.volunteer = {
         firstName: this.firstName,
         lastName: this.lastName,
@@ -378,8 +358,6 @@ export default {
         with: this.schedWith,
         notWith: this.notWith
       };
-      console.log("new volunteer");
-      console.log(this.volunteer);
       this.createVolunteer(this.volunteer);
       this.handleReturnToVolunteerList();
     },
@@ -419,10 +397,10 @@ export default {
     console.log("mounted");
     console.log("volunteerIndex");
     console.log(this.volunteerIndex);
-    console.log("volunteers");
-    console.log(this.volunteers);
-    console.log("schedules");
-    console.log(this.schedules);
+    // console.log("volunteers");
+    // console.log(this.volunteers);
+    // console.log("schedules");
+    // console.log(this.schedules);
     // push when save new volunteer, otherwise
     //  might have added a blank volunteer that never gets saved.
     // if (this.volunteerIndex === -1) {

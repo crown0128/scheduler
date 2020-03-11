@@ -1,6 +1,24 @@
 <template>
   <v-container cols="12" text-center align="center" justify="center" class="pt-0">
-    <h1 cols="12" text-center>Volunteers</h1>
+    <v-row>
+      <v-col cols="10" offset="1">
+        <h1 cols="12" text-center>Volunteers</h1>
+      </v-col>
+
+      <v-col cols="1">
+
+        <v-btn 
+          v-if="edittingVolunteer"
+          class="mx-1 my-1" 
+          @click="handleReturnToVolunteerList();" 
+          fab right dark x-small 
+          color="teal"
+        >
+          <v-icon dark>mdi-arrow-left</v-icon>
+        </v-btn>
+      </v-col>
+
+    </v-row>
 
     <EditVolunteer
       v-on:updateEdittingVolunteer="updateEdittingVolunteer($event)"
@@ -150,8 +168,13 @@
       updateEdittingVolunteer: function(newEdittingVolunteer) {
         this.edittingVolunteer = newEdittingVolunteer;
       },
-    
+
+      handleReturnToVolunteerList: function() {
+        console.log("in updateEdittingVolunteer");
+        this.edittingVolunteer = false;
+      },
     },
+    
   };
 
 </script>
