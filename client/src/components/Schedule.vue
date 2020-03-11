@@ -74,7 +74,10 @@
       <v-row>
         <v-flex col-12 py-2>
           <!-- <v-col center-align> -->
-            <v-btn block dark rounded class="teal">Run this Schedule to create a schedule document.</v-btn>
+            <!-- <v-btn @click="handleRunSchedule(schedules, scheduleIndex)" block dark rounded class="teal">Run this Schedule to create a schedule document.</v-btn> -->
+            <router-link :to="{ name: 'Run', params: { schedule: schedules[scheduleIndex] }}">
+              <v-btn block dark rounded class="teal">Run this Schedule to create a schedule document.</v-btn>
+            </router-link>
           <!-- </v-col> -->
         </v-flex>
       </v-row>
@@ -94,12 +97,13 @@
   import EditWeeklyEvents from '../components/EditWeeklyEvents';
   import RolesNeeded from '../components/RolesNeeded';
   import EditRolesNeeded from '../components/EditRolesNeeded';
+  import RunSchedule from '../components/RunSchedule';
   import axios from 'axios';
 
   export default {
     name: "Schedule",
-    components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded },
-    props: ["scheduleIndex", "schedules"],
+    components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded, RunSchedule },
+    props: ["scheduleIndex", "schedules", "schedMode"],
     data: function () {
       return {
         flags: {
@@ -112,7 +116,6 @@
 
     methods: {
 
-      
       // rtnToSchedFromWkly: function(flagsWeekly) {
       //   this.flagsWeekly = false;
       // }

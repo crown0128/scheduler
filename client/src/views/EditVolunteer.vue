@@ -5,12 +5,21 @@
     <!-- volunteer #{{ $route.params.id }}. -->
     <v-row>
       <v-col cols="8" offset="2">
-          <h1>{{ volunteerMode }} a volunteer</h1>
+          <h1>{{ this.volunteerMode }} a volunteer</h1>
       </v-col>
 
-      <!-- <v-col cols="2">
+      <v-col cols="2">
+        <v-btn 
+          class="mx-1 my-1" 
+          to="/volunteers"
+          fab right dark x-small 
+          color="teal"
+        >
+          <v-icon dark>mdi-arrow-left</v-icon>
+        </v-btn>
+      </v-col>
 
-        <v-btn class="mx-1 my-1" @click="handleReturnToVolunteerList();" fab right dark x-small color="teal">
+        <!-- <v-btn class="mx-1 my-1" @click="handleReturnToVolunteerList();" fab right dark x-small color="teal">
           <v-icon dark>mdi-arrow-left</v-icon>
         </v-btn>
       </v-col> -->
@@ -237,7 +246,7 @@
       <v-col cols="1" offset="1">
               <!-- save button and back button -->
         <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
-          <v-icon dark @click="handleSaveNewVolunteer(volunteers, volunteerIndex);"> mdi-content-save-outline</v-icon>
+          <v-icon dark @click="handleSaveNewVolunteer(volunteers);"> mdi-content-save-outline</v-icon>
         </v-btn>
       </v-col>
 
@@ -257,7 +266,7 @@ import axios from 'axios';
 
 export default {
   name: "EditVolunteer",
-  // props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames", "edittingVolunteer"],
+  // props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
   props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
   data: function() {
     return {
@@ -336,12 +345,15 @@ export default {
     },
 
     handleReturnToVolunteerList: function() {
-      console.log("in updateEdittingVolunteer");
-      this.$emit("updateEdittingVolunteer", false);
+      console.log("in handleReturnToVolunteerList");
+      // router.push({ name: '/volunteers', params: { userId: '123' } })
+      this.$router.push({ name: 'Volunteers' })
+      // this.$emit("updateVolunteerMode", 'List');
     },
 
-    handleSaveNewVolunteer: function(volunteers, volunteerIndex) {
-    
+    handleSaveNewVolunteer: function(volunteers) {
+      console.log("this.baddates");
+      console.log(this.badDates);
       this.volunteer = {
         firstName: this.firstName,
         lastName: this.lastName,
@@ -352,13 +364,15 @@ export default {
           day: this.timeSlots[this.preferredTime].day,
           time: this.timeSlots[this.preferredTime].time,
           percentPreferred: 100
-
         },
         notAvailable: this.badDates,
         with: this.schedWith,
         notWith: this.notWith
       };
+      console.log("new 'this.volunteer':");
+      console.log(this.volunteer);
       this.createVolunteer(this.volunteer);
+      this.volunteers.push(this.volunteer);
       this.handleReturnToVolunteerList();
     },
 
@@ -371,7 +385,8 @@ export default {
       .catch(err => {
         console.log(err)
       });
-    }
+    },
+
 
 // to format date in input box...  ??
 // https://codepen.io/eskemojoe007/pen/JBdpqE?editors=0001
@@ -408,7 +423,11 @@ export default {
     //   this.volunteerIndex = this.volunteers.length;
     // };
     this.eventTimes = this.GetEventTimes();
-  }
+  },
+
+  // updated() {
+  //   this.handleReturnToVolunteerList();
+  // }
 
   // See  https://forum.vuejs.org/t/how-to-format-date-for-display/3586/34
   //   on formatting dates from datepicker

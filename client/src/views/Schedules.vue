@@ -1,8 +1,9 @@
 <template>
   <v-container cols="12" text-center>
     <h1 cols="12" text-center>Schedules</h1>
+  <p> schedMode in Schedules.vue: {{ schedMode }} </p>
 
-    <div v-if="!addSched">
+    <div v-if="schedMode==='List'">
     <!-- for each schedule, display a card with it's information -->
       <div v-for="(schedule, i) in schedules"
         v-bind:key="schedule._id"
@@ -12,7 +13,7 @@
             <Schedule 
               :scheduleIndex="i"
               :schedules="schedules"
-              :addSched="addSched"
+              :schedMode="schedMode"
               mode="schedules"
               class="pb-5"
               v-on="$listeners"
@@ -40,10 +41,10 @@
       </v-flex>
     </div>
  
-    <AddSchedule
-      v-if="addSched"
+    <EditSchedule
+      v-if="schedMode==='Add'"
       :schedules="schedules"
-      :addSched="addSched"
+      :schedMode ="schedMode"
     />
 
   </v-container>
@@ -53,15 +54,15 @@
 <script>
 import axios from 'axios';
 import Schedule from '../components/Schedule';
-import AddSchedule from '../components/AddSchedule';
+import EditSchedule from './EditSchedule.vue';
 
 export default {
   name: 'Schedules',
-  components: { Schedule, AddSchedule },
+  components: { Schedule, EditSchedule },
   data: function() {
     return {
       schedules: [],
-      addSched: false,
+      schedMode: "List",
     };  // return
   },  // end data
 
@@ -81,7 +82,7 @@ export default {
     },
 
     handleClickAddSchedule() {
-      this.addSched = true;
+      this.schedMode = "Add";
     },
 
     handleDeleteSchedule: function(schedules, scheduleIndex) {
@@ -106,21 +107,9 @@ export default {
     // }
   },
 
-  computed: {
+  // computed: {
 
-  }
-
-    // deleteSchedule: function(scheduleId) {
-    //   alert("Deleting schedule.")
-    //   this.schedule = this.schedule.filter(id => {
-    //     return id !== scheduleId;
-    //   });
-    // },
-
-
-    // editRoles: function(flagsRoles) {
-    //   flagsRoles = true;
-    // }
+  // }
 
 };
 

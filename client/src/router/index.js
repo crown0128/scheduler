@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Volunteers from '../views/Volunteers.vue'
 import Schedules from '../views/Schedules.vue'
+import Volunteers from '../views/Volunteers.vue'
+import EditSchedule from '../views/EditSchedule.vue'
+import EditVolunteer from '../views/EditVolunteer.vue'
+import NewVolunteer from '../components/NewVolunteer.vue'
 import NotFound from '../components/NotFound.vue'
+import RunSchedule from '../components/RunSchedule.vue'
 // test
-import EditVolunteer from '../components/EditVolunteer'
 
 Vue.use(VueRouter)
 
@@ -17,38 +20,54 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  {
-    path: '/volunteers',
-    name: 'Volunteers',
-    // route level code-splitting
-    // this generates a separate chunk (volunteers.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: function () {
-      return import(/* webpackChunkName: "volunteers" */ '../views/Volunteers.vue')
-    }
-  },
-  // {
-  //   path: '/volunteer/:id', 
-  //   name: 'EditVolunteer',
-  //   component: function () {
-  //     return import('../components/EditVolunteer.vue')
-  //   }
-  // },
+
   {
     path: '/schedules',
     name: 'Schedules',
-    // route level code-splitting
-    // this generates a separate chunk (schedules.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: function () {
-      return import(/* webpackChunkName: "Schedules" */ '../views/Schedules.vue')
+      return import('../views/Schedules.vue')
     }
   },
-  // path: '/schedules/:schedule',
-  // name: 'AddSchedule',
-  // component: function () {
-  //   return import()
-  // }
+
+  {
+    path: '/volunteers',
+    name: 'Volunteers',
+    component: function () {
+      return import('../views/Volunteers.vue')
+    }
+  },
+
+  {
+    path: '/volunteers/volunteer/new',
+    name: 'NewVolunteer',
+    component: function () {
+      return import('../components/NewVolunteer.vue')
+    }
+  },
+
+  {
+    path: '/schedules/:schedule',
+    name: 'EditSchedule',
+    component: function () {
+      return import('../views/EditSchedule.vue')
+    },
+  },
+
+  {
+    path: '/schedules/run/:schedule',
+    name: 'Run',
+    component: function () {
+      return import('../components/RunSchedule.vue')
+    },
+  },
+  
+  {
+    path: '/volunteer/:id', 
+    name: 'EditVolunteer',
+    component: function () {
+      return import('../views/EditVolunteer.vue')
+    },
+  },
   // {
   //   path: '/schedule/weeklyevents/:id', 
   //   name: 'EditWeeklyEvents',

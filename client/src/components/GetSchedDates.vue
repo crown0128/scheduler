@@ -2,11 +2,9 @@
   <div>
 
         <h2 >
-
             <span class="title mr-3">
               Choose the date range for the new schedule and click on the Save icon.
             </span>
-
         </h2>
 
     <v-row>
@@ -35,7 +33,7 @@
                 class="mr-0 ml-3" 
                 fab dark small 
                 color="teal"
-                @click="schedules = saveSchedDates(startDate, endDate, schedules, scheduleIndex)"
+                @click="schedules = saveSchedDates(startDate, endDate, schedules, scheduleIndex, schedMode)"
             >
                 <v-icon dark>mdi-content-save-outline</v-icon>
             </v-btn>
@@ -45,7 +43,7 @@
 
     <v-row>
         <v-col>
-            <p class="text-xs-center msg">{{ message }}</p>
+            <p class="text-xs-center msg">{{ errorMessage }}</p>
         </v-col>
 
     </v-row>
@@ -58,22 +56,22 @@ import axios from 'axios'
 
 export default {
     name: "GetSchedDates",
-    props: ["schedules", "scheduleIndex", "flags", "addSched"],
+    props: ["schedules", "scheduleIndex", "flags", "schedMode"],
     data () {
         return {
             startDate: '',
             endDate: '',
-            message: ''
+            errorMessage: ''
         }
     },
 
     methods: {
-        saveSchedDates: function(startDate, endDate, schedules, scheduleIndex) {
+        saveSchedDates: function(startDate, endDate, schedules, scheduleIndex, schedMode) {
             if (startDate === '' | endDate === '') {
-                this.message = "Please choose a start and an end date.";
+                this.errorMessage = "Please choose a start and an end date.";
                  return schedules;
             } else if (endDate < startDate) {
-                this.message = "Start date must be before end date.";
+                this.errorMessage = "Start date must be before end date.";
                 return schedules;
             } else {
                 const name = Date.now().toString();
@@ -85,10 +83,16 @@ export default {
                     weeklyEvents: [],
                     name: name
                 };
-                schedules.push(schedule);
-                this.message = '';
+                if (schedMode === 'Add') {
+                    schedules.push(schedule);
+                    this.insertSchedule(schedule);
+                } else {
+                    alert("need to code changing dates in existing schedule.")
+                    // change dates for existing schedule
+                    // update schedule in database
+                }
+                this.errorMessage = '';
                 this.flags.haveSchedDates = true;
-                this.insertSchedule(schedule);
                 return schedules;
             };
         },
@@ -106,12 +110,12 @@ export default {
 
         // datesFilledOK: function () {
         //     if ( startDate === '' | endDate === '') {
-        //         this.message = "Please choose a start and an end date.";
+        //         this.errorMessage = "Please choose a start and an end date.";
         //         console.log("Not ok");
         //         return false;
         //     };
         //     if (endDate < startDate) {
-        //         this.message = "Start date must be before end date.";
+        //         this.errorMessage = "Start date must be before end date.";
         //         return false;
         //         console.log("Not ok");
         //     };

@@ -33,7 +33,7 @@
     </template>
     <template v-slot:item.action="{ item }">
 
-        <v-btn class="mx-1 my-1" @click="editVolunteer(item._id)" fab right dark x-small color="teal">
+        <v-btn class="mx-1 my-1" @click="handleEditVolunteer(item._id)" fab right dark x-small color="teal">
             <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
 
@@ -55,7 +55,7 @@ import axios from 'axios';
 
 export default {
     name: 'VolunteerList',
-    props: ["volunteers", "volunteerIndex", "edittingVolunteer"],
+    props: ["volunteers", "volunteerIndex", "volunteerMode"],
 
     data: function() {
         return {
@@ -87,9 +87,9 @@ export default {
             });
         },
 
-        editVolunteer: function(id) {
-            console.log("in editVolunteer");
-            alert("Edit volunteer button not working, yet.")
+        handleEditVolunteer: function(id) {
+            console.log("in handleEditVolunteer");
+            alert("Edit volunteer #:" + id);
         }
 
     },

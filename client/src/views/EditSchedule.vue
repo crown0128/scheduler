@@ -1,10 +1,10 @@
 <template>
 
 <div>
-  
+  <p> schedMode in EditSchedule.vue: {{ schedMode }} </p>
   <!-- card for one schedule with information -->
   <v-row text-center class="justify-center">
-    <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2" id="addsched" supportingtext="true">
+    <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2" supportingtext="true">
 
 
       <v-row>
@@ -13,7 +13,7 @@
           :flags="flags"
           :schedules="schedules"
           :scheduleIndex="scheduleIndex"
-          :addSched="addSched"
+          :schedMode="schedMode"
         />
       </v-row>
 
@@ -23,7 +23,7 @@
           <h2 >
 
             <span class="title mr-3">
-              Choose the weekly times and roles needed for the new schedule.  Click the save icon to save.
+              Choose the weekly times and roles needed for the schedule.  Click the save icon to save.
             </span>
             <div>
               {{ schedules[scheduleIndex].startDate | moment("MMM Do, YYYY") }} through {{ schedules[scheduleIndex].endDate | moment("MMM Do, YYYY") }}
@@ -36,7 +36,7 @@
             class="mr-0 ml-3" 
             fab dark x-small 
             color="teal"
-            @click="AddSched = false;"
+            @click="schedMode='List';"
           >
             <v-icon dark>mdi-arrow-left</v-icon>
           </v-btn>
@@ -96,16 +96,16 @@
 
 
 <script>
-  import WeeklyEvents from './WeeklyEvents';
-  import EditWeeklyEvents from './EditWeeklyEvents';
-  import RolesNeeded from './RolesNeeded';
-  import EditRolesNeeded from './EditRolesNeeded';
-  import GetSchedDates from './GetSchedDates';
+  import WeeklyEvents from '../components/WeeklyEvents';
+  import EditWeeklyEvents from '../components/EditWeeklyEvents';
+  import RolesNeeded from '../components/RolesNeeded';
+  import EditRolesNeeded from '../components/EditRolesNeeded';
+  import GetSchedDates from '../components/GetSchedDates';
 
   export default {
-    name: "AddSchedule",
+    name: "EditSchedule",
     components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded, GetSchedDates },
-    props: ["schedules", "addSched"],
+    props: ["schedules", "schedMode"],
     data: function () {
       return {
         flags: {
