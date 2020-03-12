@@ -1,5 +1,9 @@
 <template>
 <div>
+    <v-data-table id="sched"
+        :headers="headers"
+        :items="body"
+    ></v-data-table>
     <button @click="exportPdf">
         export exportPdf   
     </button>
@@ -14,13 +18,54 @@
 <script>
 import moment from 'moment';
 import axios from 'axios';
-import jsPDF from 'jspdf';
+import jspdf from 'jspdf';
+import 'jspdf-autotable';
 
 export default {
     name: 'RunSchedule',
     data: function () {
         return {
-            volunteers: []
+            volunteers: [],
+            // headers: [
+            //     "Date", "Sacristans", "Lectors"
+            // ],
+            body: [ 
+                {
+                    date: "3/1/2020, Sunday, 10am",
+                    sacristans: "Dorothy",
+                    lectors: "Mike"
+                },
+                {
+                    date: "3/1/2020, Sunday, noon",
+                    sacristans: "Luci",
+                    lectors: "Mark"
+                },
+                {
+                    date: "3/2/2020, Saturday, 5pm",
+                    sacristans: "Ric & Marci",
+                    lectors: "Christi"
+                },
+            ],
+            // scheduleTable: [
+            //     {
+            //         date: "Sunday, 03-01-2020, 10am",
+            //         sacristans: "Dorothy",
+            //         // lectors: ["Mike", "Maura"]
+            //         lectors: "Mike & Maura"
+            //     },
+            //     {
+            //         date: "Saturday, 03-02-2020, 5pm",
+            //         sacristans: "Luci",
+            //         // lectors: ["Colleen", "Kevin"]
+            //         lectors: "Colleen & Kevin"
+            //     },
+            //     {
+            //         date: "Sunday, 03-01-2020, noon",
+            //         sacristans: "Ric & Marci",
+            //         // lectors: ["Mark", "Christi"]
+            //         lectors: "Mark & Christi"
+            //     }
+            // ]
         };
     },
 
@@ -98,21 +143,39 @@ export default {
         },
 
         exportPdf() {
-            const vm = this;
-            // var doc = new jsPDF('p', 'pt');
-            var doc = new jsPDF({
+
+            var doc = new jspdf({
                 orientation: 'landscape',
-                unit: 'in',  // inches
-                format: [11, 8.5] // 8.5 x 11 size
+                unit: 'in', 
+                format: 'letter',
+                putOnlyUsedFonts: true,
             });
-            doc.text("here's your empty schedule!", 20, 20);
-            doc.save('schedulerfile.pdf');
+
+            //  THIS WORKS!!!
+            const pdfHeaders = this.headers.map(function (header) { return header.text });
+
+            var pdfBody = this.body.map(function(obj) {
+                return Object.keys(obj).sort().map(function(key) { 
+                    return obj[key];
+                });
+            });
+
+            doc.autoTable({head: [pdfHeaders], body: pdfBody});
+            doc.save('scheduler2.pdf');
         },
     },
 
     computed: {
         schedule() {
             return this.$route.params.schedule;
+        },
+        
+        headers() {
+            return [
+                { text: 'Date & Time', value: 'date' },
+                { text: 'Sacristans', value: 'sacristans'},
+                { text: 'Lectors', value: 'lectors'}
+            ];
         }
     },
 
