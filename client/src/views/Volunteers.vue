@@ -85,38 +85,38 @@
 
     methods: {
       getVolunteers() {
-        console.log("In getVolunteers");
+        // console.log("In getVolunteers");
         axios.get('/api/volunteers')
         .then(response => {
-          console.log("get volunteers axios done");
+          // console.log("get volunteers axios done");
           this.volunteers = response.data;
           // this.volunteerNames = this.volunteers.map(volunteer => { 
           //   id: volunteer._id, 
           //   name: volunteer.firstName + " " + volunteer.lastName 
           // }); 
-          console.log("this.volunteers");
-          console.log(this.volunteers);
+          // console.log("this.volunteers");
+          // console.log(this.volunteers);
           this.volunteers.forEach((volunteer, i) => {
-            console.log("foreach: volunteer for " + i);
-            console.log(volunteer);
+            // console.log("foreach: volunteer for " + i);
+            // console.log(volunteer);
             const newVol = {
               id: volunteer._id,
               name: volunteer.firstName + " " + volunteer.lastName
             };
-            console.log("before push: volunteerNames, newVol");
-            console.log(this.volunteerNames);
-            console.log(newVol);
+            // console.log("before push: volunteerNames, newVol");
+            // console.log(this.volunteerNames);
+            // console.log(newVol);
             this.volunteerNames.push(newVol);
             // this.volunteerNames = this.volunteerNames.push(newVol);
-            console.log("after push: volunteerNames, newVol");
-            console.log(this.volunteerNames);
+            // console.log("after push: volunteerNames, newVol");
+            // console.log(this.volunteerNames);
             // alphabetize volunteer names
             this.volunteerNames.sort();
           })
         });
-        console.log("in getVolunteers");
-        console.log("volunteerNames");
-        console.log(this.volunteerNames);
+        // console.log("in getVolunteers");
+        // console.log("volunteerNames");
+        // console.log(this.volunteerNames);
       },
 
 
@@ -177,12 +177,12 @@
       },
 
       handleReturnToVolunteerList: function() {
-        console.log("in updateVolunteerMode");
+        // console.log("in updateVolunteerMode");
         this.volunteerMode = 'List';
       },
 
       handleNewVolunteer: function() {
-        console.log("in handleNewVolunteer in Volunteers.vue");
+        // console.log("in handleNewVolunteer in Volunteers.vue");
 
       }
     },

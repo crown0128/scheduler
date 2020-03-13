@@ -68,8 +68,8 @@ export default {
     methods: {
 
         handleDeleteVolunteer: function(id) {
-            console.log("volunteer...");
-            console.log(this.volunteers);
+            // console.log("volunteer...");
+            // console.log(this.volunteers);
             this.volunteers = this.volunteers.filter( volunteer => 
                 volunteer._id != id);
             this.deleteVolunteer(id);
@@ -88,7 +88,7 @@ export default {
         },
 
         handleEditVolunteer: function(id) {
-            console.log("in handleEditVolunteer");
+            // console.log("in handleEditVolunteer");
             alert("Edit volunteer #:" + id);
         }
 

@@ -42,6 +42,7 @@
         return flags
       },
 
+      // only need time part...
       timeToDate: function(time) {
         return new Date("March 16, 2020 " + time);
       }

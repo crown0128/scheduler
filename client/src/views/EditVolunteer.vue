@@ -133,14 +133,20 @@
       <!-- choose roles & preferred times -->
       <v-col cols="6" class="white">
         <p class="text-left">Choose role(s):</p>
-        <v-checkbox class="ml-2 my-0 list-height"
+        <!-- to choose more than one in a future release
+        <checkbox class="ml-2 my-0 list-height" -->
+        <v-radio-group class="ml-2"
+          v-model="rolesChosen"
+        ><v-radio
+        
+          class="my-0 list-height"
           v-for="(role, roleIndex) in roles"
           v-bind:key="roleIndex"
-          v-model="rolesChosen"
           :value="`${role}`"
           :label="`${role}`"
           color="teal"
-        ></v-checkbox>
+        ></v-radio>
+        </v-radio-group>
         <p>{{ rolesChosen }}</p>
 
       </v-col>
@@ -165,7 +171,7 @@
 
     <v-row>
         <!-- choose availability -->
-      <v-col cols="12">
+      <v-col cols="11">
         <v-card class="inputCard">
           <v-card-text class="py-0 px-1 inputCard">
 
@@ -207,13 +213,24 @@
           </v-card-text>
         </v-card>
       </v-col>
+
+      <!-- save button -->
+      <v-col cols="1"> 
+        <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
+          <v-icon dark @click="handleSaveNewVolunteer(volunteers);"> mdi-content-save-outline</v-icon>
+        </v-btn>
+      </v-col>
+
     </v-row>
 
-    <v-row>
+
+    <!-- scheduling with and not-with saved for a future release -->
+
+    <!-- <v-row> -->
         <!-- choose who to schedule with (or not) -->
  
                    <!-- choose roles & preferred times -->
-      <v-col cols="4" class="white">
+      <!-- <v-col cols="4" class="white">
         <p class="text-left">Choose volunteers to schedule this person with:</p>
         <v-checkbox class="ml-2 my-0 list-height"
           v-for="(volunteer, volIndex) in volunteerNames"
@@ -241,16 +258,10 @@
         ></v-checkbox>
         <p>{{ notWith }}</p>
 
-      </v-col>
+      </v-col>  -->
 
-      <v-col cols="1" offset="1">
-              <!-- save button and back button -->
-        <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
-          <v-icon dark @click="handleSaveNewVolunteer(volunteers);"> mdi-content-save-outline</v-icon>
-        </v-btn>
-      </v-col>
 
-    </v-row>
+    <!-- </v-row> -->
 
     <!-- volunteers[ {{ $route.params.id }} ].firstName  -->
 </v-container>
@@ -286,9 +297,10 @@ export default {
 
       eventTimes: [],
       rolesChosen: [],
-      preferredTime: "",
-      schedWith: [],
-      notWith: []
+      preferredTime: ""
+      // Save with and notWith features for future release
+      // schedWith: [],
+      // notWith: []
 
       // title: "Image Upload",
       // dialog: false,
@@ -345,39 +357,40 @@ export default {
     },
 
     handleReturnToVolunteerList: function() {
-      console.log("in handleReturnToVolunteerList");
+      // console.log("in handleReturnToVolunteerList");
       // router.push({ name: '/volunteers', params: { userId: '123' } })
       this.$router.push({ name: 'Volunteers' })
       // this.$emit("updateVolunteerMode", 'List');
     },
 
     handleSaveNewVolunteer: function(volunteers) {
-      console.log("this.baddates");
-      console.log(this.badDates);
+      // console.log("this.baddates");
+      // console.log(this.badDates);
       this.volunteer = {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
         image: this.image.name,
-        roles: this.rolesChosen,
+        roles: [this.rolesChosen],
         prefTimes: {
           day: this.timeSlots[this.preferredTime].day,
           time: this.timeSlots[this.preferredTime].time,
           percentPreferred: 100
         },
         notAvailable: this.badDates,
-        with: this.schedWith,
-        notWith: this.notWith
+        // Save with and notWith features for a future release
+        // with: this.schedWith,
+        // notWith: this.notWith
       };
-      console.log("new 'this.volunteer':");
-      console.log(this.volunteer);
+      // console.log("new 'this.volunteer':");
+      // console.log(this.volunteer);
       this.createVolunteer(this.volunteer);
       this.volunteers.push(this.volunteer);
       this.handleReturnToVolunteerList();
     },
 
     createVolunteer: function(volunteer) {
-      console.log("in createVolunteer");
+      // console.log("in createVolunteer");
       axios.post('/api/volunteers', volunteer)
       .then(response => {
         console.log(response)
@@ -409,9 +422,9 @@ export default {
 
   // created() {
   mounted() {
-    console.log("mounted");
-    console.log("volunteerIndex");
-    console.log(this.volunteerIndex);
+    // console.log("mounted");
+    // console.log("volunteerIndex");
+    // console.log(this.volunteerIndex);
     // console.log("volunteers");
     // console.log(this.volunteers);
     // console.log("schedules");

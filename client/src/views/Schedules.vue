@@ -67,7 +67,7 @@ export default {
   },  // end data
 
   created() {
-    console.log("in created (in Schedules)");
+    // console.log("in created (in Schedules)");
     this.getSchedules();
   },
 
@@ -76,8 +76,8 @@ export default {
       axios.get('/api/schedules')
       .then(response => {
         this.schedules = response.data;
-        console.log("schedules loaded from database.");
-        console.log(response.data);
+        // console.log("schedules loaded from database.");
+        // console.log(response.data);
       });
     },
 

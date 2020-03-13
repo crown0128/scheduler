@@ -50,7 +50,7 @@
         <!-- Roles needed in the schedule on the right side (with button to edit) -->
         <v-col cols="6" class="v-card__text pb-5">
 
-          <!-- List day of week and time of each weekly event -->
+          <!-- List roles needed for the schedule -->
             <!-- @delete-weekly="deleteWeekly"
             @save-weekly="saveWeekly" -->
             <!-- v-on:chgWeekly='updWeekly($event)' -->

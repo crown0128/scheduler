@@ -55,7 +55,7 @@ const VolunteerSchema = new Schema({
     type: String
   },
 
-  // array of roles by role id the volunteer can do
+  // array of roleNames the volunteer can do
   roles: [String],
 
   // weekly event times (day of week, and time of day) preferred

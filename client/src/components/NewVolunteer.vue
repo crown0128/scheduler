@@ -46,17 +46,17 @@
 
     methods: {
       getVolunteers() {
-        console.log("In getVolunteers in NewVolunteer");
+        // console.log("In getVolunteers in NewVolunteer");
         axios.get('/api/volunteers')
         .then(response => {
-          console.log("get volunteers axios done");
+          // console.log("get volunteers axios done");
           this.volunteers = response.data;
           // this.volunteerNames = this.volunteers.map(volunteer => { 
           //   id: volunteer._id, 
           //   name: volunteer.firstName + " " + volunteer.lastName 
           // }); 
-          console.log("this.volunteers");
-          console.log(this.volunteers);
+          // console.log("this.volunteers");
+          // console.log(this.volunteers);
           this.volunteers.forEach((volunteer, i) => {
             const newVol = {
               id: volunteer._id,
@@ -68,9 +68,9 @@
             this.volunteerNames.sort();
           })
         });
-        console.log("in getVolunteers (NewVolunteer.vue");
-        console.log("this.volunteerNames");
-        console.log(this.volunteerNames);
+        // console.log("in getVolunteers (NewVolunteer.vue");
+        // console.log("this.volunteerNames");
+        // console.log(this.volunteerNames);
       },
 
 
@@ -131,7 +131,7 @@
       },
 
       handleReturnToVolunteerList: function() {
-        console.log("in updateVolunteerMode");
+        // console.log("in updateVolunteerMode");
         this.volunteerMode = 'List';
       },
     },
