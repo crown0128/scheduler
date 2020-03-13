@@ -274,7 +274,7 @@ const data = [
                 'image': 'cat.jpg',
                 'roles': ["Sacristan"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
@@ -287,7 +287,7 @@ const data = [
                 'image': 'dog.jpg',
                 'roles': ["Eucharistic minister"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
@@ -300,7 +300,7 @@ const data = [
                 'image': 'tiger.jpg',
                 'roles': ["Eucharistic minister"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
@@ -313,7 +313,7 @@ const data = [
                 'image': 'cat.jpg',
                 'roles': ["Eucharistic minister"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
@@ -326,7 +326,7 @@ const data = [
                 'image': 'sneaker.jpg',
                 'roles': ["Lector"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
@@ -339,7 +339,7 @@ const data = [
                 'image': 'sneaker.jpg',
                 'roles': ["Altar server"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
@@ -352,7 +352,7 @@ const data = [
                 'image': 'puppy.jpg',
                 'roles': ["Altar server"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
@@ -365,7 +365,7 @@ const data = [
                 'image': 'cheetah.jpg',
                 'roles': ["Usher"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
@@ -378,7 +378,7 @@ const data = [
                 'image': 'orange flower.jpg',
                 'roles': ["Usher"],
                 'prefTimes': [{
-                    'day': "Sunday",
+                    'day': "Saturday",
                     'time': '17:00',
                     'percentPreferred': 100
                 }]
