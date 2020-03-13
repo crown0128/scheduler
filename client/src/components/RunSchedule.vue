@@ -7,10 +7,7 @@
             Click <u>here</u> to create a PDF.
         </button>
         <p>The name of the file will be <span class="redtext">{{ this.filename }}</span> and it will be created in your Downloads folder.</p>
-        <v-data-table id="sched"
-            :headers="headers"
-            :items="slate"
-        ></v-data-table>
+        <v-data-table id="sched" :headers="headers" :items="slate"></v-data-table>
     </div>
     <!-- for testing... -->
     <p> {{ schedule._id }} </p>
@@ -36,9 +33,8 @@ export default {
             notMsg: "",
             noErrors: true,
             dates: [],
-            slate: [],
-
-
+            slate: []
+  
             // for testing
             // body: [ 
             //     {
@@ -75,24 +71,31 @@ export default {
             const daysWord = this.schedule.weeklyEvents.map(weeklyEvent => {
                 return weeklyEvent.day;
             });
-            console.log("daysWord: ");
-            console.log(daysWord);
+            // console.log("daysWord: ");
+            // console.log(daysWord);
             let days = [];
             daysWord.forEach(dayW => {
-                switch(dayW) {
-                    case "Sunday": days.push(0);
+                switch (dayW) {
+                    case "Sunday":
+                        days.push(0);
                         break;
-                    case "Monday": days.push(1);
+                    case "Monday":
+                        days.push(1);
                         break;
-                    case "Tuesday": days.push(2);
+                    case "Tuesday":
+                        days.push(2);
                         break;
-                    case "Wednesday": days.push(3);
+                    case "Wednesday":
+                        days.push(3);
                         break;
-                    case "Thursday": days.push(4);
+                    case "Thursday":
+                        days.push(4);
                         break;
-                    case "Friday": days.push(5);
+                    case "Friday":
+                        days.push(5);
                         break;
-                    case "Saturday": days.push(6);
+                    case "Saturday":
+                        days.push(6);
                         break;
                 };
             });
@@ -134,7 +137,7 @@ export default {
                     // console.log("dayNeeded moment: " + moment(dayNeeded).format("MM-DD-YYYY"));
 
                     // add a date needed to the array
-                    dates.push(dayNeeded.toDate());
+                    dates.push(moment(dayNeeded).format("YYYY-MM-DD").toString());
 
                     // look at the same day of the week the following week.
                     dayNeeded = moment(dayNeeded).add(7, 'days');
@@ -145,7 +148,7 @@ export default {
                 // console.log(eventDates);
 
             });
-            
+
             // console.log("Checking dates...testing - end of GETDATES Before adding []");
             // console.log(eventDates);
             // eventDates.forEach(date => {
@@ -177,6 +180,7 @@ export default {
 
         getVolunteersAndFillSlate() {
             // console.log("In getVolunteersAndFillSlate");
+            // console.log(this.slate);
             axios.get('/api/volunteers')
                 .then(response => {
                     // console.log("get volunteers axios done");
@@ -198,8 +202,9 @@ export default {
 
         fillSlate() {
             console.log("In fillSlate");
-            console.log("THIS.VOLUNTEERS");
-            console.log(this.volunteers);
+            console.log(this.slate);
+            // console.log("THIS.VOLUNTEERS");
+            // console.log(this.volunteers);
 
             this.dates = this.getDates();
             // check dates for testing
@@ -211,7 +216,6 @@ export default {
             //         console.log(moment(day).format("YYYY-MM-DD dddd"));
             //     });
             // });
-
 
             // Need estimate for ...
             //    maximum times each volunteer will serve per role (per weekly event) (maxTimesServedPerRole),
@@ -232,7 +236,6 @@ export default {
             // console.log("weeks: ");
             // console.log(weeks);
 
-
             // get the roles needed, and
             // the number of volunteers needed for each role (slots)
             let roles = [];
@@ -240,7 +243,7 @@ export default {
             this.schedule.roles.forEach(role => {
                 roles.push(role.roleName);
                 slots.push(role.numberNeeded);
-            });  // end of forEach role in the schedule
+            }); // end of forEach role in the schedule
             // console.log("roles:");
             // console.log(roles);
             // console.log("slots:");
@@ -248,7 +251,8 @@ export default {
 
             // set up empty slate with dates & properties
             this.slate = this.buildSkeleton(this.dates, roles, this.schedule.weeklyEvents);
-
+            console.log("this.slate after done with buildSkeleton call");
+            console.log(this.slate);
 
             this.schedule.weeklyEvents.forEach((weeklyEvent, we) => {
                 // console.log("\n********************");
@@ -274,20 +278,21 @@ export default {
                 let slotsFilled = []; // No slots filled for this role in this recurring event, yet
                 roles.forEach((role, r) => {
                     slotsFilled.push(0); // No slots filled for this role in this recurring event, yet
-                    numberVolunteers.push(0);  // add an element for this role.
-                    totalSlotsPerRole.push(0);  // add an element for this role.
-                // console.log('??? numberVolunteers on new role... push 0 element:');
-                // console.log(numberVolunteers);
+                    numberVolunteers.push(0); // add an element for this role.
+                    totalSlotsPerRole.push(0); // add an element for this role.
+                    // console.log('??? numberVolunteers on new role... push 0 element:');
+                    // console.log(numberVolunteers);
                     this.volunteers.forEach(volunteer => {
+
                         // if volunteer wants this event time
                         if (
-                            (volunteer.roles.includes(role)) && 
+                            (volunteer.roles.includes(role)) &&
                             (volunteer.prefTimes[0].day === weeklyEvent.day) &&
                             (volunteer.prefTimes[0].time === weeklyEvent.time)
                         ) {
                             numberVolunteers[r]++
-                // console.log('??? numberVolunteers on MATCH... increment:');
-                // console.log(numberVolunteers);
+                            // console.log('??? numberVolunteers on MATCH... increment:');
+                            // console.log(numberVolunteers);
                             // console.log("\n********************");
                             // console.log("\n*****  MATCH!  *****");
                             // console.log("\n********************");
@@ -326,7 +331,7 @@ export default {
                     // console.log("r: " + r);
                     // console.log("==== roles:");
                     // console.log(roles);
-                    totalSlotsPerRole[r]=(slots[r]*weeks[we]);  
+                    totalSlotsPerRole[r] = (slots[r] * weeks[we]);
                     // console.log('==== totalSlotsPerRole:');
                     // console.log(totalSlotsPerRole);
                 }); // end of for each role in roles
@@ -338,7 +343,7 @@ export default {
                 //      console.log("numberVolunteers");
                 //      console.log(numberVolunteers);
 
-//  Need to calculate maxTimesServedPerRole and maxRepeatPerRole
+                //  Need to calculate maxTimesServedPerRole and maxRepeatPerRole
                 // console.log("Before calculating maxTimesServedPerRole:");
                 // console.log("weeks:");
                 // console.log(weeks);
@@ -350,7 +355,7 @@ export default {
                 let maxTimesServedPerRole = [];
                 let maxRepeatPerRole = [];
 
-                slots.forEach((slot,s) => {
+                slots.forEach((slot, s) => {
                     maxTimesServedPerRole.push((weeks[we] * slots[s]) / numberVolunteers[s]);
                     if (maxTimesServedPerRole[s] > weeks[we]) {
                         this.errorMessage = "There are not enough volunteers to complete a schedule.  New schedule not created.";
@@ -362,69 +367,70 @@ export default {
                         this.noErrors = true;
                     }; // end of if more slots need to be filled per week than volunteers available.
 
-                // calculate the estimated 
-                //    maxTimesServedPerRole: 
-                //       (# events x slots)/# volunteers, rounded up 
-                //          (round after next step)
-                //    and maxRepeatPerRole: 
-                //       # events / maxTimesServed (before rounding) rounded up
-                    maxRepeatPerRole.push(Math.ceil(weeks[we]/maxTimesServedPerRole[s]));
-                    maxTimesServedPerRole[s]=(Math.ceil(maxTimesServedPerRole[s]));
+                    // calculate the estimated 
+                    //    maxTimesServedPerRole: 
+                    //       (# events x slots)/# volunteers, rounded up 
+                    //          (round after next step)
+                    //    and maxRepeatPerRole: 
+                    //       # events / maxTimesServed (before rounding) rounded up
+                    maxRepeatPerRole.push(Math.ceil(weeks[we] / maxTimesServedPerRole[s]));
+                    maxTimesServedPerRole[s] = (Math.ceil(maxTimesServedPerRole[s]));
 
-                });  // end of for each slot in slots
+                }); // end of for each slot in slots
                 // console.log("maxTimesServedPerRole:");
                 // console.log(maxTimesServedPerRole);
                 // console.log("maxRepeatPerRole:");
                 // console.log(maxRepeatPerRole);
 
                 // start filling in slate!!
-                
+
                 // for each weekly event (still in that loop)
-                
+
                 // gather volunteers in this weekly event
-                const volsInWeeklyEvent = this.volunteers.filter(volunteer => 
-                    ( (volunteer.prefTimes[0].day === weeklyEvent.day) &&
-                      (volunteer.prefTimes[0].time === weeklyEvent.time)
+                const volsInWeeklyEvent = this.volunteers.filter(volunteer =>
+                    ((volunteer.prefTimes[0].day === weeklyEvent.day) &&
+                        (volunteer.prefTimes[0].time === weeklyEvent.time)
                     )
                 );
                 // console.log("volsInWeeklyEvent");
                 // console.log(volsInWeeklyEvent);
 
                 volsInWeeklyEvent.forEach(volunteer => {
-                    // this volunteer is scheduled 0 times so far
-                    let timesServed = 0;
-                    // keep track of dates checked for this volunteer in this weeklyevent
-                    let datesChecked = [];
-                    // when numberDates = datesChecked.length, we've checked them all
-                    const numberDates = weeks[we]; 
-                    // start with first date in weeklyevents  
-                    console.log('(((((((((((((  this.dates )))))))))');
-                    console.log(this.dates);
-                    console.log("we: " + we);
-                    console.log("this.dates[0]:");
-                    console.log(this.dates[0]);
-                    console.log("this.dates[0][0]:");
-                    console.log(this.dates[0][0]);
-                    let currDate = this.dates[we][0]; 
-                    console.log("currDate: -- in fillSlate " + moment(currDate).format("YYYY-MM-DD"));
-
-                    // Reminder, totalSlotsPerRole is how many needed for this recurring event 
-                    //    i.e. number of "ushers" needed at this weekly recurring event over the whole schedule
 
                     // r is the index for the role of the current volunteer
                     //   note:  roles is an array for a future release when a volunteer can have 
                     //          more than one possible role
+                    // if r is -1, we don't need the role of this volunteer in this schedule, skip the volunteer
                     const r = roles.indexOf(volunteer.roles[0]);
+                    if (!(r === -1)) {
+                        // this volunteer is scheduled 0 times so far
+                        let timesServed = 0;
+                        // keep track of dates checked for this volunteer in this weeklyevent
+                        let datesChecked = [];
+                        // when numberDates = datesChecked.length, we've checked them all
+                        const numberDates = weeks[we];
+                        // start with first date in weeklyevents  
+                        // console.log('(((((((((((((  this.dates )))))))))');
+                        // console.log(this.dates);
+                        // console.log("we: " + we);
+                        // console.log("this.dates[0]:");
+                        // console.log(this.dates[0]);
+                        // console.log("this.dates[0][0]:");
+                        // console.log(this.dates[0][0]);
+                        let currDate = this.dates[we][0];
+                        // console.log("currDate: -- in fillSlate " + moment(currDate).format("YYYY-MM-DD").toString());
 
+                        // Reminder, totalSlotsPerRole is how many needed for this recurring event 
+                        //    i.e. number of "ushers" needed at this weekly recurring event over the whole schedule
 
-                    // repeat below until scheduled maxTimesServedPerRole, all roles filled, 
-                    //    or all dates checked for this volunteer
+                        // repeat below until scheduled maxTimesServedPerRole, all roles filled, 
+                        //    or all dates checked for this volunteer
 
-                    // while (
-                    //     (timesServed < maxTimesServedPerRole[r]) && 
-                    //     (slotsFilled[r] < totalSlotsPerRole[r]) &&
-                    //     (datesChecked.length < numberDates)) 
-                    // {
+                        // while (
+                        //     (timesServed < maxTimesServedPerRole[r]) && 
+                        //     (slotsFilled[r] < totalSlotsPerRole[r]) &&
+                        //     (datesChecked.length < numberDates)) 
+                        // {
                         // console.log("timesServed: " + timesServed);
                         // console.log("maxTImesServedPerRole[r]: " + maxTimesServedPerRole[r] + " r(" + ")");
                         // console.log("slotsFilled[r]: " + slotsFilled[r]);
@@ -432,18 +438,18 @@ export default {
                         // console.log("datesChecked:");
                         // console.log(datesChecked);
                         // console.log("numberDates: " + numberDates);
-                        
+
                         // console.log("currdate: " + currDate);
                         // do this now, before it gets changed to a new date
                         datesChecked.push(currDate);
 
                         // console.log("datesChecked:");
                         // console.log(datesChecked);
-                    //  check if this is a good date
- // i'm here
+                        //  check if this is a good date
+                        // i'm here
                         if (this.goodDate(volunteer)) {
                             // console.log("goodDate true, call scheduleVolunteer");
-                            this.scheduleVolunteer(volunteer, r, roles, currDate);
+                            this.scheduleVolunteer(volunteer, r, roles, currDate, this.schedule.weeklyEvents[we].time);
                             // increment date by maxRepeat.. if this was a good date.
                             this.pickNewDate(currDate, maxRepeatPerRole[r]);
                         } else {
@@ -452,92 +458,141 @@ export default {
                             this.pickNewDate(currDate, 1);
                         }
 
-
-                    // }; // end of while loop to fill slots with this volunteer
+                        // }; // end of while loop to fill slots with this volunteer
+                    }; // end of if volunteer's role needed.
 
                 }); // of for each volunteer in volsInWeeklyEvent
 
-            });  // of for each weekly event in weeklyEvents (we is index)
+            }); // of for each weekly event in weeklyEvents (we is index)
 
-
-            
-
-
-
-
-
-
-            
-        },  // end of fillSlate method
+        }, // end of fillSlate method
 
         buildSkeleton(dates, roles, weeklyEvents) {
-            let slate = [];
+            console.log("start buildskeleton, initialize slate");
+            let localSlate = [];
+            // console.log(this.localSlate);
+            console.log(localSlate);
 
-            console.log("---- dates:");
-            console.log(dates);
-            console.log("\n");
-            console.log("---- roles:");
-            console.log(roles);
-            console.log("---- weeklyEvents");
-            console.log(weeklyEvents);
+
+            // console.log("---- dates:");
+            // console.log(dates);
+            // console.log("\n");
+            // console.log("---- roles:");
+            // console.log(roles);
+            // console.log("---- weeklyEvents");
+            // console.log(weeklyEvents);
 
             // for each weekly event
+            console.log("start foreach loop on WEEKLYEVENTDATES in DATES");
             dates.forEach((weeklyEventDates, we) => {
-                console.log("In foreach dates, we = " + we);
+                console.log("488: WEEKLYEVENTDATES: we: " + we);
+                console.log(weeklyEventDates);
+                // console.log("In foreach dates, we = " + we);
                 // console.log("dates:");
                 // console.log(dates);
-                console.log("weeklyEventDates:");
-                console.log(weeklyEventDates);
+                // console.log("weeklyEventDates:");
+                // console.log(weeklyEventDates);
 
-                weeklyEventDates.forEach( (date, d) => {
+                // console.log("496: Initialize thisObject");
+                // console.log(thisObject);
+                console.log("499: start foreach loop on DATE in WEEKLYEVENTDATES");
+                weeklyEventDates.forEach((date, d) => {
+                    console.log("501: DATE: d: " + d);
+                    console.log(date);
                     // console.log("In foreach date in weeklyeventdates");
                     // console.log("date:");
                     // console.log(date);
                     //    get date, time & day
-                    const slateDate = moment(date).format("M/D/YYYY").toString();
-                    const day = moment(date).format("dddd").toString();
-                    // console.log("&& slateDate: " + slateDate);
+                    // const localSlateDate = moment(date).format("M/D/YYYY").toString();
+                    // const day = moment(date).format("dddd").toString();
+                    // console.log("&& localSlateDate: " + localSlateDate);
                     // console.log("&& day: " + day);
                     // const time = moment(weeklyEvents[we].time).format("hh:mm a");
                     // const keyDate = date.concat(" ", day, " at ", time);
-                    const keyDate = slateDate.concat(" ", day, " at ", weeklyEvents[we].time);
-                    console.log("keyDate: " + keyDate);
+                    // const keyDate = localSlateDate.concat(" ", day, " at ", weeklyEvents[we].time);
+                    // console.log("keyDate: " + keyDate);
 
                     //    for each specific date (index d)
-                    //    build an object (which will be a row in the displayed/PDF slate)
-                    let thisObject = {};
-                    weeklyEventDates.forEach((date,d) => {
-                        // first property is the date
-                        thisObject.date = keyDate;
-
-                        // remaining properties are the roles
-                        roles.forEach( role => {
-                            thisObject[role] = '';
-                        });
-                        console.log("thisObject (in foreach):");
-                        console.log(thisObject);
-                    });
-                    console.log("thisObject (after foreach):");
+                    //    build an object (which will be a row in the displayed/PDF localSlate)
+                    // console.log(weeklyEventDates);
+                    // first property is the date
+                    // console.log("bad?? date: " + date);
+                    // console.log("time: weeklyEvents[we].time:  " + weeklyEvents[we].time);
+                    // console.log("time: weeklyEvents[we].day:  " + weeklyEvents[we].day);
+                    
+                    // console.log(moment(date).format("YYYY-MM-DD").toString());
+                    const newDate = moment(date).format("YYYY-MM-DD").toString();
+                    // console.log(thisObject.date);
+                    const newTime = weeklyEvents[we].time;
+                    let thisObject = this.newObject(newDate, newTime);
+                    console.log("new THISOBJECT");
                     console.log(thisObject);
-                    slate.push(thisObject);
-                    console.log("slate - after push");
-                    console.log(slate);
-                });
-            });
-            console.log("SKELETON slate:");
-            console.log(slate);
 
-            
-            
+                    // remaining properties are the roles
+                    roles.forEach(role => {
+                        thisObject[role] = [];
+                    });
+                    console.log("533: thisObject (in DATE d):");
+                    console.log(thisObject);
+
+                    // console.log("537: localSlate - before push");
+                    // console.log(localSlate);
+
+                    localSlate.push(thisObject);
+                    
+                    console.log("537: localSlate - after push");
+                    console.log(localSlate);
+
+                });
+                console.log("538: Finished DATE in d");
+                // console.log("thisObject");
+                // console.log(thisObject);
+                // console.log(localSlate);
+            });
+            console.log("546: Finished WEEKLYEVENTDATES in WE");
+            console.log("547: SKELETON localSlate just before return:");
+            console.log(localSlate);
+            // console.log(this.localSlate);
+
             // console.log("in buildSkeleton");
             // console.log("dates:");
             // console.log(dates);
             // console.log(roles);
+
+            // sort into date/time order before returning
+            // localSlate = this.sortSlate(localSlate);
+            // console.log("sorted localSlate");
+            // console.log(localSlate);
+
+            return localSlate;
+        },
+
+        newObject(newDate, newTime) {
+            let newObj = {};
+            newObj.date = newDate;
+            newObj.time = newTime;
+            return newObj;
+        },
+
+        sortSlate(slate) {
+            slate.forEach( date => {
+                date.time = moment(date.time);
+                date.day = moment(date.day);
+            });
+
+            slate.sort();
+
+            slate.forEach( date => {
+                date.time = moment(date.time).format("YYYY-MM-DD").toString();
+                date.day = moment(date.day).format("hh:mm").toString();
+            });
+
             return slate;
+            
         },
 
         goodDate(volunteer) {
-            
+
             // const good = this.volunteerAvailable(volunteer);
             // console.log("in goodDate");
             // console.log("good: " + good);
@@ -554,7 +609,7 @@ export default {
 
             // let available = !volunteer.notAvailable.includes(this.currDate);
             // console.log("***********************");
-            console.log("***  in volunteerAvailable ****");
+            // console.log("***  in volunteerAvailable ****");
             // console.log("***********************");
             // console.log("available: " + available);
             // console.log("this.currDate: " + moment(this.currDate).format("YYYY-MM-DD"));
@@ -564,12 +619,12 @@ export default {
             // console.log(volunteer);
             return true;
         },
-        
+
         pickNewDate(date, increment) {
             console.log("Old date: ");
             console.log(moment(date).format("YYYY-MM-DD"));
             // date should be a multiple of a week later.
-            date = moment(date).add(increment*7, 'days');
+            date = moment(date).add(increment * 7, 'days');
             // need to check if out of range & wrap around. Add one week if wrap lands on date checked.
             console.log("in picknewdate");
             console.log("New date: " + moment(date).format("YYYY-MM-DD"));
@@ -577,48 +632,76 @@ export default {
             return date;
         },
 
-        scheduleVolunteer(volunteer, r, roles, date) {
-            // console.log("In scheduleVOLUNTEER");
-            // console.log('this.volunteer');
+        scheduleVolunteer(volunteer, r, roles, date, time) {
+            // console.log("@@@@@@@  In scheduleVOLUNTEER");
+            // console.log('volunteer');
             // console.log(volunteer);
             // console.log("r: " + r);
+            // console.log('slate:');
+            // console.log(this.slate);
             // console.log('this.slate:');
             // console.log(this.slate);
+            // console.log("roles:");
+            // console.log(roles);
             // console.log("roles[r]:");
             // console.log(roles[r]);
             // console.log("date: -- in scheduleVolunteer");
-            // console.log(moment(date).format("YYYY-MM-DD"));
+            // console.log(moment(date).format("YYYY-MM-DD").toString());
+            // i'm really here
+            // find where in array object for this date & time are
+            // console.log(".....  date: " + date);
+            // console.log("..... time: " + time);
+
+            const timeDateIndex = this.slate.findIndex(
+                timeDate => 
+                    moment(timeDate.date).format("YYYY-MM-DD").toString() === moment(date).format("YYYY-MM-DD").toString() && 
+                    moment(timeDate.time).format("hh:mm").toString() === time);
+            // console.log("after findindex (slate)");
+            // console.log(slate);
+            // console.log("timeDateIndex: " + timeDateIndex);
+            // console.log("this.slate[timeDateIndex]:  ");
+            // console.log(this.slate[timeDateIndex]);
+            // console.log("roles[r]:  " + roles[r]);
+            // this.slate[timeDateIndex].[roles[r]] = this.volunteer.firstName.concat(" ", this.volunteer.lastName);
+            // console.log("slate after assignment:");
+            // console.log(this.slate);
+
         },
 
         exportPdf() {
 
-            var doc = new jspdf(
-                {
+            var doc = new jspdf({
                 orientation: 'landscape',
                 format: 'letter',
                 putOnlyUsedFonts: true,
-            }
-            );
+            });
 
             //  THIS WORKS!!!
-            const pdfHeaders = [this.headers.map(function (header) { return header.text })];
-            console.log("pdfHeaders:");
-            console.log(pdfHeaders);
+            const pdfHeaders = [this.headers.map(function (header) {
+                return header.text
+            })];
+            // console.log("pdfHeaders:");
+            // console.log(pdfHeaders);
 
-            const pdfBody = this.slate.map(function(obj) {
+            const pdfBody = this.slate.map(function (obj) {
                 // return Object.keys(obj).sort().map(function(key) { 
-                return Object.keys(obj).map(function(key) { 
+                return Object.keys(obj).map(function (key) {
                     return obj[key];
                 });
             });
-            
-                console.log("pdfBody");
-                console.log(pdfBody);
-            doc.setProperties({title: this.schedule.name});
+
+            // console.log("pdfBody");
+            // console.log(pdfBody);
+            doc.setProperties({
+                title: this.schedule.name
+            });
 
             doc.text(10, 10, this.schedule.name);
 
-            doc.autoTable({head: pdfHeaders, body: pdfBody});
+            doc.autoTable({
+                head: pdfHeaders,
+                body: pdfBody
+            });
             doc.save(this.filename);
         },
     },
@@ -627,30 +710,51 @@ export default {
         schedule() {
             return this.$route.params.schedule;
         },
-        
+
         headers() {
-            return [
-                { text: 'Date & Time', value: 'date' },
-                { text: 'Sacristans', value: 'Sacristan'},
-                { text: 'Lectors', value: 'Lector'},
-                { text: 'Eucharistic ministers', value: 'Eucharistic minister'},
-                { text: 'Altar servers', value: 'Altar server'},
-                { text: 'Ushers', value: 'Usher'}
+            return [{
+                    text: 'Date',
+                    value: 'date'
+                },
+                {
+                    text: 'Time',
+                    value: 'time'
+                },
+                {
+                    text: 'Sacristans',
+                    value: 'Sacristan'
+                },
+                {
+                    text: 'Lectors',
+                    value: 'Lector'
+                },
+                {
+                    text: 'Eucharistic ministers',
+                    value: 'Eucharistic minister'
+                },
+                {
+                    text: 'Altar servers',
+                    value: 'Altar server'
+                },
+                {
+                    text: 'Ushers',
+                    value: 'Usher'
+                }
             ];
         }
     },
 
     created() {
+        // console.log("beginning slate:");
+        // console.log(this.slate);
         this.getVolunteersAndFillSlate();
     }
 }
 </script>
 
 <style scoped>
-
 .redtext {
     color: red;
     text-emphasis: bold;
 }
-
 </style>
