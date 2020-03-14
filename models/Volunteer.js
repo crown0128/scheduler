@@ -81,7 +81,7 @@ const VolunteerSchema = new Schema({
   ],
 
   // array of eventInfo ids when the volunteer is NOT available
-  notAvailable: [{ type: Date }]
+  notAvailable: [{ type: String }]
 
 });
 

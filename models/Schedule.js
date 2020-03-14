@@ -43,19 +43,19 @@ const ScheduleSchema = new Schema({
   // start date of schedule
   name: {
     type: String,
-    required: Date.now,
+    required: Date.now.toString(),
     unique: true
   },
 
   // start date of schedule
   startDate: {
-    type: Date,
+    type: String,
     required: "Start date is required."
   },
 
   // start date of schedule
   endDate: {
-    type: Date,
+    type: String,
     required: "End date is required."
   },
 

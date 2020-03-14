@@ -336,7 +336,7 @@ export default {
       var index = this.badDates.findIndex(x => x===date)
 
       if (index === -1){
-          this.badDates.push(date);
+          this.badDates.push(moment(date).format("YYYY-MM-DD").toString());
       }
       else {
         this.badDates.splice(index,1);

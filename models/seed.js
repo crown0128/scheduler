@@ -60,6 +60,38 @@ const data = [
                 ]
             },
             {
+                '_id': ObjectId("5e4c7f67f3b9883274f6223a"),
+                'name': 'Test schedule',
+                'startDate': '2020-03-07 12:00',
+                'endDate': '2020-03-16 12:00',
+                'weeklyEvents': 
+                [
+                    {
+                        'day': "Sunday",
+                        'time': '11:15'
+                    },            
+                    {
+                        'day': "Saturday",
+                        'time': '17:00'
+                    }             
+                ],
+                'roles': 
+                [
+                    {
+                        'roleName': "Sacristan",
+                        'numberNeeded': 1
+                    },         
+                    {
+                        'roleName': "Eucharistic minister",
+                        'numberNeeded': 3
+                    },         
+                    {
+                        'roleName': "Altar server",
+                        'numberNeeded': 2
+                    }
+                ]
+            },
+            {
                 '_id': ObjectId("5e4c7f67f3a9883274f622fa"),
                 'name': 'Spring schedule',
                 'startDate': '2020-03-07 12:00',
@@ -173,7 +205,8 @@ const data = [
                     'day': "Sunday",
                     'time': '11:15',
                     'percentPreferred': 100
-                }]
+                }],
+                'notAvailable': ["2020-03-08"]
             },         
             {
                 '_id': ObjectId("5e4c7f67f3a9883274f62112"),
