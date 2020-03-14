@@ -5,7 +5,7 @@
     <!-- volunteer #{{ $route.params.id }}. -->
     <v-row>
       <v-col cols="8" offset="2">
-          <h1>{{ this.volunteerMode }} a volunteer</h1>
+          <h1>Add a volunteer</h1>
       </v-col>
 
       <v-col cols="2">
@@ -87,14 +87,15 @@
                   label="Choose avatar image." 
                   v-model="image"
                   accept="/public/images"
-                ></v-file-input> -->
-                <v-select
-                  label="Choose avatar image." 
-                  v-model="image"
                   prepend-icon="mdi-camera"
-                  :items="avatars"
-                  dense
-                ></v-select>
+                ></v-file-input> -->
+                  <v-select
+                    label="Choose avatar image." 
+                    v-model="image"
+                    prepend-icon="mdi-camera"
+                    :items="avatars"
+                    dense
+                  ></v-select>
               </v-form>
             </v-card-text>
           </v-card>
@@ -154,7 +155,6 @@
           color="teal"
         ></v-radio>
         </v-radio-group>
-        <p>{{ rolesChosen }}</p>
 
       </v-col>
 
@@ -281,32 +281,36 @@
 
 <script>
 import axios from 'axios';
-// import '../../public/images/avatars.js'
-
+// import {avatars} from './avatars'
 
 export default {
-  name: "EditVolunteer",
+  name: "AddVolunteer",
   // props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
-  props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
+  props: ["volunteers", "schedules", "roles", "timeSlots", "volunteerNames"],
   data: function() {
     return {
 
-      volunteer: {},
+      // volunteers: [],
+      // volunteer: {},
       firstName: "",
       lastName: "",
       email: "",
       image: "",
-
-
       date: null,
       menu2: false,
       // datesAll: [],
       badDates: [],
       showNotAvailablePicker: false,
 
+      schedules: [],
+      roles: [],
+      timeSlots: [],
+      volunteerNames: [],
+
       eventTimes: [],
       rolesChosen: [],
       preferredTime: "",
+      
       avatars: [
         "bear.jpg",
         "bignose.jpg",
@@ -332,7 +336,7 @@ export default {
         "tiger.jpg",
         "xcski.jpg",
         "yellow-flower.jpg"
-    ]
+      ]
       // Save with and notWith features for future release
       // schedWith: [],
       // notWith: []
@@ -347,20 +351,6 @@ export default {
 
 
   methods: {
-    // importImage() {
-      
-    //   if (!this.image) {this.image = "No File Chosen"}
-    //   else {
-    //     const reader = new FileReader();
-        
-    //     // Use the javascript reader object to load the contents
-    //     // of the file in the v-model prop
-    //     reader.readAsText(this.chosenFile);
-    //     reader.onload = () => {
-    //       this.data = reader.result;
-    //     }
-    //   };
-    // }, 
 
     today: function() {
       const t = new Date().toJSON().slice(0,10);
@@ -378,18 +368,18 @@ export default {
       }
     },
 
-    GetEventTimes: function() {
-      return [
-        {
-          day: "Saturday",
-          time: "17:00"
-        },
-        {
-          day: "Sunday",
-          time: "11:15"
-        }
-      ]
-    },
+    // GetEventTimes: function() {
+    //   return [
+    //     {
+    //       day: "Saturday",
+    //       time: "17:00"
+    //     },
+    //     {
+    //       day: "Sunday",
+    //       time: "11:15"
+    //     }
+    //   ]
+    // },
 
     handleReturnToVolunteerList: function() {
       // console.log("in handleReturnToVolunteerList");
@@ -405,7 +395,7 @@ export default {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        image: this.image.name,
+        image: this.image,
         roles: [this.rolesChosen],
         prefTimes: {
           day: this.timeSlots[this.preferredTime].day,
@@ -435,6 +425,102 @@ export default {
       });
     },
 
+      getVolunteersAndSchedules() {
+        // console.log("In getVolunteersAndSchedules in NewVolunteer");
+        axios.get('/api/volunteers')
+        .then(response => {
+
+          this.getSchedules();
+
+          // console.log("get volunteers axios done");
+          this.volunteers = response.data;
+          // this.volunteerNames = this.volunteers.map(volunteer => { 
+          //   id: volunteer._id, 
+          //   name: volunteer.firstName + " " + volunteer.lastName 
+          // }); 
+          // console.log("this.volunteers");
+          // console.log(this.volunteers);
+          this.volunteers.forEach((volunteer, i) => {
+            const newVol = {
+              id: volunteer._id,
+              name: volunteer.firstName + " " + volunteer.lastName
+            };
+            this.volunteerNames.push(newVol);
+            // this.volunteerNames = this.volunteerNames.push(newVol);
+            // alphabetize volunteer names
+            this.volunteerNames.sort();
+          });
+          console.log("In AddVolunteer...variables needed");
+          console.log("volunteers");
+          console.log(this.volunteers);
+          console.log("volunteerNames");
+          console.log(this.volunteerNames);
+        });
+      },
+
+
+      getSchedules() {
+        axios.get('/api/schedules')
+        .then(res => {
+          this.schedules = res.data;
+          // console.log("schedules loaded from database.");
+          // console.log(response.data);
+// this.eventTimes = this.GetEventTimes();
+          console.log("schedules");
+          console.log(this.schedules);
+        })
+        .then(response => {
+          // Get all role names from schedules, remove dups & alphabetize
+          this.schedules.forEach((schedule, index) => {
+            
+            roles[index] = schedule.roles;
+            roles[index] = roles[index].map(role => role.roleName);
+            
+          });
+          console.log('this.roles');
+          console.log(this.roles);
+          // flatten array, so only one level deep
+          this.roles = [].concat.apply([], this.roles);
+          // remove duplicates
+          this.roles = this.roles.filter((a, b) => this.roles.indexOf(a) === b);
+          // sort the array
+          this.roles = this.roles.sort();
+          console.log("roles");
+          console.log(this.roles);
+          
+          let nth = 0;
+          // Get all time slots from schedules, sort by schedule
+          this.schedules.forEach((schedule, index) => {
+            schedule.weeklyEvents.forEach((weeklyEvent, i) => {
+              // console.log("forEach schedule... slot, this.timeSlots");
+              // console.log(this.timeSlots);
+              const slot = {
+                index: nth++,
+                scheduleName: schedule.name, 
+                day: weeklyEvent.day,
+                time: weeklyEvent.time
+              };
+              // console.log(slot);
+              if (this.timeSlots.length === 0) {
+                this.timeSlots = [slot]
+              } else {
+                this.timeSlots.push(slot);
+              };
+            });
+
+          console.log("timeSlots");
+          console.log(this.timeSlots);
+          });
+        });
+
+
+        // deleteVolunteer(volunteer) {
+        //   console.log("Delete" + volunteer.firstName);
+        // },
+
+
+      },
+
 
 // to format date in input box...  ??
 // https://codepen.io/eskemojoe007/pen/JBdpqE?editors=0001
@@ -457,20 +543,10 @@ export default {
 
   // created() {
   mounted() {
-    // console.log("mounted");
-    // console.log("volunteerIndex");
-    // console.log(this.volunteerIndex);
-    // console.log("volunteers");
-    // console.log(this.volunteers);
-    // console.log("schedules");
-    // console.log(this.schedules);
-    // push when save new volunteer, otherwise
-    //  might have added a blank volunteer that never gets saved.
-    // if (this.volunteerIndex === -1) {
-    //   this.volunteers = this.volunteers.push([]);
-    //   this.volunteerIndex = this.volunteers.length;
-    // };
-    this.eventTimes = this.GetEventTimes();
+    console.log('this.roles');
+    console.log(this.roles);
+    this.getVolunteersAndSchedules();
+
   },
 
   // updated() {

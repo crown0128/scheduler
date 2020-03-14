@@ -291,7 +291,7 @@ const data = [
                 'firstName': 'Susan',
                 'lastName': 'M.',
                 'email': 'sue@gmail.com',
-                'image': 'orange flower.jpg',
+                'image': 'orange-flower.jpg',
                 'roles': ["Usher"],
                 'prefTimes': [{
                     'day': "Sunday",
@@ -408,7 +408,7 @@ const data = [
                 'firstName': 'Susan2',
                 'lastName': 'M.',
                 'email': 'sue@gmail.com',
-                'image': 'orange flower.jpg',
+                'image': 'orange-flower.jpg',
                 'roles': ["Usher"],
                 'prefTimes': [{
                     'day': "Saturday",
