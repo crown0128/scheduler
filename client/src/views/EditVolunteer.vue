@@ -139,7 +139,7 @@
     <v-row>
       <!-- choose roles & preferred times -->
       <v-col cols="6" class="white">
-        <p class="text-left">Choose role(s):</p>
+        <p class="text-left">Choose role:</p>
         <!-- to choose more than one in a future release
         <checkbox class="ml-2 my-0 list-height" -->
         <v-radio-group class="ml-2"
@@ -378,18 +378,18 @@ export default {
       }
     },
 
-    GetEventTimes: function() {
-      return [
-        {
-          day: "Saturday",
-          time: "17:00"
-        },
-        {
-          day: "Sunday",
-          time: "11:15"
-        }
-      ]
-    },
+    // GetEventTimes: function() {
+    //   return [
+    //     {
+    //       day: "Saturday",
+    //       time: "17:00"
+    //     },
+    //     {
+    //       day: "Sunday",
+    //       time: "11:15"
+    //     }
+    //   ]
+    // },
 
     handleReturnToVolunteerList: function() {
       // console.log("in handleReturnToVolunteerList");
@@ -470,7 +470,7 @@ export default {
     //   this.volunteers = this.volunteers.push([]);
     //   this.volunteerIndex = this.volunteers.length;
     // };
-    this.eventTimes = this.GetEventTimes();
+    // this.eventTimes = this.GetEventTimes();
   },
 
   // updated() {

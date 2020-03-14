@@ -5,6 +5,7 @@ import Schedules from '../views/Schedules.vue'
 import Volunteers from '../views/Volunteers.vue'
 import EditSchedule from '../views/EditSchedule.vue'
 import EditVolunteer from '../views/EditVolunteer.vue'
+import EditExistingVolunteer from '../views/EditExistingVolunteer.vue'
 import NewVolunteer from '../components/NewVolunteer.vue'
 import NotFound from '../components/NotFound.vue'
 import RunSchedule from '../components/RunSchedule.vue'
@@ -66,6 +67,14 @@ const routes = [
     name: 'EditVolunteer',
     component: function () {
       return import('../views/EditVolunteer.vue')
+    },
+  },
+
+  {
+    path: '/volunteer/:id', 
+    name: 'EditExistingVolunteer',
+    component: function () {
+      return import('../views/EditExistingVolunteer.vue')
     },
   },
   // {

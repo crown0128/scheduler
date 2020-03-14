@@ -38,9 +38,11 @@
       :volunteers="volunteers"
       :volunteerIndex="volunteerIndex"
       :volunteerMode="volunteerMode"
+      :roles="roles"
+      :timeSlots="timeSlots"
     ></VolunteerList>
 
-    <!-- NEW VOLUNTEER button -->
+    <!-- NEW VOLUNTEER button; uses NewVolunteer component -->
     <v-flex v-if="volunteerMode==='List'" xs10 offset-xs1 py-2>
         <router-link to="/volunteers/volunteer/new">
           <v-btn block dark rounded class="teal">Add a new volunteer</v-btn>

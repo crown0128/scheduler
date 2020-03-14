@@ -33,9 +33,11 @@
     </template>
     <template v-slot:item.action="{ item }">
 
-        <v-btn class="mx-1 my-1" @click="handleEditVolunteer(item._id)" fab right dark x-small color="teal">
-            <v-icon dark>mdi-pencil</v-icon>
-        </v-btn>
+        <router-link :to="{ name: 'EditExistingVolunteer', params: { volunteers: volunteers, id: item._id, roles: roles, timeSlots: timeSlots }}">
+            <v-btn class="mx-1 my-1" @click="handleEditVolunteer(item._id)" fab right dark x-small color="teal">
+                <v-icon dark>mdi-pencil</v-icon>
+            </v-btn>
+        </router-link>
 
         <v-btn class="mx-1 my-1" @click="handleDeleteVolunteer(item._id)" fab right dark x-small color="teal">
             <v-icon dark>mdi-delete-circle</v-icon>
@@ -55,7 +57,7 @@ import axios from 'axios';
 
 export default {
     name: 'VolunteerList',
-    props: ["volunteers", "volunteerIndex", "volunteerMode"],
+    props: ["volunteers", "volunteerIndex", "volunteerMode", "roles", "timeSlots"],
 
     data: function() {
         return {
@@ -63,6 +65,11 @@ export default {
             item: '',
             id: ''
         };
+    },
+
+    created() {
+        console.log(this.roles); // need to reference to pass through?
+        console.log(this.timeSlots); // need to reference to pass through?
     },
 
     methods: {
