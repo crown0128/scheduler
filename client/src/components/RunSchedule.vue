@@ -37,7 +37,8 @@ export default {
             notMsg: "",
             noErrors: true,
             dates: [],
-            slate: []
+            slate: [],
+            headers: []
         };
     },
 
@@ -141,6 +142,9 @@ export default {
                     // assign volunteers to specific times, dates and jobs (roles)
                     this.slate = this.fillSlate();
 
+                    // clean up slate (format time, date; spaces between volunteers)
+                    this.slate = this.cleanUpSlate();
+
                 });
         },
 
@@ -176,6 +180,9 @@ export default {
                 roles.push(role.roleName);
                 slots.push(role.numberNeeded);
             }); // end of forEach role in the schedule
+
+            // now that I have the roles, I can create the headers for the table
+            this.headers = this.createHeaders(roles);
 
             let workingSlate = [];
             // set up empty slate with dates & properties
@@ -426,6 +433,31 @@ export default {
             return localSlate;
         },
 
+        // create the headers for the slate table on the website & in the PDF
+        // first column is Date/Time, rest are roles being assigned.
+        createHeaders(roles) {
+            function Role(text, value) {
+                this.text = text;
+                this.value = value;
+            }
+
+            let headers = [];
+
+            // first two columns are date & time
+            const dateHeader = new Role('Date', 'date');
+            headers.push(dateHeader);
+            const timeHeader = new Role('Time', 'time');
+            headers.push(timeHeader);
+
+            roles.forEach(r => {
+                const roleObj = new Role(r, r);
+                headers.push(roleObj);
+            });
+
+            console.log("headers:");
+            console.log(headers);
+            return headers
+        },
 
         // If time, or future release...
         // sortSlate(slate) {
@@ -535,10 +567,28 @@ export default {
             );
             console.log("date in English:  " + moment(date).format("YYYY-MM-DD").toString());
             // get volunteer name
-            const volunteerName = volunteer.firstName.concat(" ", volunteer.lastName);
+            let volunteerName = volunteer.firstName.concat(" ", volunteer.lastName);
 
             // push the assignment.
+            // put a space before the name if it's not the first. Comma's get added automatically.
+            if (workingSlate[timeDateIndex][roles[r]].length > 0) {
+                volunteerName = " " + volunteerName;
+            };
             workingSlate[timeDateIndex][roles[r]].push(volunteerName);
+        },
+
+        cleanUpSlate() {
+
+            this.slate.forEach(eventLine => {
+                console.log(this.slate);
+                eventLine.date = moment(eventLine.date).format("M/D/YYYY (dddd)").toString();
+                // put time in datetime format (actual date is irrelevant because only time part is used)
+                const date = "2020-03-16";
+                const time = date.concat(" ", eventLine.time);
+                eventLine.time = moment(time).format("h:mm a").toString();
+            });
+
+            return this.slate;
         },
 
         exportPdf(slate) {
@@ -586,37 +636,6 @@ export default {
             return this.$route.params.schedule;
         },
 
-        headers() {
-            return [{
-                    text: 'Date',
-                    value: 'date'
-                },
-                {
-                    text: 'Time',
-                    value: 'time'
-                },
-                {
-                    text: 'Sacristans',
-                    value: 'Sacristan'
-                },
-                {
-                    text: 'Lectors',
-                    value: 'Lector'
-                },
-                {
-                    text: 'Eucharistic ministers',
-                    value: 'Eucharistic minister'
-                },
-                {
-                    text: 'Altar servers',
-                    value: 'Altar server'
-                },
-                {
-                    text: 'Ushers',
-                    value: 'Usher'
-                }
-            ];
-        }
     },
 
     created() {
