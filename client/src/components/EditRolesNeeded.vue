@@ -15,9 +15,6 @@
     <!-- enter new role name -->
     <v-col cols="5" class="pr-1 offset-lg-1 pb-0">
       <v-card class="inputCard">
-        <!-- <v-card-title class="py-0 px-1 inputCard">
-          <p class="inputCard">Name of Role</p>
-        </v-card-title> -->
         <v-card-text class="py-0 px-1 inputCard">
           <v-form>
             <v-text-field label="New Role Name" class="py-0" v-model="newRole" autofocus>

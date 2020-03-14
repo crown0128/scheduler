@@ -77,7 +77,6 @@ export default {
         },
 
         deleteVolunteer: function(id) {
-            alert("Id: " + id + ".  don't forget to delete from 'with' & 'notWith' ");
             axios.delete(`/api/volunteers/id/${id}`)
             .then(response => {
                 console.log(response)

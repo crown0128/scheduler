@@ -1,6 +1,6 @@
 <template>
 <div>
-    <h2>New schedule <span class="redtext">{{ notMsg }}</span> created</h2>
+    <h2><span class="schedName">{{ schedule.name }}</span> <span class="redtext">{{ notMsg }}</span></h2>
     <h3 class="redtext"> {{ errorMessage }} </h3>
     <div v-if="noErrors">
         <button @click="exportPdf(slate)" class="redtext">
@@ -136,8 +136,8 @@ export default {
                 .then(response => {
                     this.volunteers = response.data;
 
-                    // create a new filename each time the schedule is run
-                    this.filename = this.schedule.name + "-" + this.schedule.version + ".pdf";
+                    // create a filename 
+                    this.filename = this.schedule.name + ".pdf";
 
                     // assign volunteers to specific times, dates and jobs (roles)
                     this.slate = this.fillSlate();
@@ -618,7 +618,11 @@ export default {
             });
 
             // Write the title to the PDF
-            doc.text(10, 10, this.schedule.name);
+            const pdfTitle = this.schedule.name.concat(": ",
+                moment(this.schedule.startDate).format("M/D/YYYY").toString(), 
+                " through ",
+                moment(this.schedule.endDate).format("M/D/YYYY").toString());
+            doc.text(10, 10, pdfTitle);
 
             // Write the table to the PDF
             doc.autoTable({
@@ -651,6 +655,11 @@ export default {
  /* for error messages */
 .redtext {
     color: red;
+    text-emphasis: bold;
+}
+
+.schedName {
+    text-decoration: underline;
     text-emphasis: bold;
 }
 </style>

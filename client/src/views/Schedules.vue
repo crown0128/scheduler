@@ -1,7 +1,6 @@
 <template>
   <v-container cols="12" text-center>
     <h1 cols="12" text-center>Schedules</h1>
-  <p> schedMode in Schedules.vue: {{ schedMode }} </p>
 
     <div v-if="schedMode==='List'">
     <!-- for each schedule, display a card with it's information -->

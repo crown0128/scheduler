@@ -1,6 +1,20 @@
 <template>
   <div>
-
+      <v-row>
+        
+        <!-- enter a name for the new schedule -->
+        <v-col cols="6" offset="3" class="text-input-center newSched">
+            <v-card class="inputCard ">
+                <v-card-text class="p-10 m-10 inputCard">
+                    <v-form>
+                        <v-text-field label="Name of New Schedule" class="py-0" v-model="schedName" autofocus>
+                        </v-text-field>
+                    </v-form>
+                </v-card-text>
+            </v-card>
+        </v-col>
+        </v-row>
+ 
         <h2 >
             <span class="title mr-3">
               Choose the date range for the new schedule and click on the Save icon.
@@ -33,7 +47,7 @@
                 class="mr-0 ml-3" 
                 fab dark small 
                 color="teal"
-                @click="schedules = saveSchedDates(startDate, endDate, schedules, scheduleIndex, schedMode)"
+                @click="schedules = saveSchedDates(startDate, endDate, schedules, scheduleIndex, schedMode, schedName)"
             >
                 <v-icon dark>mdi-content-save-outline</v-icon>
             </v-btn>
@@ -66,7 +80,7 @@ export default {
     },
 
     methods: {
-        saveSchedDates: function(startDate, endDate, schedules, scheduleIndex, schedMode) {
+        saveSchedDates: function(startDate, endDate, schedules, scheduleIndex, schedMode, schedName) {
             if (startDate === '' | endDate === '') {
                 this.errorMessage = "Please choose a start and an end date.";
                  return schedules;
@@ -74,14 +88,13 @@ export default {
                 this.errorMessage = "Start date must be before end date.";
                 return schedules;
             } else {
-                const name = Date.now().toString();
                 const schedule = {
                     startDate: startDate,
                     endDate: endDate,
                     version: 0,
                     roles: [],
                     weeklyEvents: [],
-                    name: name
+                    name: schedName
                 };
                 if (schedMode === 'Add') {
                     schedules.push(schedule);
@@ -143,5 +156,11 @@ export default {
         text-decoration-line: none;
         font-size: 3em;
         padding: 20px 0 0;
+    }
+
+    .newSched {
+        width: 50%;
+        font-size: 20px;
+        text-align: center;
     }
 </style>

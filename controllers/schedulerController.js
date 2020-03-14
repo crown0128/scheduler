@@ -82,44 +82,24 @@ module.exports = {
       .catch(err => console.log(err));
       // .catch(err => res.status(502).json(err));
   },
-  //   db.Volunteer.findById({ _id: req.params.id })
-  //     .then(dbVolunteers => dbVolunteers.remove())
-  //     .then(dbVolunteers => res.json(dbVolunteers))
-  //     .catch(err => res.status(505).json(err));
-  // }
+
+  
+  updateVolunteer: function(req, res) {
+    console.log("In updateVolunteer:");
+    console.log(req.body);
+    db.Volunteer.findOneAndUpdate({ _id: req.body }, req.body)
+      .then(dbVolunteers => res.json(dbVolunteers))
+      // .catch(err => res.status(50).json(err));
+      .catch(err => console.log(err));
+  },
+
+  findOneVolunteer: function(req,res) {
+    console.log("In findOneVolunteer");
+    db.Volunteer.findById({ _id: req.params.id })
+      .then(dbVolunteers => res.json(dbVolunteers))
+      .catch(err => console.log(err));
+      // .catch(err => res.status(505).json(err));
+  }
 };
 
-    // db.Role.create({ 
-    //     "_id": 10,
-    //     scheduleId: 1,
-    //     roleName: "Outreach Volunteer",
-    //     numberNeeded: 2
-    // })
-    // .then(dbRole => {
-    //     console.log(dbRole);
-    // })
-    // .catch(({ message }) => {
-    //     console.log(message);
-    // });
 
-    // app.post("/submit", ({ body }, res) => {
-//   db.Note.create(body)
-//     .then(({ _id }) => db.User.findOneAndUpdate({}, { $push: { notes: _id } }, { new: true }))
-//     .then(dbUser => {
-//       res.json(dbUser);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
-
-// app.get("/populateduser", (req, res) => {
-//   db.User.find({})
-//     .populate("notes")
-//     .then(dbUser => {
-//       res.json(dbUser);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });

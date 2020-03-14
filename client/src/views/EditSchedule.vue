@@ -1,7 +1,6 @@
 <template>
 
 <div>
-  <p> schedMode in EditSchedule.vue: {{ schedMode }} </p>
   <!-- card for one schedule with information -->
   <v-row text-center class="justify-center">
     <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2" supportingtext="true">
@@ -25,9 +24,12 @@
             <span class="title mr-3">
               Choose the weekly times and roles needed for the schedule.  Click the save icon to save.
             </span>
-            <div>
+            <h1>
+              {{ schedules[scheduleIndex].name }}
+            </h1>
+            <h4>
               {{ schedules[scheduleIndex].startDate | moment("MMM Do, YYYY") }} through {{ schedules[scheduleIndex].endDate | moment("MMM Do, YYYY") }}
-            </div>
+            </h4>
 
           </h2>
         </v-col>

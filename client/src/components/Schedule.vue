@@ -13,13 +13,13 @@
             <!-- add 7 hours so possible time zone differences don't change the date -->
             <!-- may not need since the type was changed to a string -->
             <span class="schedule-title">
-              Schedule:  {{ schedules[scheduleIndex].startDate | moment("add", "7 hours", "MMM Do YYYY") }} through {{ schedules[scheduleIndex].endDate  | moment("add", "7 hours", "MMM Do YYYY") }}
+              {{schedules[scheduleIndex].name}}
             </span>
             
             <!-- For information, just because we have it. :) -->
-            <div class="v-card__text pa-0">
-              (Number of times this schedule has been run:  {{schedules[scheduleIndex].version}})
-            </div>
+            <h1 class="v-card__text pa-0 mt-1">
+              {{ schedules[scheduleIndex].startDate | moment("add", "7 hours", "MMM Do YYYY") }} through {{ schedules[scheduleIndex].endDate  | moment("add", "7 hours", "MMM Do YYYY") }}
+            </h1>
           </v-col>
 
         </v-row>
