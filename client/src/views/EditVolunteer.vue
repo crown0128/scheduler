@@ -87,6 +87,7 @@
                   label="Choose avatar image." 
                   v-model="image"
                   accept="/public/images"
+                  prepend-icon="mdi-camera"
                 ></v-file-input>
               </v-form>
             </v-card-text>
