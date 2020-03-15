@@ -83,12 +83,6 @@
           <v-card class="inputCard">
             <v-card-text class="py-0 px-1 inputCard">
               <v-form class="match-height">
-                <!-- <v-file-input 
-                  label="Choose avatar image." 
-                  v-model="image"
-                  accept="/public/images"
-                  prepend-icon="mdi-camera"
-                ></v-file-input> -->
                   <v-select
                     label="Choose avatar image." 
                     v-model="image"
@@ -164,10 +158,11 @@
           v-model="preferredTime"
         ><v-radio
             class = "my-0 list-height"
-            v-for="timeSlot in timeSlots"
-            v-bind:key="timeSlot.index"
+            v-for="(timeSlot, index) in timeSlots"
+            v-bind:key="index"
             :label="formatTime(timeSlot)"
-            :value="`${timeSlot.index}`"
+            :value="`${index}`"
+            color="teal"
           ></v-radio>
         </v-radio-group>
 
@@ -403,6 +398,13 @@ export default {
     handleSaveNewVolunteer: function(volunteers) {
       // console.log("this.baddates");
       // console.log(this.badDates);
+      this.image = this.image.toString();
+      console.log('this.image');
+      console.log(this.image);
+      console.log('this.preferredTime:');
+      console.log(this.preferredTime);
+      console.log('this.timeSlots');
+      console.log(this.timeSlots);
       this.volunteer = {
         firstName: this.firstName,
         lastName: this.lastName,

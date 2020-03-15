@@ -61,7 +61,7 @@ module.exports = {
 //       .catch(err => res.status(50).json(err));
 //   },
   createVolunteer: function(req, res) {
-    console.log("in createVolunteer");
+    console.log("in createVolunteer (schedulerController)");
     console.log(req.body);
     db.Volunteer.create(req.body)
       .then(dbVolunteers => res.json(dbVolunteers))

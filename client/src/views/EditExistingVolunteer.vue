@@ -19,11 +19,6 @@
         </v-btn>
       </v-col>
 
-        <!-- <v-btn class="mx-1 my-1" @click="handleReturnToVolunteerList();" fab right dark x-small color="teal">
-          <v-icon dark>mdi-arrow-left</v-icon>
-        </v-btn>
-      </v-col> -->
-
     </v-row>
 
     <v-row>
@@ -82,7 +77,7 @@
         <v-col cols="3">
           <v-card class="inputCard">
             <v-card-text class="py-0 px-1 inputCard">
-              <v-form>
+              <v-form class="match-height">
                 <v-select
                   label="Choose avatar image." 
                   v-model="image"
@@ -95,41 +90,6 @@
           </v-card>
         </v-col>
     </v-row>
-
-
-<!-- //  see https://stackoverflow.com/questions/44989162/file-upload-in-vuetify -->
-<!-- 
-            <v-btn icon @click="dialog = !dialog">
-                <v-icon>link</v-icon>
-            </v-btn>
-
-    <v-content>
-			<v-container fluid>
-				<v-flex xs12 class="text-xs-center text-sm-center text-md-center text-lg-center">
-					<img :src="imageUrl" height="150" v-if="imageUrl"/>
-					<v-text-field label="Select Image" @click='pickFile' v-model='imageName' prepend-icon='attach_file'></v-text-field>
-					<input
-						type="file"
-						style="display: none"
-						ref="image"
-						accept="image/*"
-						@change="onFilePicked"
-					>
-				</v-flex>
-				<!-- <v-dialog v-model="dialog" max-width="290">
-					<v-card>
-						<v-card-title class="headline">Hello World!</v-card-title>
-						<v-card-text>Image Upload Script in VUE JS
-							<hr>Yubaraj Shrestha
-							<br>http://yubarajshrestha.com.np/</v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Close</v-btn>
-						</v-card-actions>
-					</v-card>
-				</v-dialog> -->
-			<!-- </v-container>
-		</v-content>  -->
 
     <v-row>
       <!-- choose roles & preferred times -->
@@ -153,21 +113,21 @@
 
       </v-col>
 
-            <!-- :label="`${timeSlot.day} at ${moment(timeSlot.time}).format("M/D/YYYY")}`" -->
       <v-col cols="6" class="white">
         <p class="text-left">Choose a preferred time slot (pick one in the next schedule to be run):</p>
         <v-radio-group class="ml-2"
           v-model="preferredTime"
         ><v-radio
             class = "my-0 list-height"
-            v-for="timeSlot in timeSlots"
-            v-bind:key="timeSlot.index"
+            v-for="(timeSlot, idx) in timeSlots"
+            v-bind:key="idx"
             :label="formatTime(timeSlot)"
-            :value="`${timeSlot.index}`"
+            :value="`${idx}`"
+            color="teal"
           ></v-radio>
         </v-radio-group>
 
-        <p>{{ preferredTime }}</p>
+        <p>{{ preferredTime }} in {{ timeSlots.length }}</p>
       </v-col>
 
     </v-row>
@@ -266,9 +226,8 @@
 
     <!-- </v-row> -->
 
-    <!-- volunteers[ {{ $route.params.id }} ].firstName  -->
 </v-container>
-  </v-app>
+</v-app>
 
 
 </template>
@@ -284,12 +243,11 @@ import moment from 'moment';
 
 export default {
   name: "EditExistingVolunteer",
-  // props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
-  // props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
   data: function() {
     return {
 
       volunteer: {},
+      _id: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -338,30 +296,11 @@ export default {
       // schedWith: [],
       // notWith: []
 
-      // title: "Image Upload",
-      // dialog: false,
-      // imageName: '',
-      // imageUrl: '',
-      // imageFile: ''
     }
   },
 
 
   methods: {
-    // importImage() {
-      
-    //   if (!this.image) {this.image = "No File Chosen"}
-    //   else {
-    //     const reader = new FileReader();
-        
-    //     // Use the javascript reader object to load the contents
-    //     // of the file in the v-model prop
-    //     reader.readAsText(this.chosenFile);
-    //     reader.onload = () => {
-    //       this.data = reader.result;
-    //     }
-    //   };
-    // }, 
 
     formatTime: function(timeSlot) {
       const day = timeSlot.day;
@@ -389,34 +328,21 @@ export default {
       }
     },
 
-    // GetEventTimes: function() {
-    //   return [
-    //     {
-    //       day: "Saturday",
-    //       time: "17:00"
-    //     },
-    //     {
-    //       day: "Sunday",
-    //       time: "11:15"
-    //     }
-    //   ]
-    // },
 
     handleReturnToVolunteerList: function() {
-      // console.log("in handleReturnToVolunteerList");
-      // router.push({ name: '/volunteers', params: { userId: '123' } })
       this.$router.push({ name: 'Volunteers' })
-      // this.$emit("updateVolunteerMode", 'List');
     },
 
     handleSaveNewVolunteer: function(volunteers) {
-      // console.log("this.baddates");
-      // console.log(this.badDates);
+
+      this.image = this.image.toString();
+
       this.volunteer = {
+        _id: this._id,
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
-        image: this.image.name,
+        image: this.image,
         roles: [this.rolesChosen],
         prefTimes: {
           day: this.timeSlots[this.preferredTime].day,
@@ -428,16 +354,14 @@ export default {
         // with: this.schedWith,
         // notWith: this.notWith
       };
-      // console.log("new 'this.volunteer':");
-      // console.log(this.volunteer);
-      this.createVolunteer(this.volunteer);
+
+      this.updateVolunteer(this.volunteer);
       this.volunteers.push(this.volunteer);
       this.handleReturnToVolunteerList();
     },
 
-    createVolunteer: function(volunteer) {
-      // console.log("in createVolunteer");
-      axios.post('/api/volunteers', volunteer)
+    updateVolunteer: function(volunteer) {
+      axios.post('/api/volunteers/volunteer', volunteer)
       .then(response => {
         console.log(response)
       })
@@ -446,53 +370,24 @@ export default {
       });
     },
 
-
-// to format date in input box...  ??
-// https://codepen.io/eskemojoe007/pen/JBdpqE?editors=0001
-    // getString: function(dt_string) {
-    //   var weekday=new Array(7);
-    //   weekday[1]="Mon";
-    //   weekday[2]="Tue";
-    //   weekday[3]="Wed";
-    //   weekday[4]="Thu";
-    //   weekday[5]="Fri";
-    //   weekday[6]="Sat";
-    //   weekday[0]="Sun";
-      
-    //   var dt = new Date(dt_string);
-    //   const dayWeek = dt.getUTCDay();
-      
-    //   return `${weekday[dayWeek]}, ${dt.getUTCMonth()}/${dt.getUTCDate()}`;
-    // }
   },
 
   // created() {
   mounted() {
-    console.log("In editVolunteer MOUNTED");
-    // console.log(this.$route.params);
     const id = this.$route.params.id;
     this.roles = this.$route.params.roles;
     
     this.timeSlots = this.$route.params.timeSlots;
-    console.log("EditExistingVolunteer... this.timeSlots (from params): ");
-    console.log(this.timeSlots);
 
     // this is passed in --- duplicates should already have been removed.
-    // // remove duplicate day/time combinations
-    // this.timeSlots = this.timeSlots.filter((timeSlot, index, self) => 
-    //   index === self.findIndex((t) => (
-    //     t.day === timeSlot.day && t.time === timeSlot.time
-    //   ))
-    // );
-
-    // console.log("this.timeSlots (after removed dups): ");
-    // console.log(this.timeSlots);
     
     this.volunteers = this.$route.params.volunteers;
     let index = this.volunteers.findIndex(volunteer => volunteer._id === id);
     let editVolunteer = this.volunteers[index];
+
     this.rolesChosen = editVolunteer.roles[0]; // only one for this release
 
+    this._id = this.volunteers[index]._id;
     this.firstName = this.volunteers[index].firstName;
     this.lastName = this.volunteers[index].lastName;
     this.email = this.volunteers[index].email;
@@ -505,51 +400,6 @@ export default {
     this.badDates = this.badDates.filter(badDate => moment(badDate) >= moment(Date.now()));
   },
 
-  // updated() {
-  //   this.handleReturnToVolunteerList();
-  // }
-
-  // See  https://forum.vuejs.org/t/how-to-format-date-for-display/3586/34
-  //   on formatting dates from datepicker
-  // computed: {
-  //   formattedDate: {
-  //     get() {
-  //       console.log("in get");
-  //       console.log(this.badDates);
-  //     },
-  //     set(valueFromPicker) {
-  //       console.log("in set");
-  //       console.log(this.badDates);
-  //     }
-
-  //   }
-  // }
-
-//  see https://stackoverflow.com/questions/44989162/file-upload-in-vuetify
-//     pickFile () {
-//         this.$refs.image.click ()
-//     },
-    
-//     onFilePicked (e) {
-//       const files = e.target.files
-//       if(files[0] !== undefined) {
-//         this.imageName = files[0].name
-//         if(this.imageName.lastIndexOf('.') <= 0) {
-//           return
-//         }
-//         const fr = new FileReader ()
-//         fr.readAsDataURL(files[0])
-//         fr.addEventListener('load', () => {
-//           this.imageUrl = fr.result
-//           this.imageFile = files[0] // this is an image file that can be sent to server...
-//         })
-//       } else {
-//         this.imageName = ''
-//         this.imageFile = ''
-//         this.imageUrl = ''
-//       }
-//     }
-  
 };
 
 </script>
@@ -575,6 +425,11 @@ export default {
   font-size: 16px;
   background-color:  #c4fff9 !important;
   height: 20px;
+}
+
+/* avatar selection same height as rest of row */
+.match-height {
+  height: 53.98px;
 }
 
 </style>

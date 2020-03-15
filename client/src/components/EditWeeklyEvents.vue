@@ -21,6 +21,7 @@
         menu-props="auto"
         label="day"
         single-line
+        color="teal"
       ></v-select>
     </v-col>
 
