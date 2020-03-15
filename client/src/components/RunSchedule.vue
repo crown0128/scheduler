@@ -168,12 +168,12 @@ export default {
             }); // end of forEach date in dates
 
             // get the roles needed, and
-            // the number of volunteers needed for each role (slots)
+            // the number of volunteers needed for each role (volsNeeded)
             let roles = [];
-            let slots = [];
+            let volsNeeded = [];
             this.schedule.roles.forEach(role => {
                 roles.push(role.roleName);
-                slots.push(role.numberNeeded);
+                volsNeeded.push(role.numberNeeded);
             }); // end of forEach role in the schedule
 
             // now that I have the roles, I can create the headers for the table
@@ -185,6 +185,13 @@ export default {
 
             // do schedule for each weekly event separately
             this.schedule.weeklyEvents.forEach((weeklyEvent, we) => {
+
+                // dates where roster is full; need one array / role (even if empty) to start
+                let datesFilledPerRole = [];
+                roles.forEach(role => datesFilledPerRole.push([]));
+                console.log("initialized datesFilledPerRole:");
+                console.log(datesFilledPerRole);
+
 
                 // initialize the number of volunteers available for each role
                 // this gets re-created for each weekly event
@@ -199,6 +206,11 @@ export default {
 
                 // number of slots filled for each role for this weekly event
                 let slotsFilled = []; // No slots filled for this role in this recurring event, yet
+
+                // firstDate helps us make sure we still are working with the right day of the week.
+                const firstDate = this.dates[we][0];
+                // when numberDates = datesChecked.length, we've checked them all
+                const numberDates = weeks[we];
 
                 roles.forEach((role, r) => {
 
@@ -219,7 +231,7 @@ export default {
 
                     }); // end of for each volunteer in volunteers
 
-                    totalSlotsPerRole[r] = (slots[r] * weeks[we]);
+                    totalSlotsPerRole[r] = (volsNeeded[r] * weeks[we]);
 
                 }); // end of for each role in roles
 
@@ -229,8 +241,8 @@ export default {
 
                 // if there are more slots / week to be filled than there are volunteers, show error message;
                 //   don't run schedule.  noErrors is flag to avoid displaying slate
-                slots.forEach((slot, s) => {
-                    maxTimesServedPerRole.push((weeks[we] * slots[s]) / numberVolunteers[s]);
+                volsNeeded.forEach((slot, s) => {
+                    maxTimesServedPerRole.push((weeks[we] * volsNeeded[s]) / numberVolunteers[s]);
                     if (maxTimesServedPerRole[s] > weeks[we]) {
                         this.errorMessage = "There are not enough volunteers to complete a schedule.  New schedule not created.";
                         this.notMsg = "not ";
@@ -272,17 +284,22 @@ export default {
                     //          more than one possible role
                     // if r is -1, we don't need the role of this volunteer in this schedule, skip the volunteer
                     const r = roles.indexOf(volunteer.roles[0]);
-                    if (!(r === -1)) {
+                    if (!(r === -1)) {  // volunteer's role needed in this schedule
                         // this volunteer is scheduled 0 times so far
                         let timesServed = 0;
                         // keep track of dates checked for this volunteer in this weeklyevent
                         let datesChecked = [];
-                        // when numberDates = datesChecked.length, we've checked them all
-                        const numberDates = weeks[we];
+                        console.log('***************************************************');
+                        console.log("Begin this volunteer " + volunteer.firstName + " in WeeklyEvent " + we + ".");
+                        console.log("Weekly event: " + weeklyEvent.day + ", " + weeklyEvent.time);
+                        console.log('=========== datesChecked: =============');
+                        console.log(datesChecked);
+                        console.log('***************************************************');
                         // start with first date in weeklyevents  
 
                         // currDate Should be first date of weekly events
-                        let currDate = this.dates[we][0];
+                        let currDate = firstDate;
+                        console.log("_________________  new currDate: (initialized for " + volunteer.firstName + "): " + currDate);
 
                         // Reminder, totalSlotsPerRole is how many needed for this recurring event 
                         //    i.e. number of "ushers" needed at this weekly recurring event over the whole schedule
@@ -297,30 +314,59 @@ export default {
                         //              && currDate not = 0 () means no more possible dates found.
                     
                         while ( (timesServed < maxTimesServedPerRole[r])
-                            && (datesChecked.length <= numberDates)
+                            && (datesChecked.length < numberDates)
                             && (slotsFilled[r] < totalSlotsPerRole[r]) 
                             && (currDate != 0) ) {
 
-                            // do this now, before it gets changed to a new date
-                            datesChecked.push(currDate);
+                            if (this.goodDate(volunteer, currDate, weeklyEvent.time, workingSlate, roles[r], volsNeeded[r], we)) {
+                                // keep track of which dates have been checked for this volunteer
+                                datesChecked.push(currDate);
 
-                            if (this.goodDate(volunteer.notAvailable, currDate, volunteer.firstName)) {
+                                console.log('=========== datesChecked: =============');
+                                console.log(datesChecked);
+                                console.log("...pushed Currdate: " + currDate);
+                                console.log("in while checking various dates for " + volunteer.firstName);
+                                console.log('===========++++++=============');
 
-                                this.scheduleVolunteer(volunteer, r, roles, currDate, this.schedule.weeklyEvents[we].time, workingSlate);
+                                datesFilledPerRole[r] = this.scheduleVolunteer(volunteer, r, roles, volsNeeded, currDate, this.schedule.weeklyEvents[we].time, workingSlate, datesFilledPerRole);
 
                                 timesServed++;
                                 slotsFilled[r]++;
 
                                 // increment date by maxRepeat.. if this was a good date.
-                                currDate = this.pickNewDate(currDate, maxRepeatPerRole[r], datesChecked, this.dates[we][0]);
+                                currDate = this.pickNewDate(currDate, maxRepeatPerRole[r], datesChecked, firstDate, numberDates);
+                                console.log("_________________  new currDate: (after scheduled): " + currDate);
                             } else {
+                                // keep track of which dates have been checked for this volunteer
+                                datesChecked.push(currDate);
+
+                                console.log('=========== datesChecked: =============');
+                                console.log(datesChecked);
+                                console.log("in while checking various dates for " + volunteer.firstName);
+                                console.log("Currdate: " + currDate + " just pushed.");
+                                console.log('===========++++++=============');
+
                                 // increment date by one week if this was a bad date
-                                currDate = this.pickNewDate(currDate, 1);
+                                currDate = this.pickNewDate(currDate, 1, datesChecked, firstDate, numberDates);
+                                console.log("_________________  new currDate: (after bad date): " + currDate);
                             };
+
+                            // if currDate of 0 returned, then pickNewDate couldn't find any more valid
+                            //  dates for this volunteer.  Set datesChecked to ALL the dates, to stop checking.
                             if (currDate === 0) { 
-                                datedChecked = dates[we];
-                                return;
+                                datesChecked = this.dates[we];
                             };
+                            console.log("**************************************");
+                            console.log("*****  bottom of while loop for " + volunteer.firstName);
+                            console.log("*****  continue looping?? ");
+                            console.log("*****  is timesServed < maxTimesServedPerRole[r]? ");
+                            console.log("*****  " + timesServed + "     " + maxTimesServedPerRole[r]);
+                            console.log("*****  datesChecked.length < numberDates ???");
+                            console.log("*****  " + datesChecked.length + "     " + numberDates);
+                            console.log("*****  slotsFilled[r] < totalSlotsPerRole[r] ???"); 
+                            console.log("*****  " + slotsFilled[r] + "     " + totalSlotsPerRole[r]); 
+                            console.log("*****  (currDate != 0) ???" );
+                            console.log("*****  " + (currDate != 0));
 
                         }; // end of while loop to fill slots with this volunteer
 
@@ -397,26 +443,24 @@ export default {
             return headers
         },
 
-        // If time, or future release...
-        // sortSlate(slate) {
-        //     slate.forEach( date => {
-        //         date.time = moment(date.time);
-        //         date.day = moment(date.day);
-        //     });
 
-        //     slate.sort();
+        goodDate(volunteer, date, time, slate, role, volsNeeded, we) {
+            // 'we' is index for this weekly (recurring) event
 
-        //     slate.forEach( date => {
-        //         date.time = moment(date.time).format("YYYY-MM-DD").toString();
-        //         date.day = moment(date.day).format("hh:mm").toString();
-        //     });
+            // checks if volunteer is available
+            //    and if volunteer has already been scheduled
+            //    and date within range of schedule
+            //    and if enough people are scheduled for this role and date
 
-        //     return slate;
-            
-        // },
+            // assume the date is good unless proven otherwise
+            let isGood = true;
 
-        goodDate(badDates, date, name) {
+            // get data needed from volunteer object
+            let badDates = volunteer.notAvailable;
+            const firstName = volunteer.firstName;
+            const lastName = volunteer.lastName;
 
+            // make sure date is in format expected
             date = moment(date).format("YYYY-MM-DD").toString();
 
             // convert dates in badDates to same format as date
@@ -439,44 +483,155 @@ export default {
 
             // date is good if it is NOT in the list of unavailable dates (badDates)
             // (and not already returned a false if out of range)
-            return !badDates.includes(date);
+            isGood = !badDates.includes(date);
+            if (!isGood) {return false};  // no need to check further
+
+            // where to update the assignment in the array (which object)
+            const timeDateIndex = slate.findIndex(timeDate => 
+                timeDate.date === date && timeDate.time === time
+            );
+            console.log("mmmm timeDateIndex: " + timeDateIndex);
+
+            // check if enough volunteers have been scheduled for this role and date
+            const volsScheduled = slate[timeDateIndex][role].length;
+            console.log("mmmm volsScheduled: " + volsScheduled);
+
+            // if there are at least as many scheduled as needed, return false;
+            console.log("mmmm is volsScheduled >= volsNeeded ??");
+            console.log("mmmm " + volsScheduled + "     " + volsNeeded);
+            if (volsScheduled >= volsNeeded) {return false}
+
+            // check if volunteer is already scheduled
+
+            // testing...
+            console.log("\n***********************************************************");
+            console.log("***************  Ready to check if already scheduled (in 'goodDate')");
+            // console.log("firstName: ");
+            // console.log(firstName);
+            // console.log("lastName: ");
+            // console.log(lastName);
+            // console.log("volunteer:");
+            // console.log(volunteer);
+            console.log("8888  slate");
+            console.log(slate);
+            this.testDisplaySlate(slate);
+            console.log(date);
+
+            // is firstName lastName in slate
+            console.log("8888 full name  in (slate[we][role]): ");
+            console.log("8888 full name: ");
+            console.log([firstName + " " + lastName]);
+            console.log("8888 slate[we][role]: ");
+            console.log(slate[we][role]);
+            console.log("curious - are they equal?? ( == then ===)");
+            console.log( ([firstName + " " + lastName]) == slate[we][role]);
+            console.log( ([firstName + " " + lastName]) === slate[we][role]);
+            console.log('slate[we][role].includes(  [firstName + " " + lastName]  )' );
+            console.log(slate[we][role].includes( [firstName + " " + lastName] ) );
+            if ( slate[we][role].includes([firstName + " " + lastName]) || 
+                 slate[we][role].includes([" " + firstName + " " + lastName]) 
+            ) {return false};
+            console.log("GGGOOOOOOODDD ????", + isGood);
+            console.log("***********************************************************");
+
+            if (!isGood) {return isGood};  // no need to check any further
+
+            return isGood;
         },
 
 
-        pickNewDate(date, increment, datesChecked, firstDate) {
+        testDisplaySlate(slate) {
+            slate.forEach(date => {
+                console.log("************  SLATE for " + date.date + " - " + date.time + ".");
+                date.Sacristan.forEach(s => console.log("Sacristan: " + s));
+                // date.Lector.forEach(l = console.log("Lector: " + l));
+                date['Eucharistic minister'].forEach(em => console.log("EM: " + em));
+                date['Altar server'].forEach(as => console.log("Server: " + as));
+                // date.Usher.forEach(u => console.log("Usher: " + u));
+            });
+        },
 
+        pickNewDate(date, increment, datesChecked, firstDate, numberDates) {
+
+            console.log('ddddddddddddddddd  Pick new date');
+            console.log('ddddddddddd  old date passed in: ' + date);
+            console.log('ddddddddddd  increment: ' + increment);
+            console.log('ddddddddddd  datesChecked:');
+            console.log(datesChecked);
+            console.log('ddddddddddd  firstDate: ' + firstDate);
+            console.log('ddddddddddd  numberDates: ' + numberDates);
             // new date should be a multiple of a week later,
             //   to get that many weekly occuring events later.
             date = moment(date).add(increment, 'weeks');
+            console.log('ddddddddddd reformatted date: ' + date);
 
+            console.log('ddddddddddd is datesChecked.length >= numberDates ???');
+            console.log('ddddddddddd ' + datesChecked.length + '     ' + numberDates);
+            // if we've already checked all the dates, any date isn't good.
+            if (datesChecked.length >= numberDates) {return 0}; 
+            console.log('ddddddddddd No (yes would have returned); more dates to check');
             // all dates (date, endDate, startDate) should be in moment format
             let end = moment(this.schedule.endDate);
             let start = moment(this.schedule.startDate);
             firstDate = moment(firstDate);  // this will be the right day of the week
+            console.log('end: ' + end + ';  start: ' + start + '; reformatted firstDate: ' + firstDate);
 
             // if this is past the end of the schedule,
             //  wrap around to the beginning , and then increment
             //  one week at a time until you find a date that hasn't been
             //  checked, or all the dates have been checked.
+            console.log('ddddddddddd is date > end ???');
+            console.log('ddddddddddd ' + date + '     ' + end);
             if (date > end) {
                 date = firstDate;
             
+            console.log('ddddddddddd start loop until find date not already checked');
+            console.log('before loop:  date: ' + date);
                 while (datesChecked.includes(date)) {
                     date = moment(date).add(1, 'weeks');
+                    console.log('this date??:  date: ' + date);
+                    console.log('is date > end??  (then return 0)');
+                    console.log(date + '     ' +  end);
                     if (date > moment(end)) {
                         return 0;  // no available dates found
                     };
+                    console.log('ddddddddddddd  repeat while loop??  (date in datesChecked?)');
+                    console.log('ddddddddddddd  ' + date);
+                    console.log(datesChecked);
+                    console.log('----ddddddddddddd----\n');
+
                 };
             };
 
             // reformat start and end dates
             this.schedule.startDate = moment(this.schedule.startDate).format("YYYY-MM-DD").toString();
             this.schedule.endDate = moment(this.schedule.endDate).format("YYYY-MM-DD").toString();
+            console.log('dddddddddddddddd return ' + moment(date).format("YYYY-MM-DD").toString());
+            console.log('ddddddddddddddddd     END    Pick new date dddddddddddddddd\n\n');
             return moment(date).format("YYYY-MM-DD").toString();
         },
 
-        scheduleVolunteer(volunteer, r, roles, date, time, workingSlate) {
+        scheduleVolunteer(volunteer, r, roles, volsNeeded, date, time, workingSlate, datesFilledPerRole) {
             // assign volunteer a spot (put in slate)
+// testing...
+            console.log("\n***********************************************************");
+            console.log("\n****************  Scheduling a volunteer   **************");
+console.log("VVVVV SCHEDULING a volunteer:");
+console.log("VVVVV volunteer firstName:");
+console.log(volunteer.firstName);
+console.log("VVVVV volunteer:");
+console.log(volunteer);
+console.log("VVVVV r:");
+console.log(r);
+console.log("VVVVV roles:");
+console.log(roles);
+console.log("VVVVV date:");
+console.log(date);
+console.log("VVVVV time:");
+console.log(time);
+
+
+
 
             // where to update the assignment in the array (which object)
             const timeDateIndex = workingSlate.findIndex(timeDate => 
@@ -492,7 +647,43 @@ export default {
                 volunteerName = " " + volunteerName;
             };
             workingSlate[timeDateIndex][roles[r]].push(volunteerName);
-        },
+            console.log("VVVVV workingSlate:");
+            console.log(workingSlate);
+            this.testDisplaySlate(workingSlate);
+            console.log("\n***********************************************************");
+
+            // get the datesFilled for this role; it will be an array of dates.
+            let datesFilled = datesFilledPerRole[r];
+
+            // if all the slots for this weekly event & this role are filled, make note of that
+            //    so we can skip checking for this spot in the future
+            // console.log("%%%      datesFilled   %%%%%:");
+            // console.log(datesFilled);
+            // console.log("%%%       workingSlate[timeDateIndex][roles[r]]       %%%");
+            // console.log(workingSlate[timeDateIndex][roles[r]]);
+
+            // **************** if all the dates for this role are filled, add to datesFilled
+            // console.log("roles:");
+            // console.log(roles);
+            // console.log("slots:");
+            // console.log(slots);
+
+            // volunteersScheduled is the number of volunteers in this slot
+            //    (for this role, on this date, in this weekly event)
+            const volunteersScheduled = workingSlate[timeDateIndex][roles[r]].length;
+
+            // if the number of people scheduled is at least the number needed (volsNeeded),
+            //   then add this date to the datesFilled array
+            if (volunteersScheduled >= volsNeeded[r]) { datesFilled.push(date) };
+            console.log('in SCHEDULE-VOLUNTEER;   datesFilled:      <----------');
+            console.log(datesFilled);
+
+
+
+
+
+            return datesFilled;
+        },  // of schedule volunteer
 
         cleanUpSlate() {
 
