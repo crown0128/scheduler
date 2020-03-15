@@ -13,11 +13,6 @@
             :items="slate"
         ></v-data-table>
     </div>
-    <!-- for testing... -->
-    <p> {{ schedule._id }} </p>
-    <template v-if="volunteers">
-        <p> {{ volunteers[0].firstName }} </p>
-    </template>
 </div>
 </template>
 
