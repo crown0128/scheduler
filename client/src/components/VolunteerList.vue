@@ -1,7 +1,7 @@
 <template>
 <div>
 
-    <v-card-title>
+    <v-card-title my-0 py-0>
     
     <v-spacer></v-spacer>
     <v-text-field
@@ -10,6 +10,7 @@
         label="Search"
         single-line
         hide-details
+        class="pt-0"
     ></v-text-field>
 
     </v-card-title>
@@ -22,9 +23,9 @@
     >
     <template v-slot:item.image="{ item }">
         <v-btn icon  >
-            <v-avatar>
-                <v-img 
-                    :src="require('../../public/images/' + item.image )" :alt="item.firstName" height="30px">
+            <v-avatar class="image-size">
+                <v-img
+                    :src="require('../../public/images/' + item.image )" :alt="item.firstName">
                 </v-img>
             </v-avatar>
         </v-btn>
@@ -115,6 +116,12 @@ export default {
 </script>
 
 <style scoped>
+
+.image-size {
+    height: 40px !important;
+    min-width: 40px !important;
+    width: 40px !important;
+}
 
 </style>
 

@@ -12,7 +12,7 @@
               <v-icon dark>mdi-home</v-icon>
             </v-btn>
           </router-link>
-          <p class="pt-2"><strong>Home</strong></p>
+          <p class="pt-2 my-0"><strong>Home</strong></p>
         </v-card>
       </v-col>
 
@@ -24,7 +24,7 @@
               <v-icon dark>mdi-calendar-multiselect</v-icon>
             </v-btn>
           </router-link>
-          <p class="pt-2"><strong>Schedules</strong></p>
+          <p class="pt-2 my-0"><strong>Schedules</strong></p>
         </v-card>
       </v-col>
 
@@ -36,7 +36,7 @@
               <v-icon dark>mdi-account-multiple</v-icon>
             </v-btn>
           </router-link>
-          <p class="pt-2"><strong>Volunteers</strong></p>
+          <p class="pt-2 my-0"><strong>Volunteers</strong></p>
         </v-card>
       </v-col>
 

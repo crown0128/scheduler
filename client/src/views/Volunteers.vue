@@ -1,11 +1,11 @@
 <template>
-  <v-container cols="12" text-center align="center" justify="center" class="pt-0">
+  <v-container cols="12" text-center align="center" justify="center" class="pt-0 my-0">
     <v-row>
-      <v-col cols="10" offset="1">
+      <v-col cols="10" offset="1" class="my-0 pb-0">
         <h1 cols="12" text-center>Volunteers</h1>
       </v-col>
 
-      <v-col cols="1">
+      <v-col cols="1" class="pb-0">
 
         <v-btn 
           v-if="((volunteerMode==='Add')||(volunteerMode==='Edit'))"
