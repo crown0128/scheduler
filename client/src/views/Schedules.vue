@@ -1,6 +1,24 @@
 <template>
   <v-container cols="12" text-center>
-    <h1 cols="12" text-center>Schedules</h1>
+    <v-row>
+
+      <v-col cols="8" offset="2">
+        <h1 text-center>Schedules</h1>
+      </v-col>
+
+      <v-col cols="2">
+        <v-btn 
+          class="mx-1 my-1" 
+          @click="handleBackButton()"
+          to="/schedules"
+          fab right dark x-small 
+          color="teal"
+        >
+          <v-icon dark>mdi-arrow-left</v-icon>
+        </v-btn>
+      </v-col>
+
+    </v-row>
 
     <div v-if="schedMode==='List'">
     <!-- for each schedule, display a card with it's information -->
@@ -84,6 +102,10 @@ export default {
       this.schedMode = "Add";
     },
 
+    handleBackButton() {
+      this.schedMode = "List";
+    },
+
     handleDeleteSchedule: function(schedules, scheduleIndex) {
       const id = schedules[scheduleIndex]._id;
       schedules = schedules.filter( schedule => 
@@ -101,14 +123,9 @@ export default {
         console.log(err);
       });
     }
-    // getIndex(schedules, schedule) {
-    //   return schedules.map( sched => sched._id ).indexOf(schedule.id);
-    // }
+
   },
 
-  // computed: {
-
-  // }
 
 };
 
