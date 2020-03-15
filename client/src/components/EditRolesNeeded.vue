@@ -124,33 +124,19 @@ export default {
     },
 
     handleSaveNewRole: function(schedules, scheduleIndex, newRole, newNumNeeded) {
-      // console.log("in HandleSaveNewRole in EditRolesNeeded component");
       schedules[scheduleIndex].roles.push({
         roleName: newRole,
         numberNeeded: newNumNeeded
       });
       this.updateSchedule(schedules[scheduleIndex]);
-      // console.log("updated schedules");
-      // console.log(schedules);
       return schedules;
     },
 
     handleDeleteRole: function(schedules, scheduleIndex, i) {
-      // console.log("in handledeleterole");
-      // console.log("schedules");
-      // console.log(schedules);
-      // console.log("scheduleIndex, i: " + scheduleIndex + " " + i);
-      // console.log("_id of weeklyevent");
       const id = schedules[scheduleIndex].roles[i]._id;
-      // console.log(id);
       schedules[scheduleIndex].roles = 
         schedules[scheduleIndex].roles.filter( 
           role => ( role._id != id ));
-      // console.log("After filter");
-      // console.log("schedules");
-      // console.log(schedules);
-      // console.log("scheduleIndex");
-      // console.log(scheduleIndex);
       this.updateSchedule(schedules[scheduleIndex]);
       return schedules;
     },

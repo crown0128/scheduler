@@ -161,9 +161,18 @@
                 this.timeSlots.push(slot);
               };
             });
-            // console.log("in Volunteers.vue - getschedules:");
-            // console.log(this.timeSlots);
+            console.log("in Volunteers.vue - this.timeSlots:");
+            console.log(this.timeSlots);
           });
+
+          // remove duplicate day/time combinations
+          this.timeSlots = this.timeSlots.filter((timeSlot, index, self) => 
+            index === self.findIndex((t) => (
+              t.day === timeSlot.day && t.time === timeSlot.time
+            ))
+          );
+            console.log("in Volunteers.vue - this.timeSlots: (after duplicates removed)");
+            console.log(this.timeSlots);
         });
 
 

@@ -153,6 +153,7 @@
 
       </v-col>
 
+            <!-- :label="`${timeSlot.day} at ${moment(timeSlot.time}).format("M/D/YYYY")}`" -->
       <v-col cols="6" class="white">
         <p class="text-left">Choose a preferred time slot (pick one in the next schedule to be run):</p>
         <v-radio-group class="ml-2"
@@ -161,7 +162,7 @@
             class = "my-0 list-height"
             v-for="timeSlot in timeSlots"
             v-bind:key="timeSlot.index"
-            :label="`${timeSlot.day} at ${timeSlot.time} in schedule: ${timeSlot.scheduleName}`"
+            :label="formatTime(timeSlot)"
             :value="`${timeSlot.index}`"
           ></v-radio>
         </v-radio-group>
@@ -362,6 +363,16 @@ export default {
     //   };
     // }, 
 
+    formatTime: function(timeSlot) {
+      const day = timeSlot.day;
+      // add random date to time so we can use moment to format it
+      let time = new Date("March 16, 2020 " + timeSlot.time);
+      time = moment(time).format("hh:mm a").toString();
+      console.log("editexistingvolunteer...  formatted timeslot");
+      console.log(`${day} at ${time}`);
+      return `${day} at ${time}`;
+    },
+
     today: function() {
       const t = new Date().toJSON().slice(0,10);
       return t;
@@ -457,40 +468,39 @@ export default {
 
   // created() {
   mounted() {
-    console.log("In editVolunteer mounted");
+    console.log("In editVolunteer MOUNTED");
     // console.log(this.$route.params);
     const id = this.$route.params.id;
-    console.log("ID:" + id);
-
     this.roles = this.$route.params.roles;
-    console.log("this.roles: ");
-    console.log(this.roles);
     
     this.timeSlots = this.$route.params.timeSlots;
-    console.log("this.timeSlots: ");
+    console.log("EditExistingVolunteer... this.timeSlots (from params): ");
     console.log(this.timeSlots);
+
+    // this is passed in --- duplicates should already have been removed.
+    // // remove duplicate day/time combinations
+    // this.timeSlots = this.timeSlots.filter((timeSlot, index, self) => 
+    //   index === self.findIndex((t) => (
+    //     t.day === timeSlot.day && t.time === timeSlot.time
+    //   ))
+    // );
+
+    // console.log("this.timeSlots (after removed dups): ");
+    // console.log(this.timeSlots);
     
     this.volunteers = this.$route.params.volunteers;
     let index = this.volunteers.findIndex(volunteer => volunteer._id === id);
-    console.log("index: " + index);
-
     let editVolunteer = this.volunteers[index];
-    console.log("volunteer to edit:");
-    console.log(editVolunteer);
-    
     this.rolesChosen = editVolunteer.roles[0]; // only one for this release
-    console.log("this.rolesChosen:");
-    console.log(this.rolesChosen);
 
     this.firstName = this.volunteers[index].firstName;
     this.lastName = this.volunteers[index].lastName;
     this.email = this.volunteers[index].email;
     this.image = this.volunteers[index].image;
-    console.log("image: " + this.image);
+;
     this.preferredTime = this.volunteers[index].preferredTime;
     this.badDates = this.volunteers[index].notAvailable;
-    console.log("badDates:");
-    console.log(this.badDates);
+
     // drop old dates (before today)
     this.badDates = this.badDates.filter(badDate => moment(badDate) >= moment(Date.now()));
   },

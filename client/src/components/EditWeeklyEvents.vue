@@ -180,15 +180,12 @@ export default {
 
 // Is this used other places?  Should it be modularized?
     handleSaveWeeklyEvent(schedules, scheduleIndex) {
-      // console.log("in handleSaveWeeklyEvent");
-      console.log("day: " + this.day);
-      console.log("time: " + this.newTime);
+
       schedules[scheduleIndex].weeklyEvents.push({
         day: this.day,
         time: this.newTime
       });
-      // console.log("updated schedules");
-      // console.log(schedules);
+
       this.updateSchedule(schedules[scheduleIndex]);
 
       return schedules;
@@ -204,18 +201,6 @@ export default {
       });
     }
   },
-
-  // computed: {
-  //   formattedTime() {
-  //     console.log(this.newTime);
-  //     console.log(this.timeToDate(this.newTime));
-  //     let time = this.timeToDate(this.newTime);
-  //     time = time ? format(time, 'h:mm aaaa') : '';
-  //     console.log("Time: " + time);
-  //     return time;
-  //     // return time ? format(time, 'h:mm aaaa') : '';
-  //   }
-  // }
 
 };
 </script>

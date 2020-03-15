@@ -34,7 +34,7 @@
     <template v-slot:item.action="{ item }">
 
         <router-link :to="{ name: 'EditExistingVolunteer', params: { volunteers: volunteers, id: item._id, roles: roles, timeSlots: timeSlots }}">
-            <v-btn class="mx-1 my-1" @click="handleEditVolunteer(item._id)" fab right dark x-small color="teal">
+            <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
                 <v-icon dark>mdi-pencil</v-icon>
             </v-btn>
         </router-link>
@@ -68,6 +68,7 @@ export default {
     },
 
     created() {
+        console.log("VolunteerList.vue... roles & timeslots passing through:")
         console.log(this.roles); // need to reference to pass through?
         console.log(this.timeSlots); // need to reference to pass through?
     },
@@ -92,11 +93,6 @@ export default {
                 console.log(err)
             });
         },
-
-        handleEditVolunteer: function(id) {
-            // console.log("in handleEditVolunteer");
-            alert("Edit volunteer #:" + id);
-        }
 
     },
 

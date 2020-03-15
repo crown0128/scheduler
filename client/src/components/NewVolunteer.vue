@@ -46,17 +46,14 @@
 
     methods: {
       getVolunteers() {
-        // console.log("In getVolunteers in NewVolunteer");
         axios.get('/api/volunteers')
         .then(response => {
-          // console.log("get volunteers axios done");
           this.volunteers = response.data;
           // this.volunteerNames = this.volunteers.map(volunteer => { 
           //   id: volunteer._id, 
           //   name: volunteer.firstName + " " + volunteer.lastName 
           // }); 
-          // console.log("this.volunteers");
-          // console.log(this.volunteers);
+
           this.volunteers.forEach((volunteer, i) => {
             const newVol = {
               id: volunteer._id,
@@ -68,9 +65,7 @@
             this.volunteerNames.sort();
           })
         });
-        // console.log("in getVolunteers (NewVolunteer.vue");
-        // console.log("this.volunteerNames");
-        // console.log(this.volunteerNames);
+
       },
 
 
@@ -78,8 +73,6 @@
         axios.get('/api/schedules')
         .then(response => {
           this.schedules = response.data;
-          // console.log("schedules loaded from database.");
-          // console.log(response.data);
         })
         .then(response => {
           // Get all role names from schedules, remove dups & alphabetize
@@ -98,31 +91,35 @@
           // Get all time slots from schedules, sort by schedule
           this.schedules.forEach((schedule, index) => {
             schedule.weeklyEvents.forEach((weeklyEvent, i) => {
-              // console.log("forEach schedule... slot, this.timeSlots");
-              // console.log(this.timeSlots);
               const slot = {
                 index: nth++,
                 scheduleName: schedule.name, 
                 day: weeklyEvent.day,
                 time: weeklyEvent.time
               };
-              // console.log(slot);
+              console.log('NewVolunteer.vue...  slot to be pushed:');
+              console.log(slot);
               if (this.timeSlots.length === 0) {
                 this.timeSlots = [slot]
               } else {
                 this.timeSlots.push(slot);
               };
+              console.log('NewVolunteer.vue...  timeSlots after push:');
+              console.log(this.timeSlots);
             });
-            // console.log("in Volunteers.vue - getschedules:");
-            // console.log(this.timeSlots);
+
           });
+
+          // remove duplicate day/time combinations in timeslots
+          this.timeSlots = this.timeSlots.filter((timeSlot, index, self) => 
+            index === self.findIndex((t) => (
+              t.day === timeSlot.day && t.time === timeSlot.time
+            ))
+          );
+
+          console.log("NewVolunteer.vue... after duplicates removed...timeSlots");
+          console.log(this.timeSlots);
         });
-
-
-        // deleteVolunteer(volunteer) {
-        //   console.log("Delete" + volunteer.firstName);
-        // },
-
 
       },
 
@@ -131,7 +128,6 @@
       },
 
       handleReturnToVolunteerList: function() {
-        // console.log("in updateVolunteerMode");
         this.volunteerMode = 'List';
       },
     },

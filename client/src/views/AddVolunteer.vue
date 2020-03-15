@@ -166,7 +166,7 @@
             class = "my-0 list-height"
             v-for="timeSlot in timeSlots"
             v-bind:key="timeSlot.index"
-            :label="`${timeSlot.day} at ${timeSlot.time} in schedule: ${timeSlot.scheduleName}`"
+            :label="formatTime(timeSlot)"
             :value="`${timeSlot.index}`"
           ></v-radio>
         </v-radio-group>
@@ -281,6 +281,8 @@
 
 <script>
 import axios from 'axios';
+import moment from 'moment';
+
 // import {avatars} from './avatars'
 
 export default {
@@ -351,6 +353,16 @@ export default {
 
 
   methods: {
+
+    formatTime: function(timeSlot) {
+      const day = timeSlot.day;
+      // add random date to time so we can use moment to format it
+      let time = new Date("March 16, 2020 " + timeSlot.time);
+      time = moment(time).format("hh:mm a").toString();
+      console.log('AddVolunteer.vue... Formatted timeSlot text:');
+      console.log(`${day} at ${time}`);  // returned to put on window
+      return `${day} at ${time}`;
+    },
 
     today: function() {
       const t = new Date().toJSON().slice(0,10);
@@ -489,27 +501,35 @@ export default {
           console.log(this.roles);
           
           let nth = 0;
-          // Get all time slots from schedules, sort by schedule
+          // Get all time slots from schedules
           this.schedules.forEach((schedule, index) => {
             schedule.weeklyEvents.forEach((weeklyEvent, i) => {
               // console.log("forEach schedule... slot, this.timeSlots");
               // console.log(this.timeSlots);
               const slot = {
                 index: nth++,
-                scheduleName: schedule.name, 
                 day: weeklyEvent.day,
                 time: weeklyEvent.time
               };
-              // console.log(slot);
+              // Add the slot to the timeSlots array (or initiate it, if the first one)
               if (this.timeSlots.length === 0) {
                 this.timeSlots = [slot]
               } else {
                 this.timeSlots.push(slot);
               };
+              console.log("AddVolunteer.vue... timeSlot after push:");
+              console.log(this.timeSlot);
             });
 
-          console.log("timeSlots");
-          console.log(this.timeSlots);
+            // remove duplicate day/time combinations
+            this.timeSlots = this.timeSlots.filter((timeSlot, index, self) => 
+              index === self.findIndex((t) => (
+                t.day === timeSlot.day && t.time === timeSlot.time
+              ))
+            );
+
+            console.log("AddVolunteer.vue... after duplicates removed...  timeSlots");
+            console.log(this.timeSlots);
           });
         });
 

@@ -166,7 +166,7 @@
             class = "my-0 list-height"
             v-for="timeSlot in timeSlots"
             v-bind:key="timeSlot.index"
-            :label="`${timeSlot.day} at ${timeSlot.time} in schedule: ${timeSlot.scheduleName}`"
+            :label="formatTime(timeSlot)"
             :value="`${timeSlot.index}`"
           ></v-radio>
         </v-radio-group>
@@ -281,6 +281,8 @@
 
 <script>
 import axios from 'axios';
+import moment from 'moment';
+
 // import '../../public/images/avatars.js'
 
 
@@ -361,6 +363,14 @@ export default {
     //     }
     //   };
     // }, 
+    
+    formatTime: function(timeSlot) {
+      const day = timeSlot.day;
+      // add random date to time so we can use moment to format it
+      let time = new Date("March 16, 2020 " + timeSlot.time);
+      time = moment(time).format("hh:mm a").toString();
+      return `${day} at ${time}`;
+    },
 
     today: function() {
       const t = new Date().toJSON().slice(0,10);

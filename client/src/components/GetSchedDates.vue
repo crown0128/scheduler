@@ -120,21 +120,6 @@ export default {
                 throw err;
             });
         },
-
-        // datesFilledOK: function () {
-        //     if ( startDate === '' | endDate === '') {
-        //         this.errorMessage = "Please choose a start and an end date.";
-        //         console.log("Not ok");
-        //         return false;
-        //     };
-        //     if (endDate < startDate) {
-        //         this.errorMessage = "Start date must be before end date.";
-        //         return false;
-        //         console.log("Not ok");
-        //     };
-        //         console.log("Ok");
-        //     return true;
-        // }
     }
 }
 </script>
