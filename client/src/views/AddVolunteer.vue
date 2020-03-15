@@ -1,8 +1,6 @@
 <template>
 <v-app class="bg-lightteal">
-<!-- ********* does this go in Volunteer when edit is clicked ?? ***** -->
   <v-container cols="12" text-center align="center" justify="center" class="pt-0">
-    <!-- volunteer #{{ $route.params.id }}. -->
     <v-row>
       <v-col cols="8" offset="2">
           <h1>Add a volunteer</h1>
@@ -18,11 +16,6 @@
           <v-icon dark>mdi-arrow-left</v-icon>
         </v-btn>
       </v-col>
-
-        <!-- <v-btn class="mx-1 my-1" @click="handleReturnToVolunteerList();" fab right dark x-small color="teal">
-          <v-icon dark>mdi-arrow-left</v-icon>
-        </v-btn>
-      </v-col> -->
 
     </v-row>
 
@@ -153,7 +146,7 @@
       </v-col>
 
       <v-col cols="6" class="white">
-        <p class="text-left">Choose a preferred time slot (pick one in the next schedule to be run):</p>
+        <p class="text-left">Choose a preferred time slot:</p>
         <v-radio-group class="ml-2"
           v-model="preferredTime"
         ><v-radio
@@ -277,18 +270,15 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
-
+// for future release (or store in cloud)
 // import {avatars} from './avatars'
 
 export default {
   name: "AddVolunteer",
-  // props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
   props: ["volunteers", "schedules", "roles", "timeSlots", "volunteerNames"],
   data: function() {
     return {
 
-      // volunteers: [],
-      // volunteer: {},
       firstName: "",
       lastName: "",
       email: "",
@@ -334,15 +324,7 @@ export default {
         "xcski.jpg",
         "yellow-flower.jpg"
       ]
-      // Save with and notWith features for future release
-      // schedWith: [],
-      // notWith: []
 
-      // title: "Image Upload",
-      // dialog: false,
-      // imageName: '',
-      // imageUrl: '',
-      // imageFile: ''
     }
   },
 
@@ -354,9 +336,7 @@ export default {
       // add random date to time so we can use moment to format it
       let time = new Date("March 16, 2020 " + timeSlot.time);
       time = moment(time).format("hh:mm a").toString();
-      console.log('AddVolunteer.vue... Formatted timeSlot text:');
-      console.log(`${day} at ${time}`);  // returned to put on window
-      return `${day} at ${time}`;
+      return `${day} at ${time}`;  // returned to put on window
     },
 
     today: function() {
@@ -375,36 +355,13 @@ export default {
       }
     },
 
-    // GetEventTimes: function() {
-    //   return [
-    //     {
-    //       day: "Saturday",
-    //       time: "17:00"
-    //     },
-    //     {
-    //       day: "Sunday",
-    //       time: "11:15"
-    //     }
-    //   ]
-    // },
-
     handleReturnToVolunteerList: function() {
-      // console.log("in handleReturnToVolunteerList");
-      // router.push({ name: '/volunteers', params: { userId: '123' } })
       this.$router.push({ name: 'Volunteers' })
-      // this.$emit("updateVolunteerMode", 'List');
     },
 
     handleSaveNewVolunteer: function(volunteers) {
-      // console.log("this.baddates");
-      // console.log(this.badDates);
       this.image = this.image.toString();
-      console.log('this.image');
-      console.log(this.image);
-      console.log('this.preferredTime:');
-      console.log(this.preferredTime);
-      console.log('this.timeSlots');
-      console.log(this.timeSlots);
+
       this.volunteer = {
         firstName: this.firstName,
         lastName: this.lastName,
@@ -421,15 +378,13 @@ export default {
         // with: this.schedWith,
         // notWith: this.notWith
       };
-      // console.log("new 'this.volunteer':");
-      // console.log(this.volunteer);
+
       this.createVolunteer(this.volunteer);
       this.volunteers.push(this.volunteer);
       this.handleReturnToVolunteerList();
     },
 
     createVolunteer: function(volunteer) {
-      // console.log("in createVolunteer");
       axios.post('/api/volunteers', volunteer)
       .then(response => {
         console.log(response)
@@ -440,35 +395,18 @@ export default {
     },
 
       getVolunteersAndSchedules() {
-        // console.log("In getVolunteersAndSchedules in NewVolunteer");
         axios.get('/api/volunteers')
         .then(response => {
 
           this.getSchedules();
-
-          // console.log("get volunteers axios done");
           this.volunteers = response.data;
-          // this.volunteerNames = this.volunteers.map(volunteer => { 
-          //   id: volunteer._id, 
-          //   name: volunteer.firstName + " " + volunteer.lastName 
-          // }); 
-          // console.log("this.volunteers");
-          // console.log(this.volunteers);
           this.volunteers.forEach((volunteer, i) => {
             const newVol = {
               id: volunteer._id,
               name: volunteer.firstName + " " + volunteer.lastName
             };
             this.volunteerNames.push(newVol);
-            // this.volunteerNames = this.volunteerNames.push(newVol);
-            // alphabetize volunteer names
-            this.volunteerNames.sort();
           });
-          console.log("In AddVolunteer...variables needed");
-          console.log("volunteers");
-          console.log(this.volunteers);
-          console.log("volunteerNames");
-          console.log(this.volunteerNames);
         });
       },
 
@@ -477,11 +415,6 @@ export default {
         axios.get('/api/schedules')
         .then(res => {
           this.schedules = res.data;
-          // console.log("schedules loaded from database.");
-          // console.log(response.data);
-// this.eventTimes = this.GetEventTimes();
-          console.log("schedules");
-          console.log(this.schedules);
         })
         .then(response => {
           // Get all role names from schedules, remove dups & alphabetize
@@ -491,23 +424,17 @@ export default {
             roles[index] = roles[index].map(role => role.roleName);
             
           });
-          console.log('this.roles');
-          console.log(this.roles);
           // flatten array, so only one level deep
           this.roles = [].concat.apply([], this.roles);
           // remove duplicates
           this.roles = this.roles.filter((a, b) => this.roles.indexOf(a) === b);
           // sort the array
           this.roles = this.roles.sort();
-          console.log("roles");
-          console.log(this.roles);
           
           let nth = 0;
           // Get all time slots from schedules
           this.schedules.forEach((schedule, index) => {
             schedule.weeklyEvents.forEach((weeklyEvent, i) => {
-              // console.log("forEach schedule... slot, this.timeSlots");
-              // console.log(this.timeSlots);
               const slot = {
                 index: nth++,
                 day: weeklyEvent.day,
@@ -519,8 +446,6 @@ export default {
               } else {
                 this.timeSlots.push(slot);
               };
-              console.log("AddVolunteer.vue... timeSlot after push:");
-              console.log(this.timeSlot);
             });
 
             // remove duplicate day/time combinations
@@ -529,93 +454,17 @@ export default {
                 t.day === timeSlot.day && t.time === timeSlot.time
               ))
             );
-
-            console.log("AddVolunteer.vue... after duplicates removed...  timeSlots");
-            console.log(this.timeSlots);
           });
         });
 
-
-        // deleteVolunteer(volunteer) {
-        //   console.log("Delete" + volunteer.firstName);
-        // },
-
-
       },
-
-
-// to format date in input box...  ??
-// https://codepen.io/eskemojoe007/pen/JBdpqE?editors=0001
-    // getString: function(dt_string) {
-    //   var weekday=new Array(7);
-    //   weekday[1]="Mon";
-    //   weekday[2]="Tue";
-    //   weekday[3]="Wed";
-    //   weekday[4]="Thu";
-    //   weekday[5]="Fri";
-    //   weekday[6]="Sat";
-    //   weekday[0]="Sun";
-      
-    //   var dt = new Date(dt_string);
-    //   const dayWeek = dt.getUTCDay();
-      
-    //   return `${weekday[dayWeek]}, ${dt.getUTCMonth()}/${dt.getUTCDate()}`;
-    // }
   },
 
   // created() {
   mounted() {
-    console.log('this.roles');
-    console.log(this.roles);
     this.getVolunteersAndSchedules();
 
   },
-
-  // updated() {
-  //   this.handleReturnToVolunteerList();
-  // }
-
-  // See  https://forum.vuejs.org/t/how-to-format-date-for-display/3586/34
-  //   on formatting dates from datepicker
-  // computed: {
-  //   formattedDate: {
-  //     get() {
-  //       console.log("in get");
-  //       console.log(this.badDates);
-  //     },
-  //     set(valueFromPicker) {
-  //       console.log("in set");
-  //       console.log(this.badDates);
-  //     }
-
-  //   }
-  // }
-
-//  see https://stackoverflow.com/questions/44989162/file-upload-in-vuetify
-//     pickFile () {
-//         this.$refs.image.click ()
-//     },
-    
-//     onFilePicked (e) {
-//       const files = e.target.files
-//       if(files[0] !== undefined) {
-//         this.imageName = files[0].name
-//         if(this.imageName.lastIndexOf('.') <= 0) {
-//           return
-//         }
-//         const fr = new FileReader ()
-//         fr.readAsDataURL(files[0])
-//         fr.addEventListener('load', () => {
-//           this.imageUrl = fr.result
-//           this.imageFile = files[0] // this is an image file that can be sent to server...
-//         })
-//       } else {
-//         this.imageName = ''
-//         this.imageFile = ''
-//         this.imageUrl = ''
-//       }
-//     }
-  
 };
 
 </script>

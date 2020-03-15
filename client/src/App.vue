@@ -54,8 +54,6 @@
 <script>
   import Schedules from './views/Schedules';
   import Volunteers from './views/Volunteers';
-  // import EditSchedule from './views/EditSchedule';
-  // import EditVolunteer from './views/EditVolunteer';
 
   export default {
     name: 'App',

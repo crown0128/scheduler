@@ -117,7 +117,7 @@
       </v-col>
 
       <v-col cols="6" class="white">
-        <p class="text-left">Choose a preferred time slot (pick one in the next schedule to be run):</p>
+        <p class="text-left">Choose a preferred time slot:</p>
         <v-radio-group class="ml-2"
           v-model="preferredTime"
         ><v-radio

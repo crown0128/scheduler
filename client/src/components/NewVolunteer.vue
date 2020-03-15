@@ -97,15 +97,13 @@
                 day: weeklyEvent.day,
                 time: weeklyEvent.time
               };
-              console.log('NewVolunteer.vue...  slot to be pushed:');
-              console.log(slot);
+
               if (this.timeSlots.length === 0) {
                 this.timeSlots = [slot]
               } else {
                 this.timeSlots.push(slot);
               };
-              console.log('NewVolunteer.vue...  timeSlots after push:');
-              console.log(this.timeSlots);
+
             });
 
           });

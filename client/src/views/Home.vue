@@ -10,7 +10,7 @@
     </p>
 
     <!-- decorative icon -->
-    <img alt="Scheduler logo" src="../assets/logo.png">
+    <img alt="Scheduler logo" src="../assets/weeklyplanner.jpg">
   </div>
 </template>
 

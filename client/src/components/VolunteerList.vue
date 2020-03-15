@@ -68,7 +68,6 @@ export default {
     },
 
     created() {
-        console.log("VolunteerList.vue... roles & timeslots passing through:")
         console.log(this.roles); // need to reference to pass through?
         console.log(this.timeSlots); // need to reference to pass through?
     },
@@ -76,8 +75,7 @@ export default {
     methods: {
 
         handleDeleteVolunteer: function(id) {
-            // console.log("volunteer...");
-            // console.log(this.volunteers);
+
             this.volunteers = this.volunteers.filter( volunteer => 
                 volunteer._id != id);
             this.deleteVolunteer(id);

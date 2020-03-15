@@ -109,12 +109,10 @@
           color="teal"
         ></v-radio>
         </v-radio-group>
-        <p>{{ rolesChosen }}</p>
-
       </v-col>
 
       <v-col cols="6" class="white">
-        <p class="text-left">Choose a preferred time slot (pick one in the next schedule to be run):</p>
+        <p class="text-left">Choose a preferred time slot:</p>
         <v-radio-group class="ml-2"
           v-model="preferredTime"
         ><v-radio
@@ -127,7 +125,6 @@
           ></v-radio>
         </v-radio-group>
 
-        <p>{{ preferredTime }} in {{ timeSlots.length }}</p>
       </v-col>
 
     </v-row>
@@ -171,7 +168,6 @@
             </v-dialog>
 
             <v-spacer></v-spacer>
-            <p>{{ badDates }} entered.</p>
 
           </v-card-text>
         </v-card>
@@ -204,7 +200,6 @@
           multiple
           color="teal"
         ></v-checkbox>
-        <p>{{ schedWith }}</p>
 
       </v-col>
 
@@ -219,7 +214,6 @@
           multiple
           color="teal"
         ></v-checkbox>
-        <p>{{ notWith }}</p>
 
       </v-col>  -->
 
@@ -252,6 +246,7 @@ export default {
       lastName: "",
       email: "",
       image: "",
+      prefTimes: {},
 
 
       date: null,
@@ -265,7 +260,7 @@ export default {
       eventTimes: [],
       roles: [],
       rolesChosen: [],
-      preferredTime: "",
+      preferredTime: -1,
       avatars: [
         "bear.jpg",
         "bignose.jpg",
@@ -307,8 +302,6 @@ export default {
       // add random date to time so we can use moment to format it
       let time = new Date("March 16, 2020 " + timeSlot.time);
       time = moment(time).format("hh:mm a").toString();
-      console.log("editexistingvolunteer...  formatted timeslot");
-      console.log(`${day} at ${time}`);
       return `${day} at ${time}`;
     },
 
@@ -382,6 +375,8 @@ export default {
     // this is passed in --- duplicates should already have been removed.
     
     this.volunteers = this.$route.params.volunteers;
+    console.log('this.volunteers (passed in to EditExistingVolunteer);  id:  ' + id);
+    console.log(this.volunteers);
     let index = this.volunteers.findIndex(volunteer => volunteer._id === id);
     let editVolunteer = this.volunteers[index];
 
@@ -392,9 +387,25 @@ export default {
     this.lastName = this.volunteers[index].lastName;
     this.email = this.volunteers[index].email;
     this.image = this.volunteers[index].image;
-;
-    this.preferredTime = this.volunteers[index].preferredTime;
+console.log('this.volunteers[' + index + ']:');
+console.log(this.volunteers[index]);
+console.log('this.volunteers[index].prefTimes');
+console.log(this.volunteers[index].prefTimes);
+console.log('this.timeSlots');
+console.log(this.timeSlots);
+console.log(this.prefTimes);
+
+
     this.badDates = this.volunteers[index].notAvailable;
+    this.prefTimes = this.volunteers[index].prefTimes;
+
+    this.preferredTime = this.timeSlots.findIndex(
+      timeSlot => timeSlot.day === this.prefTimes[0].day &&
+                  timeSlot.time === this.prefTimes[0].time
+    );
+
+    // It needs to be a string to match the v-model and turn the radio button on
+    this.preferredTime = this.preferredTime.toString();
 
     // drop old dates (before today)
     this.badDates = this.badDates.filter(badDate => moment(badDate) >= moment(Date.now()));
