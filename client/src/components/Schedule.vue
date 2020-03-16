@@ -9,15 +9,15 @@
       <div class="v-card__text pb-0">
         <v-row>
 
-          <v-col cols="11">
-            <!-- add 7 hours so possible time zone differences don't change the date -->
-            <!-- may not need since the type was changed to a string -->
+          <!-- Title for component is the schedule name -->
+          <v-col cols="12">
             <span class="schedule-title">
               {{schedules[scheduleIndex].name}}
             </span>
             
-            <!-- For information, just because we have it. :) -->
-            <h1 class="v-card__text pa-0 mt-1">
+            <!-- For information, just because we have it. And it might be helpful to the user. :) -->
+            <!-- add 7 hours so possible time zone differences don't change the date -->
+            <h1 class="v-card__text pa-0 mt-1 font-s">
               {{ schedules[scheduleIndex].startDate | moment("add", "7 hours", "MMM Do YYYY") }} through {{ schedules[scheduleIndex].endDate  | moment("add", "7 hours", "MMM Do YYYY") }}
             </h1>
           </v-col>
@@ -31,16 +31,14 @@
         <!-- Weekly events in the schedule on the left side (with button to edit) -->
         <v-col cols="6" class="v-card__text">
 
-          <!-- List day of week and time of each weekly event -->
-            <!-- @delete-weekly="deleteWeekly"
-            @save-weekly="saveWeekly" -->
-            <!-- v-on:chgWeekly='updWeekly($event)' -->
+          <!-- Let user add new day of week and time of day for a new weekly event in the schedule -->
           <EditWeeklyEvents 
             v-if="flags.edittingWeeklyEvents"
             :schedules="schedules"
             :scheduleIndex="scheduleIndex"
             :flags="flags"
           />
+          <!-- List day of week and time of each weekly event -->
           <WeeklyEvents v-else
             :schedules="schedules" 
             :scheduleIndex="scheduleIndex"
@@ -52,15 +50,13 @@
         <v-col cols="6" class="v-card__text pb-5">
 
           <!-- List roles needed for the schedule -->
-            <!-- @delete-weekly="deleteWeekly"
-            @save-weekly="saveWeekly" -->
-            <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditRolesNeeded 
             v-if="flags.edittingRoles"
             :schedules="schedules"
             :scheduleIndex="scheduleIndex"
             :flags="flags"
           />
+          <!-- Let user add new roles -->
           <RolesNeeded v-else
             :schedules="schedules" 
             :scheduleIndex="scheduleIndex"
@@ -100,8 +96,11 @@
 
   export default {
     name: "Schedule",
+
     components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded, RunSchedule },
+
     props: ["scheduleIndex", "schedules", "schedMode"],
+
     data: function () {
       return {
         flags: {
@@ -114,16 +113,16 @@
 
     methods: {
 
-      // rtnToSchedFromWkly: function(flagsWeekly) {
-      //   this.flagsWeekly = false;
-      // }
     }
     
   };
+
 </script>
 
 
 <style scoped>
+
+  /* Tweak color and spacing */
 
   .bg-lightteal {
     background-color: #c4fff9 !important;
@@ -132,7 +131,7 @@
 
   .schedule-title {
     color:blue;
-    text-decoration-line: underline;
+    /* text-decoration-line: underline; */
     font-size: 1.6em;
     padding: 20px 0 0;
   }
@@ -147,5 +146,8 @@
     width: 100%;
   }
 
+  .font-s {
+    font-size: 20px;
+  }
  
 </style>

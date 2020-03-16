@@ -5,7 +5,7 @@
   <v-row text-center class="justify-center">
     <div class="v-card v-card--shaped v-sheet elevation-7 px-3 py-1 mb-2" supportingtext="true">
 
-
+      <!-- component to ask user for schedule date range -->
       <v-row>
         <GetSchedDates
           v-if="!flags.haveSchedDates"
@@ -16,6 +16,7 @@
         />
       </v-row>
 
+      <!-- once we have the dates, we ask about weekly events (day, time, roles & number volunteers needed) -->
       <v-row class="wide" v-if="flags.haveSchedDates">
 
         <v-col cols="10" offset="1">
@@ -33,55 +34,28 @@
 
           </h2>
         </v-col>
-        <!-- <v-col cols="1">
-          <v-btn
-            class="mr-0 ml-3" 
-            fab dark x-small 
-            color="teal"
-            @click="schedMode='List';"
-          >
-            <v-icon dark>mdi-arrow-left</v-icon>
-          </v-btn>
-        </v-col> -->
 
         <!-- Weekly events in the schedule on the left side (with button to edit) -->
         <v-col cols="6" class="v-card__text ml-5">
 
 
           <!-- List day of week and time of each weekly event -->
-            <!-- @delete-weekly="deleteWeekly"
-            @save-weekly="saveWeekly" -->
-            <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditWeeklyEvents 
             :scheduleIndex="scheduleIndex"
             :schedules="schedules"
             :flags="flags"
           />
-          <!-- <WeeklyEvents
-            v-if="schedule.weeklyEvents.length > 0"
-            :schedules="schedules" 
-            :scheduleIndex="scheduleIndex"
-            :flags="flags"
-          /> -->
         </v-col>
 
         <!-- Roles needed in the schedule on the right side (with button to edit) -->
         <v-col cols="5" class="v-card__text">
 
           <!-- List roles needed for the schedule -->
-            <!-- @delete-weekly="deleteWeekly"
-            @save-weekly="saveWeekly" -->
-            <!-- v-on:chgWeekly='updWeekly($event)' -->
           <EditRolesNeeded 
             :scheduleIndex="scheduleIndex"
             :schedules="schedules"
             :flags="flags"
           />
-          <!-- <RolesNeeded v-else
-            :key="key"
-            :schedules="schedules"
-            :flags="flags"
-          /> -->
 
         </v-col>
 
@@ -107,7 +81,9 @@
   export default {
     name: "EditSchedule",
     components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded, GetSchedDates },
+
     props: ["schedules", "schedMode"],
+
     data: function () {
       return {
         flags: {
@@ -120,21 +96,13 @@
       };
     },
 
-       // methods: {
-    //   updWeekly: function(doWeekly) {
-    //     this.flagsWeekly = doWeekly;
-    //   }
-      
-    //   // rtnToSchedFromWkly: function(flagsWeekly) {
-    //   //   this.flagsWeekly = false;
-    //   // }
-    // }
-    
   };
+
 </script>
 
 
 <style scoped>
+  /* tweak colors and spacing */
 
   .bg-lightteal {
     background-color: #c4fff9 !important;

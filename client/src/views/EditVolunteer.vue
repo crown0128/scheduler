@@ -1,13 +1,13 @@
 <template>
 <v-app class="bg-lightteal">
-<!-- ********* does this go in Volunteer when edit is clicked ?? ***** -->
   <v-container cols="12" text-center align="center" justify="center" class="pt-0">
-    <!-- volunteer #{{ $route.params.id }}. -->
     <v-row>
+      <!-- title (add or edit a volunteer) -->
       <v-col cols="8" offset="2">
           <h1>{{ this.volunteerMode }} a volunteer</h1>
       </v-col>
 
+      <!-- return to volunteer list button -->
       <v-col cols="2">
         <v-btn 
           class="mx-1 my-1" 
@@ -244,7 +244,9 @@ import moment from 'moment';
 
 export default {
   name: "EditVolunteer",
+
   props: ["volunteers", "volunteerIndex", "volunteerMode", "schedules", "roles", "timeSlots", "volunteerNames"],
+
   data: function() {
     return {
 
@@ -294,30 +296,11 @@ export default {
       // schedWith: [],
       // notWith: []
 
-      // title: "Image Upload",
-      // dialog: false,
-      // imageName: '',
-      // imageUrl: '',
-      // imageFile: ''
     }
   },
 
 
   methods: {
-    // importImage() {
-      
-    //   if (!this.image) {this.image = "No File Chosen"}
-    //   else {
-    //     const reader = new FileReader();
-        
-    //     // Use the javascript reader object to load the contents
-    //     // of the file in the v-model prop
-    //     reader.readAsText(this.chosenFile);
-    //     reader.onload = () => {
-    //       this.data = reader.result;
-    //     }
-    //   };
-    // }, 
     
     formatTime: function(timeSlot) {
       const day = timeSlot.day;
@@ -327,11 +310,13 @@ export default {
       return `${day} at ${time}`;
     },
 
+    // date range can't start before today
     today: function() {
       const t = new Date().toJSON().slice(0,10);
       return t;
     },
 
+    // save dates not available
     save: function (date) {
       var index = this.badDates.findIndex(x => x===date)
 
@@ -348,8 +333,9 @@ export default {
       this.$router.push({ name: 'Volunteers' })
     },
 
-    handleSaveNewVolunteer: function(volunteers) {
 
+    // build volunteer object and insert in volunteer table
+    handleSaveNewVolunteer: function(volunteers) {
       this.image = this.image.toString();
       this.volunteer = {
         firstName: this.firstName,
@@ -367,11 +353,15 @@ export default {
         // with: this.schedWith,
         // notWith: this.notWith
       };
+      // insert new volunteer in volunteer table
       this.createVolunteer(this.volunteer);
+      // add to volunteers array to display
       this.volunteers.push(this.volunteer);
+      // return to volunteers list
       this.handleReturnToVolunteerList();
     },
 
+    // does the axios call to insert the volunteer in the db
     createVolunteer: function(volunteer) {
       axios.post('/api/volunteers', volunteer)
       .then(response => {
@@ -389,7 +379,7 @@ export default {
 </script>
 
 <style scoped>
-
+/* tweak colors and spacing */
 .bg-lightteal {
   background-color: #c4fff9 !important;
 }

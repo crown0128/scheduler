@@ -1,6 +1,8 @@
 <template>
 <div>
+<!-- enter roles (volunteer jobs) needed in this schedule -->
 
+  <!-- Title -->
   <v-row>
     <v-col class="col-12 pa-0">
       <h2 class="text-left col-12 py-0 pl-12">
@@ -9,10 +11,8 @@
     </v-col>
   </v-row>
   
-    <!-- List day of week and time of each weekly event -->
+  <!-- enter new role name -->
   <v-row id="edit-role">
-    
-    <!-- enter new role name -->
     <v-col cols="5" class="pr-1 offset-lg-1 pb-0">
       <v-card class="inputCard">
         <v-card-text class="py-0 px-1 inputCard">
@@ -27,9 +27,6 @@
     <!-- choose number of volunteers needed for that role -->
     <v-col cols="3" class="pb-0">
       <v-card class="inputCard">
-        <!-- <v-card-title class="py-0 px-1 inputCard">
-          <p class="inputCard">Nbr</p>
-        </v-card-title> -->
         <v-card-text class="py-0 px-1 inputCard">
           <v-form>
             <v-text-field type="number" placeholder="#" class="py-0" v-model="newNumNeeded">
@@ -39,7 +36,7 @@
       </v-card>
     </v-col>
 
-    <!-- icon to save new role -->
+    <!-- icon for save button to save new role -->
     <v-col cols="1" class="mt-3">
       <v-btn 
         class="mr-1" 
@@ -73,13 +70,13 @@
     <!-- with delete buttom -->
     <v-list
       v-for="(role, i) in schedules[scheduleIndex].roles"
-      class="pl-12 pt-0 role-event"
+      class="pl-12 py-2 role-event font-s"
       :key="i"
       :role="role">
 
       <v-row>
         <v-col cols="6" class="offset-sm-1 mt-0">
-          <v-list-item class="pa-0">
+          <v-list-item class="pa-0 font-s">
               {{ role.roleName }}: {{ role.numberNeeded }}            
           </v-list-item>
         </v-col>
@@ -110,28 +107,37 @@ import axios from 'axios';
 
 export default {
   name: "EditRolesNeeded",
+
   props: ["schedules", "scheduleIndex", "flags"],
+
   data () {
     return {
-      newRole: '',
+      newRole: '',      
       newNumNeeded: 1,
     }
   },
+
   methods: {
+    // Set flags so returning to schedules page from entering roles works properly
     rtnToSchedFromRole: function(flags) {
       flags.edittingRoles = false;
       return flags
     },
 
+    // Put new role in the schedules array of objects and update the database
+    //  for that schedule.
     handleSaveNewRole: function(schedules, scheduleIndex, newRole, newNumNeeded) {
       schedules[scheduleIndex].roles.push({
         roleName: newRole,
         numberNeeded: newNumNeeded
       });
       this.updateSchedule(schedules[scheduleIndex]);
+      // returns the new schedules array to display
       return schedules;
     },
 
+    // delete the role from the schedules array of objects, and update
+    //   the schedule with the new roles
     handleDeleteRole: function(schedules, scheduleIndex, i) {
       const id = schedules[scheduleIndex].roles[i]._id;
       schedules[scheduleIndex].roles = 
@@ -141,6 +147,7 @@ export default {
       return schedules;
     },
 
+    // axios call to do the actual update
     updateSchedule: function(schedule) {
       axios.post('/api/schedules/sched', schedule)
       .then(response => {
@@ -157,14 +164,11 @@ export default {
 
 
 <style scoped>
-  /* #edit-role {
-    background-color: #dbfffa;
-  } */
 
   .role-event {
-    font-size: 14px;
+    font-size: 20px;
     background-color: #c4fff9 !important;
-    height: 20px;
+    height: 24px;
   }
 
   .small-dlt {
@@ -177,6 +181,10 @@ export default {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     font-size: 14px;
     background-color: #dbfffa;
+  }
+
+  * {
+    font-size: 20px;
   }
 
 </style>

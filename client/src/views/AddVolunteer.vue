@@ -2,10 +2,13 @@
 <v-app class="bg-lightteal">
   <v-container cols="12" text-center align="center" justify="center" class="pt-0">
     <v-row>
+
+      <!-- header -->
       <v-col cols="8" offset="2">
           <h1>Add a volunteer</h1>
       </v-col>
 
+      <!-- arrow to return to volunteers list -->
       <v-col cols="2">
         <v-btn 
           class="mx-1 my-1" 
@@ -90,39 +93,7 @@
     </v-row>
 
 
-<!-- //  see https://stackoverflow.com/questions/44989162/file-upload-in-vuetify -->
-<!-- 
-            <v-btn icon @click="dialog = !dialog">
-                <v-icon>link</v-icon>
-            </v-btn>
 
-    <v-content>
-			<v-container fluid>
-				<v-flex xs12 class="text-xs-center text-sm-center text-md-center text-lg-center">
-					<img :src="imageUrl" height="150" v-if="imageUrl"/>
-					<v-text-field label="Select Image" @click='pickFile' v-model='imageName' prepend-icon='attach_file'></v-text-field>
-					<input
-						type="file"
-						style="display: none"
-						ref="image"
-						accept="image/*"
-						@change="onFilePicked"
-					>
-				</v-flex>
-				<!-- <v-dialog v-model="dialog" max-width="290">
-					<v-card>
-						<v-card-title class="headline">Hello World!</v-card-title>
-						<v-card-text>Image Upload Script in VUE JS
-							<hr>Yubaraj Shrestha
-							<br>http://yubarajshrestha.com.np/</v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Close</v-btn>
-						</v-card-actions>
-					</v-card>
-				</v-dialog> -->
-			<!-- </v-container>
-		</v-content>  -->
 
     <v-row>
       <!-- choose roles & preferred times -->
@@ -145,6 +116,7 @@
 
       </v-col>
 
+      <!-- choose when volunteer wants to serve (weekly day/time) -->
       <v-col cols="6" class="white">
         <p class="text-left">Choose a preferred time slot:</p>
         <v-radio-group class="ml-2"
@@ -256,9 +228,8 @@
 
     <!-- </v-row> -->
 
-    <!-- volunteers[ {{ $route.params.id }} ].firstName  -->
 </v-container>
-  </v-app>
+</v-app>
 
 
 </template>
@@ -273,7 +244,9 @@ import moment from 'moment';
 
 export default {
   name: "AddVolunteer",
+
   props: ["volunteers", "schedules", "roles", "timeSlots", "volunteerNames"],
+
   data: function() {
     return {
 
@@ -283,7 +256,6 @@ export default {
       image: "",
       date: null,
       menu2: false,
-      // datesAll: [],
       badDates: [],
       showNotAvailablePicker: false,
 
@@ -337,11 +309,13 @@ export default {
       return `${day} at ${time}`;  // returned to put on window
     },
 
+    // for date picker - can't pick a date before today
     today: function() {
       const t = new Date().toJSON().slice(0,10);
       return t;
     },
 
+    // to save not available dates
     save: function (date) {
       var index = this.badDates.findIndex(x => x===date)
 
@@ -353,10 +327,12 @@ export default {
       }
     },
 
+    // route to named route "Volunteers" to get to volunteers list
     handleReturnToVolunteerList: function() {
       this.$router.push({ name: 'Volunteers' })
     },
 
+    // build object and insert in volunteers table
     handleSaveNewVolunteer: function(volunteers) {
       this.image = this.image.toString();
 
@@ -377,11 +353,15 @@ export default {
         // notWith: this.notWith
       };
 
+      // write to volunteers table in db
       this.createVolunteer(this.volunteer);
+      // update volunteers array to display
       this.volunteers.push(this.volunteer);
+      // return to volunteers list
       this.handleReturnToVolunteerList();
     },
 
+    // does axios call to insert the volunteer array
     createVolunteer: function(volunteer) {
       axios.post('/api/volunteers', volunteer)
       .then(response => {
@@ -392,11 +372,13 @@ export default {
       });
     },
 
+    // get all the volunteers from the volunteers table
       getVolunteersAndSchedules() {
         axios.get('/api/volunteers')
         .then(response => {
-
+          // then get the schedules  
           this.getSchedules();
+          // volunteers gets displayed in Volunteers List
           this.volunteers = response.data;
           this.volunteers.forEach((volunteer, i) => {
             const newVol = {
@@ -409,6 +391,7 @@ export default {
       },
 
 
+      // do the axios call to get the schedules
       getSchedules() {
         axios.get('/api/schedules')
         .then(res => {
@@ -426,8 +409,6 @@ export default {
           this.roles = [].concat.apply([], this.roles);
           // remove duplicates
           this.roles = this.roles.filter((a, b) => this.roles.indexOf(a) === b);
-          // sort the array
-          this.roles = this.roles.sort();
           
           let nth = 0;
           // Get all time slots from schedules
@@ -485,9 +466,9 @@ export default {
 }
 
 .role {
-  font-size: 16px;
+  font-size: 20px;
   background-color:  #c4fff9 !important;
-  height: 20px;
+  height: 24px;
 }
 
 /* Make same height as other imput boxes */

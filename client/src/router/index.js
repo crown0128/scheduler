@@ -9,19 +9,20 @@ import EditExistingVolunteer from '../views/EditExistingVolunteer.vue'
 import NewVolunteer from '../components/NewVolunteer.vue'
 import NotFound from '../components/NotFound.vue'
 import RunSchedule from '../components/RunSchedule.vue'
-// test
 
 Vue.use(VueRouter)
 
 // Client side routes, NOT api routes!
 
 const routes = [
+  // for home page
   {
     path: '/',
     name: 'Home',
     component: Home
   },
 
+  // to get all schedules from schedules table
   {
     path: '/schedules',
     name: 'Schedules',
@@ -30,6 +31,7 @@ const routes = [
     }
   },
 
+  // to get all volunteers from the volunteers table
   {
     path: '/volunteers',
     name: 'Volunteers',
@@ -38,6 +40,7 @@ const routes = [
     }
   },
 
+  // to insert a new volunteer to the volunteers table
   {
     path: '/volunteers/volunteer/new',
     name: 'NewVolunteer',
@@ -46,6 +49,7 @@ const routes = [
     }
   },
 
+  // to update a schedule in the schedules table
   {
     path: '/schedules/:schedule',
     name: 'EditSchedule',
@@ -54,6 +58,7 @@ const routes = [
     },
   },
 
+  // to generate a slate of volunteer assignments
   {
     path: '/schedules/run/:schedule',
     name: 'Run',
@@ -62,6 +67,7 @@ const routes = [
     },
   },
   
+  // to insert a volunteer in the volunteers table
   {
     path: '/volunteer/:id', 
     name: 'EditVolunteer',
@@ -70,6 +76,7 @@ const routes = [
     },
   },
 
+  // to update a volunteer in the volunteers table
   {
     path: '/volunteer/:id', 
     name: 'EditExistingVolunteer',
@@ -77,20 +84,8 @@ const routes = [
       return import('../views/EditExistingVolunteer.vue')
     },
   },
-  // {
-  //   path: '/schedule/weeklyevents/:id', 
-  //   name: 'EditWeeklyEvents',
-  //   component: function () {
-  //     return import('../components/EditWeeklyEvents.vue')
-  //   }
-  // },
-  // {
-  //   path: '/schedule/rolesneeded/:id', 
-  //   name: 'EditRolesNeeded',
-  //   component: function () {
-  //     return import('../components/EditRolesNeeded.vue')
-  //   }
-  // },
+  
+  // component with error message if unexpected path called.
   {
     path: '*', 
     name: 'NotFound',

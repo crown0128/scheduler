@@ -1,5 +1,6 @@
 <template>
 
+    <!-- re-use EditVolunteer component with different parameters -->
     <EditVolunteer
       :volunteers="this.volunteers"
       :volunteerIndex="-1"
@@ -17,7 +18,6 @@
   import axios from 'axios';
   import EditVolunteer from '../views/EditVolunteer';
 
-
   export default {
     name: 'NewVolunteer',
     components: { EditVolunteer },
@@ -25,43 +25,32 @@
     data: function() {
       return {
         volunteers: [],
-        // volunteerMode: "List",
         schedules: [],
         roles: [],
         timeSlots: [],
         volunteerNames: [],
-        // volunteerIndex: -1
       };
     },
 
     created() {
+      // get the volunteers and schedules to display on the page
       this.getVolunteers();
       this.getSchedules();
     },
 
-    // beforeUpdate() {
-    //   this.volunteerMode = 'List';
-
-    // },
-
     methods: {
+
+      // make axios call to get all the volunteers from the volunteers table
       getVolunteers() {
         axios.get('/api/volunteers')
         .then(response => {
           this.volunteers = response.data;
-          // this.volunteerNames = this.volunteers.map(volunteer => { 
-          //   id: volunteer._id, 
-          //   name: volunteer.firstName + " " + volunteer.lastName 
-          // }); 
-
           this.volunteers.forEach((volunteer, i) => {
             const newVol = {
               id: volunteer._id,
               name: volunteer.firstName + " " + volunteer.lastName
             };
             this.volunteerNames.push(newVol);
-            // this.volunteerNames = this.volunteerNames.push(newVol);
-            // alphabetize volunteer names
             this.volunteerNames.sort();
           })
         });
@@ -69,6 +58,7 @@
       },
 
 
+      // do axios call to get all the schedules from the schedules table
       getSchedules() {
         axios.get('/api/schedules')
         .then(response => {
@@ -98,6 +88,7 @@
                 time: weeklyEvent.time
               };
 
+              // make sure timesSlots is an array
               if (this.timeSlots.length === 0) {
                 this.timeSlots = [slot]
               } else {
@@ -121,10 +112,13 @@
 
       },
 
+      // so we know if we're adding, editting or listing volunteers.
+      // Used to show appropriate component
       updateVolunteerMode: function(newVolunteerMode) {
         this.volunteerMode = newVolunteerMode;
       },
 
+      // when returning to volunteer list, mode must be "list"
       handleReturnToVolunteerList: function() {
         this.volunteerMode = 'List';
       },

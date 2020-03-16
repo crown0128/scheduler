@@ -1,13 +1,13 @@
 <template>
 <v-app class="bg-lightteal">
-<!-- ********* does this go in Volunteer when edit is clicked ?? ***** -->
   <v-container cols="12" text-center align="center" justify="center" class="pt-0">
-    <!-- volunteer #{{ $route.params.id }}. -->
     <v-row>
+      <!-- header -->
       <v-col cols="8" offset="2">
           <h1>Edit an existing volunteer</h1>
       </v-col>
 
+      <!-- return-to-volunteers-list button -->
       <v-col cols="2">
         <v-btn 
           class="mx-1 my-1" 
@@ -96,11 +96,10 @@
       <v-col cols="6" class="white">
         <p class="text-left">Choose role:</p>
         <!-- to choose more than one in a future release
-        <checkbox class="ml-2 my-0 list-height" -->
+                    <checkbox class="ml-2 my-0 list-height" -->
         <v-radio-group class="ml-2"
           v-model="rolesChosen"
         ><v-radio
-        
           class="my-0 list-height"
           v-for="(role, roleIndex) in roles"
           v-bind:key="roleIndex"
@@ -232,8 +231,6 @@
 import axios from 'axios';
 import moment from 'moment';
 
-// import '../../public/images/avatars.js'
-
 
 export default {
   name: "EditExistingVolunteer",
@@ -251,7 +248,6 @@ export default {
 
       date: null,
       menu2: false,
-      // datesAll: [],
       badDates: [],
       showNotAvailablePicker: false,
       timeSlots: [],
@@ -305,11 +301,13 @@ export default {
       return `${day} at ${time}`;
     },
 
+    // schedule start date has to be before (or on) today
     today: function() {
       const t = new Date().toJSON().slice(0,10);
       return t;
     },
 
+    // save dates not available
     save: function (date) {
       var index = this.badDates.findIndex(x => x===date)
 
@@ -321,11 +319,12 @@ export default {
       }
     },
 
-
+    // route to return to volunteers list
     handleReturnToVolunteerList: function() {
       this.$router.push({ name: 'Volunteers' })
     },
 
+    // build object and insert in volunteers table
     handleSaveNewVolunteer: function(volunteers) {
 
       this.image = this.image.toString();
@@ -348,11 +347,15 @@ export default {
         // notWith: this.notWith
       };
 
+      // update in volunteers table
       this.updateVolunteer(this.volunteer);
+      // update volunteers array
       this.volunteers.push(this.volunteer);
+      // return to volunteers list
       this.handleReturnToVolunteerList();
     },
 
+    // axios call to update volunteer in volunteers table
     updateVolunteer: function(volunteer) {
       axios.post('/api/volunteers/volunteer', volunteer)
       .then(response => {
@@ -367,9 +370,9 @@ export default {
 
   // created() {
   mounted() {
+    // get data from parameters
     const id = this.$route.params.id;
     this.roles = this.$route.params.roles;
-    
     this.timeSlots = this.$route.params.timeSlots;
 
     // this is passed in --- duplicates should already have been removed.
@@ -377,9 +380,13 @@ export default {
     this.volunteers = this.$route.params.volunteers;
     console.log('this.volunteers (passed in to EditExistingVolunteer);  id:  ' + id);
     console.log(this.volunteers);
+
+    // find where in the volunteers array this volunteer is
     let index = this.volunteers.findIndex(volunteer => volunteer._id === id);
+    // get that volunteer to edit
     let editVolunteer = this.volunteers[index];
 
+    // update state
     this.rolesChosen = editVolunteer.roles[0]; // only one for this release
 
     this._id = this.volunteers[index]._id;
@@ -416,7 +423,7 @@ console.log(this.prefTimes);
 </script>
 
 <style scoped>
-
+/* tweak colors and spacing */
 .bg-lightteal {
   background-color: #c4fff9 !important;
 }

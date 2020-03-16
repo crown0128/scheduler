@@ -61,8 +61,6 @@
     components: {
       Schedules,
       Volunteers,
-      // EditSchedule,
-      // EditVolunteer
     }
 
   };  // end of export

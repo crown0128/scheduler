@@ -1,5 +1,6 @@
 <template>
 
+<!-- Weekly events header with edit icon -->
 <div>
   <div class="row">
     <div class="col-12 pa-0">
@@ -20,7 +21,7 @@
   <!-- List day of week and time of each weekly event -->
   <v-list
       v-for="(weeklyEvent, i) in schedules[scheduleIndex].weeklyEvents"
-      class="pl-12 py-0 weekly-event"
+      class="pl-12 py-2 weekly-event"
       :key="i"
       :weeklyEvent="weeklyEvent">
           <v-list-item class="pa-0">
@@ -35,14 +36,18 @@
 <script>
   export default {
     name: "WeeklyEvents",
+
     props: ["schedules", "scheduleIndex", "flags"],
+
     methods: {
+
+      // set flags so page to allow edits gets displayed
       editWeeklyEvents: function(flags) {
         flags.edittingWeeklyEvents = true;
         return flags
       },
 
-      // only need time part...
+      // only need time part...   Put time in date/time format so moment can format it
       timeToDate: function(time) {
         return new Date("March 16, 2020 " + time);
       }
@@ -53,8 +58,9 @@
 
 <style scoped>
   .weekly-event {
-    font-size: 14px;
+    /* tweak color and spacing */
+    font-size: 20px;
     background-color:  #c4fff9 !important;
-    height: 20px;
+    height: 24px;
   }
 </style>

@@ -1,12 +1,14 @@
 <template>
   <v-container cols="12" text-center align="center" justify="center" class="pt-0 my-0">
     <v-row>
+      <!-- header -->
       <v-col cols="10" offset="1" class="my-0 pb-0">
         <h1 cols="12" text-center>Volunteers</h1>
       </v-col>
 
       <v-col cols="1" class="pb-0">
 
+        <!-- go back to volunteers list page button -->
         <v-btn 
           v-if="((volunteerMode==='Add')||(volunteerMode==='Edit'))"
           class="mx-1 my-1" 
@@ -20,6 +22,14 @@
 
     </v-row>
 
+    <!-- NEW VOLUNTEER button; uses NewVolunteer component -->
+    <v-flex v-if="volunteerMode==='List'" xs10 offset-xs1 py-2>
+        <router-link to="/volunteers/volunteer/new" class="no-underscore">
+          <v-btn block dark rounded class="teal">Click here to add a new volunteer</v-btn>
+        </router-link>
+    </v-flex>
+
+    <!-- get component to edit a volunteer -->
     <EditVolunteer
       v-on:updatevolunteerMode="updatevolunteerMode($event)"
       v-if="((volunteerMode==='Add')||(volunteerMode==='Edit'))"
@@ -32,6 +42,7 @@
       :volunteerNames="volunteerNames"
     ></EditVolunteer>
 
+    <!-- get component to display volunteer list -->
     <VolunteerList
       v-on:updatevolunteerMode="updatevolunteerMode($event)"
       v-if="volunteerMode==='List'"
@@ -42,12 +53,6 @@
       :timeSlots="timeSlots"
     ></VolunteerList>
 
-    <!-- NEW VOLUNTEER button; uses NewVolunteer component -->
-    <v-flex v-if="volunteerMode==='List'" xs10 offset-xs1 py-2>
-        <router-link to="/volunteers/volunteer/new" class="no-underscore">
-          <v-btn block dark rounded class="teal">Click here to add a new volunteer</v-btn>
-        </router-link>
-    </v-flex>
   </v-container>
 </template>
 
@@ -61,6 +66,7 @@
 
   export default {
     name: 'Volunteers',
+
     components: { VolunteerList, EditVolunteer, NewVolunteer },
 
     data: function() {
@@ -76,58 +82,36 @@
     },
 
     created() {
+      // get volunteers and schedules from respective tables
       this.getVolunteers();
       this.getSchedules();
     },
 
-    // beforeUpdate() {
-    //   this.volunteerMode = 'List';
-
-    // },
 
     methods: {
+
+      // axios call to get volunteers
       getVolunteers() {
-        // console.log("In getVolunteers");
         axios.get('/api/volunteers')
         .then(response => {
-          // console.log("get volunteers axios done");
           this.volunteers = response.data;
-          // this.volunteerNames = this.volunteers.map(volunteer => { 
-          //   id: volunteer._id, 
-          //   name: volunteer.firstName + " " + volunteer.lastName 
-          // }); 
-          // console.log("this.volunteers");
-          // console.log(this.volunteers);
           this.volunteers.forEach((volunteer, i) => {
-            // console.log("foreach: volunteer for " + i);
-            // console.log(volunteer);
             const newVol = {
               id: volunteer._id,
               name: volunteer.firstName + " " + volunteer.lastName
             };
-            // console.log("before push: volunteerNames, newVol");
-            // console.log(this.volunteerNames);
-            // console.log(newVol);
             this.volunteerNames.push(newVol);
-            // this.volunteerNames = this.volunteerNames.push(newVol);
-            // console.log("after push: volunteerNames, newVol");
-            // console.log(this.volunteerNames);
-            // alphabetize volunteer names
             this.volunteerNames.sort();
           })
         });
-        // console.log("in getVolunteers");
-        // console.log("volunteerNames");
-        // console.log(this.volunteerNames);
       },
 
 
+      // axios call to get schedules
       getSchedules() {
         axios.get('/api/schedules')
         .then(response => {
           this.schedules = response.data;
-          // console.log("schedules loaded from database.");
-          // console.log(response.data);
         })
         .then(response => {
           // Get all role names from schedules, remove dups & alphabetize
@@ -139,30 +123,26 @@
           this.roles = [].concat.apply([], this.roles);
           // remove duplicates
           this.roles = this.roles.filter((a, b) => this.roles.indexOf(a) === b);
-          // sort the array
-          this.roles = this.roles.sort();
           
           let nth = 0;
           // Get all time slots from schedules, sort by schedule
           this.schedules.forEach((schedule, index) => {
             schedule.weeklyEvents.forEach((weeklyEvent, i) => {
-              // console.log("forEach schedule... slot, this.timeSlots");
-              // console.log(this.timeSlots);
               const slot = {
                 index: nth++,
                 scheduleName: schedule.name, 
                 day: weeklyEvent.day,
                 time: weeklyEvent.time
               };
-              // console.log(slot);
+
+              // make sure timeSlots is an array
               if (this.timeSlots.length === 0) {
                 this.timeSlots = [slot]
               } else {
                 this.timeSlots.push(slot);
               };
             });
-            console.log("in Volunteers.vue - this.timeSlots:");
-            console.log(this.timeSlots);
+
           });
 
           // remove duplicate day/time combinations
@@ -171,15 +151,7 @@
               t.day === timeSlot.day && t.time === timeSlot.time
             ))
           );
-            console.log("in Volunteers.vue - this.timeSlots: (after duplicates removed)");
-            console.log(this.timeSlots);
         });
-
-
-        // deleteVolunteer(volunteer) {
-        //   console.log("Delete" + volunteer.firstName);
-        // },
-
 
       },
 
@@ -188,14 +160,9 @@
       },
 
       handleReturnToVolunteerList: function() {
-        // console.log("in updateVolunteerMode");
         this.volunteerMode = 'List';
       },
 
-      handleNewVolunteer: function() {
-        // console.log("in handleNewVolunteer in Volunteers.vue");
-
-      }
     },
     
   };
@@ -205,6 +172,7 @@
 
 <style scoped>
 
+/* get rid of underscore on routes icons/text */
 .no-underscore { 
   text-decoration: none !important;
 }

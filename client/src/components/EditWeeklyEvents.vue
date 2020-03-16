@@ -1,6 +1,7 @@
 <template>
 <div>
 
+  <!-- Header for this section -->
   <v-row>
     <v-col class="col-12 pa-0">
       <h2 class="text-left col-12 py-0 pl-12">
@@ -54,7 +55,6 @@
         >
           <v-spacer></v-spacer>
           <v-btn text color="teal" @click="showTimePicker = false">Cancel</v-btn>
-          <!-- <v-btn text color="teal" format="ampm" @click="newTime = $refs.dialog.save( getAmPm(newTime) )">OK</v-btn> -->
           <v-btn text color="teal" format="ampm" @click="$refs.dialog.save( newTime )">OK</v-btn>
         </v-time-picker>
       </v-dialog>
@@ -90,38 +90,36 @@
   <div class="pb-4">
     <!-- List day of week and time of each weekly event -->
     <!-- with delete button -->
-    <!-- <div v-if="(schedules[scheduleIndex].length > 0) && (schedules[scheduleIndex].weeklyEvents.length > 0)"> -->
-      <v-list
-        v-for="(weeklyEvent, i) in schedules[scheduleIndex].weeklyEvents"
-        class="pl-12 pt-0 weekly-event"
-        :key="i"
-        :weeklyEvent="weeklyEvent">
+    <v-list
+      v-for="(weeklyEvent, i) in schedules[scheduleIndex].weeklyEvents"
+      class="pl-12 py-2 weekly-event"
+      :key="i"
+      :weeklyEvent="weeklyEvent">
 
-        <v-row>
-          <v-col cols="6" class="offset-sm-1 mt-0">
-            <v-list-item class="pa-0">
-                {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
-            </v-list-item>
-          </v-col>
+      <v-row>
+        <v-col cols="6" class="offset-sm-1 mt-0">
+          <v-list-item class="pa-0">
+              {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
+          </v-list-item>
+        </v-col>
 
-          <v-col cols="1">
-            <v-btn 
-              class="mr-0 small-dlt mt-3" 
-              fab dark color="teal"
-              @click="handleDeleteWeeklyEvent(schedules, scheduleIndex, i)"
-            >
-            <v-icon 
-              dark
-            >
-              mdi-delete-circle
-            </v-icon>
-            </v-btn>
-          </v-col>
+        <v-col cols="1">
+          <v-btn 
+            class="mr-0 small-dlt mt-3" 
+            fab dark color="teal"
+            @click="handleDeleteWeeklyEvent(schedules, scheduleIndex, i)"
+          >
+          <v-icon 
+            dark
+          >
+            mdi-delete-circle
+          </v-icon>
+          </v-btn>
+        </v-col>
 
-        </v-row>
-        <v-spacer></v-spacer>
-      </v-list>
-    <!-- </div> -->
+      </v-row>
+      <v-spacer></v-spacer>
+    </v-list>
 
   </div>
 
@@ -151,25 +149,30 @@ export default {
       ],
       newTime: "12:00",
       day: 'Saturday',
-      // menu2: false,
       showTimePicker: false,
     }
   }, // end data
   methods: {
+
+    // set flags so leaving editting weekly events works properly
     rtnToSchedFromWkly: function(flags) {
       flags.edittingWeeklyEvents = false;
       return flags
     },
 
+    // put time date format
     timeToDate: function(time) {
       return new Date("March 16, 2020 " + time);
     },
 
+    // format time using moment
     getAmPm: function(time) {
       time = this.timeToDate(time);
       return moment(time, "h:mm a");
     },
 
+    // delete the weekly event from the schedule object 
+    //  and update the database
     handleDeleteWeeklyEvent: function(schedules, scheduleIndex, i) {
       const id = schedules[scheduleIndex].weeklyEvents[i]._id;
       schedules[scheduleIndex].weeklyEvents = 
@@ -179,7 +182,8 @@ export default {
       return schedules;
     },
 
-// Is this used other places?  Should it be modularized?
+    // Is this used other places?  Should it be modularized?
+    // update the schedule object and update the database
     handleSaveWeeklyEvent(schedules, scheduleIndex) {
 
       schedules[scheduleIndex].weeklyEvents.push({
@@ -192,6 +196,7 @@ export default {
       return schedules;
     },
 
+    // do the axios call to update the database
     updateSchedule: function(schedule) {
       axios.post('/api/schedules/sched', schedule)
       .then(response => {
@@ -208,14 +213,16 @@ export default {
 
 <style scoped>
 
+/* tweak spacing and colors */
+
   #edit-weekly {
     background-color: #dbfffa;
   }
 
   .weekly-event {
-    font-size: 14px;
+    font-size: 20px;
     background-color: #c4fff9 !important;
-    height: 20px;
+    height: 24px;
   }
 
   .select {
