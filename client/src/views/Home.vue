@@ -44,4 +44,5 @@
   .none {
     border: none;
   }
+
 </style>

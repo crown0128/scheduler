@@ -112,7 +112,6 @@
           color="teal"
         ></v-radio>
         </v-radio-group>
-        <p>{{ rolesChosen }}</p>
 
       </v-col>
 
@@ -130,7 +129,6 @@
           ></v-radio>
         </v-radio-group>
 
-        <p>{{ preferredTime }}</p>
       </v-col>
 
     </v-row>
@@ -174,7 +172,6 @@
             </v-dialog>
 
             <v-spacer></v-spacer>
-            <p>{{ badDates }} entered.</p>
 
           </v-card-text>
         </v-card>

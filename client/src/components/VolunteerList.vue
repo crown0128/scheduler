@@ -34,8 +34,10 @@
     </template>
     <template v-slot:item.action="{ item }">
 
-        <router-link :to="{ name: 'EditExistingVolunteer', params: { volunteers: volunteers, id: item._id, roles: roles, timeSlots: timeSlots }}">
-            <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
+        <router-link 
+            :to="{ name: 'EditExistingVolunteer', params: { volunteers: volunteers, id: item._id, roles: roles, timeSlots: timeSlots }}"
+            class="no-underscore"
+            ><v-btn class="mx-1 my-1" fab right dark x-small color="teal">
                 <v-icon dark>mdi-pencil</v-icon>
             </v-btn>
         </router-link>
@@ -121,6 +123,10 @@ export default {
     height: 40px !important;
     min-width: 40px !important;
     width: 40px !important;
+}
+
+.no-underscore { 
+  text-decoration: none !important;
 }
 
 </style>

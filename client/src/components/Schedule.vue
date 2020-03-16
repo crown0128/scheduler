@@ -74,12 +74,9 @@
       <!-- Button to run the schedule to create a document with the volunteer assignments -->
       <v-row>
         <v-flex col-12 py-2>
-          <!-- <v-col center-align> -->
-            <!-- <v-btn @click="handleRunSchedule(schedules, scheduleIndex)" block dark rounded class="teal">Run this Schedule to create a schedule document.</v-btn> -->
-            <router-link :to="{ name: 'Run', params: { schedule: schedules[scheduleIndex] }}">
-              <v-btn block dark rounded class="teal">Run this Schedule to create a schedule document.</v-btn>
-            </router-link>
-          <!-- </v-col> -->
+          <router-link :to="{ name: 'Run', params: { schedule: schedules[scheduleIndex] }}" class="no-underscore">
+            <v-btn block dark rounded class="teal">Click here to generate a slate of volunteer assignments.</v-btn>
+          </router-link>
         </v-flex>
       </v-row>
 
@@ -149,5 +146,6 @@
   .sched-width {
     width: 100%;
   }
-  
+
+ 
 </style>

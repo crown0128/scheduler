@@ -159,7 +159,6 @@
           ></v-radio>
         </v-radio-group>
 
-        <p>{{ preferredTime }}</p>
       </v-col>
 
     </v-row>
@@ -203,7 +202,6 @@
             </v-dialog>
 
             <v-spacer></v-spacer>
-            <p>{{ badDates }} entered.</p>
 
           </v-card-text>
         </v-card>
@@ -495,6 +493,10 @@ export default {
 /* Make same height as other imput boxes */
 .match-height {
   height: 53.98px;
+}
+
+li a { 
+  text-decoration: none !important;
 }
 
 </style>

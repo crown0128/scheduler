@@ -7,7 +7,7 @@
       <!-- HOME button and link -->
       <v-col cols="4">
         <v-card class="pa-2 bg-lightteal" outlined tile>
-          <router-link to="/">         
+          <router-link class="no-underscore" to="/">         
             <v-btn class="mx-2" fab dark large color="teal">
               <v-icon dark>mdi-home</v-icon>
             </v-btn>
@@ -19,7 +19,7 @@
       <!-- SCHEDULES button and link -->
       <v-col cols="4">
         <v-card class="pa-2 bg-lightteal" outlined tile>
-          <router-link to="/schedules">         
+          <router-link class="no-underscore" to="/schedules">         
             <v-btn class="mx-2" fab dark large color="teal">
               <v-icon dark>mdi-calendar-multiselect</v-icon>
             </v-btn>
@@ -31,7 +31,7 @@
       <!-- VOLUNTEERS button and link -->
       <v-col cols="4">
         <v-card class="pa-2 bg-lightteal" outlined tile>
-          <router-link to="/volunteers">         
+          <router-link class="no-underscore" to="/volunteers">         
             <v-btn class="mx-2" fab dark large color="teal">
               <v-icon dark>mdi-account-multiple</v-icon>
             </v-btn>
@@ -98,7 +98,7 @@
     color: #0216b0
   }
 
-  .no-underscore {
+  .no-underscore { 
     text-decoration: none !important;
   }
 
