@@ -133,8 +133,4 @@ export default {
 
 <style scoped>
 
-.no-underscore { 
-  text-decoration: none !important;
-}
-
 </style>

@@ -75,7 +75,8 @@ export default {
         return {
             startDate: '',
             endDate: '',
-            errorMessage: ''
+            errorMessage: '',
+            schedName: ''
         }
     },
 

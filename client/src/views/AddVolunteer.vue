@@ -495,8 +495,4 @@ export default {
   height: 53.98px;
 }
 
-li a { 
-  text-decoration: none !important;
-}
-
 </style>
