@@ -471,9 +471,6 @@ export default {
             // if there are at least as many scheduled as needed, return false;
             if (volsScheduled >= volsNeeded) {return false}
 
-            // check if volunteer is already scheduled
-            this.testDisplaySlate(slate);
-
             // is firstName lastName in slate
             if ( slate[we][role].includes([firstName + " " + lastName]) || 
                  slate[we][role].includes([" " + firstName + " " + lastName]) 
@@ -540,7 +537,6 @@ export default {
                 volunteerName = " " + volunteerName;
             };
             workingSlate[timeDateIndex][roles[r]].push(volunteerName);
-            this.testDisplaySlate(workingSlate);
 
             // get the datesFilled for this role; it will be an array of dates.
             let datesFilled = datesFilledPerRole[r];
