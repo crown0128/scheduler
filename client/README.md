@@ -14,6 +14,20 @@ Then volunteers are added with their name, email address, tasks they can do, wee
 
 As a church secretary responsible for scheduling volunteers to help at the weekly Masses, I need to generate a slate of volunteer assignments for all the Masses.  I usually schedule 2-4 months at a time.
 
+## Technologies used
+
+- Express
+- Mongo DB
+- Mongoose
+- Vue
+- Vuetify
+- Axios
+- Node.js
+- JavaScript
+- moment.js pkg
+- jsPDF pkg
+- HTML & CSS
+
 ## Functionality
 
 From the home page:
@@ -56,21 +70,6 @@ Here is an example of the slate generated.  Clicking the area indicated will cre
 ![See the slate](./documentation/make-pdf.png)
 
 
-
-
-## Technologies used
-
-- Express
-- Mongo DB
-- Mongoose
-- Vue
-- Vuetify
-- Axios
-- Node.js
-- JavaScript
-- moment.js pkg
-- jsPDF pkg
-- HTML & CSS
 
 
 ## Database structure
