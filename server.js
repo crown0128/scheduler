@@ -9,7 +9,6 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 app.use(logger("dev"));
 
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 

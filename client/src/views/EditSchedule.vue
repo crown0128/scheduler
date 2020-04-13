@@ -72,15 +72,13 @@
 
 
 <script>
-  import WeeklyEvents from '../components/WeeklyEvents';
   import EditWeeklyEvents from '../components/EditWeeklyEvents';
-  import RolesNeeded from '../components/RolesNeeded';
   import EditRolesNeeded from '../components/EditRolesNeeded';
   import GetSchedDates from '../components/GetSchedDates';
 
   export default {
     name: "EditSchedule",
-    components: { EditWeeklyEvents, EditRolesNeeded, WeeklyEvents, RolesNeeded, GetSchedDates },
+    components: { EditWeeklyEvents, EditRolesNeeded, GetSchedDates },
 
     props: ["schedules", "schedMode"],
 
