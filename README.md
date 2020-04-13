@@ -32,11 +32,11 @@ As a church secretary responsible for scheduling volunteers to help at the weekl
 
 From the home page:
 
-![Home](./documentation/home.png)
+![Home](client/documentation/home.png)
 
 Click on Schedules to see a list of existing schedules:
 
-![Schedule List](./documentation/schedule-list.png)
+![Schedule List](client/documentation/schedule-list.png)
 
 
 You may edit an existing schedule, or set up a new schedule.  The screen for either is very similar, except you can't change the name or the date range for an existing schedule (yet).
@@ -45,29 +45,29 @@ Click the button near the top that says "Set up a new schedule" to begin creatin
 
 On the first page, enter a name and select beginning and ending dates.
 
-![Schedule Name and Dates](./documentation/schedule-dates.png)
+![Schedule Name and Dates](client/documentation/schedule-dates.png)
 
 Click the disc icon to save that and move on to choosing when the weekly events will be, and what volunteers are needed:
 
-![Schedule Days Times and Volunteers](./documentation/schedule-days-volunteers.png)
+![Schedule Days Times and Volunteers](client/documentation/schedule-days-volunteers.png)
 
 Now you are ready to enter volunteers!
 
 Click on the Volunteers icon on the top right to see a list of volunteers.  You may edit or delete existing volunteers by clicking on the corresonding icon next to the volunteer's information; or add a new volunteer by clicking the large button near the top of the screen.  Note that this window has extensive ordering and sorting capabilities.
 
-![Volunteer List](./documentation/volunteer-list.png)
+![Volunteer List](client/documentation/volunteer-list.png)
 
 The page to edit volunteers lets you enter or edit the volunteer name, email, role they wish to volunteer for, weekly time slot, and when they are NOT available (if this is not entered, it will be assumed that they are always available during the chosen weekly event).  There are also avatars to choose from, just for fun!
 
-![Edit Volunteer](./documentation/edit-volunteer.png)
+![Edit Volunteer](client/documentation/edit-volunteer.png)
 
 Once all the volunteers are done, a slate of volunteer assignments can be generated from the list of schedules.
 
-![Generate Schedule](./documentation/generate-schedule.png)
+![Generate Schedule](client/documentation/generate-schedule.png)
 
 Here is an example of the slate generated.  Clicking the area indicated will create a PDF and put it in your Downloads folder.
 
-![See the slate](./documentation/make-pdf.png)
+![See the slate](client/documentation/make-pdf.png)
 
 
 

@@ -7,7 +7,9 @@
         <button @click="exportPdf(slate)" class="redtext">
             Click <u>here</u> to create a PDF.
         </button>
-        <p>The name of the file will be <span class="redtext">{{ this.filename }}</span> and it will be created in your Downloads folder.</p>
+        <p>The name of the file will be <span class="redtext">{{ this.filename }}</span> 
+            and it will be created in your Downloads folder.
+        </p>
         <!-- show the actual slate of volunteer assignments -->
         <v-data-table 
             id="sched" 
