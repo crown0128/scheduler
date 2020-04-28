@@ -239,6 +239,9 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+// import fcns from '../js/fcns.js';
+import {getRolesAndTimeSlots} from '../js/fcns.js';
+
 // for future release (or store in cloud)
 // import {avatars} from './avatars'
 
@@ -398,42 +401,13 @@ export default {
           this.schedules = res.data;
         })
         .then(response => {
-          // Get all role names from schedules, remove dups & alphabetize
-          this.schedules.forEach((schedule, index) => {
-            
-            roles[index] = schedule.roles;
-            roles[index] = roles[index].map(role => role.roleName);
-            
-          });
-          // flatten array, so only one level deep
-          this.roles = [].concat.apply([], this.roles);
-          // remove duplicates
-          this.roles = this.roles.filter((a, b) => this.roles.indexOf(a) === b);
-          
-          let nth = 0;
-          // Get all time slots from schedules
-          this.schedules.forEach((schedule, index) => {
-            schedule.weeklyEvents.forEach((weeklyEvent, i) => {
-              const slot = {
-                index: nth++,
-                day: weeklyEvent.day,
-                time: weeklyEvent.time
-              };
-              // Add the slot to the timeSlots array (or initiate it, if the first one)
-              if (this.timeSlots.length === 0) {
-                this.timeSlots = [slot]
-              } else {
-                this.timeSlots.push(slot);
-              };
-            });
-
-            // remove duplicate day/time combinations
-            this.timeSlots = this.timeSlots.filter((timeSlot, index, self) => 
-              index === self.findIndex((t) => (
-                t.day === timeSlot.day && t.time === timeSlot.time
-              ))
-            );
-          });
+          // get unique role names & time slots from schedules
+          [this.roles, this.timeSlots] = getRolesAndTimeSlots(this.schedules, this.roles);
+          // [this.roles, this.timeSlots] = fcns.getRolesAndTimeSlots(this.schedules, this.roles);
+        })
+        .catch(err => {
+          console.log("error in getSchedules (AddVolunteer.vue):");
+          console.log(err);
         });
 
       },

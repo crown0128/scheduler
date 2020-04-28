@@ -62,49 +62,12 @@
           this.schedules = response.data;
         })
         .then(response => {
-          // Get all role names from schedules, remove dups & alphabetize
-          this.schedules.forEach((schedule, index) => {
-            this.roles[index] = schedule.roles;
-            this.roles[index] = this.roles[index].map(role => role.roleName);
-          });
-          // flatten array, so only one level deep
-          this.roles = [].concat.apply([], this.roles);
-          // remove duplicates
-          this.roles = this.roles.filter((a, b) => this.roles.indexOf(a) === b);
-          // sort the array
-          this.roles = this.roles.sort();
-          
-          let nth = 0;
-          // Get all time slots from schedules, sort by schedule
-          this.schedules.forEach((schedule, index) => {
-            schedule.weeklyEvents.forEach((weeklyEvent, i) => {
-              const slot = {
-                index: nth++,
-                scheduleName: schedule.name, 
-                day: weeklyEvent.day,
-                time: weeklyEvent.time
-              };
-
-              // make sure timesSlots is an array
-              if (this.timeSlots.length === 0) {
-                this.timeSlots = [slot]
-              } else {
-                this.timeSlots.push(slot);
-              };
-
-            });
-
-          });
-
-          // remove duplicate day/time combinations in timeslots
-          this.timeSlots = this.timeSlots.filter((timeSlot, index, self) => 
-            index === self.findIndex((t) => (
-              t.day === timeSlot.day && t.time === timeSlot.time
-            ))
-          );
-
-          console.log("NewVolunteer.vue... after duplicates removed...timeSlots");
-          console.log(this.timeSlots);
+          // get unique role names & time slots from schedules
+          [this.roles, this.timeSlots] = fcns.getRolesAndTimeSlots(this.schedules, this.roles);
+        })
+        .catch(err => {
+          console.log("Error in getSchedules (NewVolunteer.vue):");
+          console.log(err);
         });
 
       },
