@@ -33,24 +33,24 @@
     <EditVolunteer
       v-on:updatevolunteerMode="updatevolunteerMode($event)"
       v-if="((volunteerMode==='Add')||(volunteerMode==='Edit'))"
-      :volunteers="volunteers"
+      :volunteers="this.volunteers"
       :volunteerIndex="-1"
-      :volunteerMode="volunteerMode"
-      :schedules="schedules"
-      :roles="roles"
-      :timeSlots="timeSlots"
-      :volunteerNames="volunteerNames"
+      :volunteerMode="this.volunteerMode"
+      :schedules="this.schedules"
+      :roles="this.roles"
+      :timeSlots="this.timeSlots"
+      :volunteerNames="this.volunteerNames"
     ></EditVolunteer>
 
     <!-- get component to display volunteer list -->
     <VolunteerList
       v-on:updatevolunteerMode="updatevolunteerMode($event)"
       v-if="volunteerMode==='List'"
-      :volunteers="volunteers"
-      :volunteerIndex="volunteerIndex"
-      :volunteerMode="volunteerMode"
-      :roles="roles"
-      :timeSlots="timeSlots"
+      :volunteers="this.volunteers"
+      :volunteerIndex="this.volunteerIndex"
+      :volunteerMode="this.volunteerMode"
+      :roles="this.roles"
+      :timeSlots="this.timeSlots"
     ></VolunteerList>
 
   </v-container>
@@ -62,6 +62,7 @@
   import VolunteerList from '../components/VolunteerList';
   import EditVolunteer from './EditVolunteer';
   import NewVolunteer from '../components/NewVolunteer';
+  import fcns from '../js/fcns.js';
 
 
   export default {
@@ -95,14 +96,12 @@
         axios.get('/api/volunteers')
         .then(response => {
           this.volunteers = response.data;
-          this.volunteers.forEach((volunteer, i) => {
-            const newVol = {
-              id: volunteer._id,
-              name: volunteer.firstName + " " + volunteer.lastName
-            };
-            this.volunteerNames.push(newVol);
-            this.volunteerNames.sort();
-          })
+          // extract volunteer names from volunteers to display in component
+          this.volunteerNames = fcns.getVolunteerNames(this.volunteers);
+        })
+        .catch(err => {
+          console.log("Error in getVolunteers (Volunteers.vue):");
+          console.log(err);
         });
       },
 

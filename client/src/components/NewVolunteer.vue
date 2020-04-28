@@ -17,6 +17,7 @@
 <script>
   import axios from 'axios';
   import EditVolunteer from '../views/EditVolunteer';
+  import fcns from '../js/fcns.js';  // added 4/26/2020
 
   export default {
     name: 'NewVolunteer',
@@ -40,23 +41,19 @@
 
     methods: {
 
-      // make axios call to get all the volunteers from the volunteers table
+      // axios call to get volunteers
       getVolunteers() {
-        axios.get('/api/volunteers')
-        .then(response => {
-          this.volunteers = response.data;
-          this.volunteers.forEach((volunteer, i) => {
-            const newVol = {
-              id: volunteer._id,
-              name: volunteer.firstName + " " + volunteer.lastName
-            };
-            this.volunteerNames.push(newVol);
-            this.volunteerNames.sort();
+          axios.get('/api/volunteers')
+          .then(response => {
+            this.volunteers = response.data;
+            // extract volunteer names from volunteers to display in component
+            this.volunteerNames = fcns.getVolunteerNames(this.volunteers);
           })
-        });
-
-      },
-
+          .catch(err => {
+            console.log("Error in getVolunteers (NewVolunteer.vue):");
+            console.log(err);
+          });
+        },
 
       // do axios call to get all the schedules from the schedules table
       getSchedules() {
