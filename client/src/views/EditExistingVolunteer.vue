@@ -230,6 +230,7 @@
 <script>
 import axios from 'axios';
 import moment from 'moment';
+import {getAvatars} from '../js/fcns.js';
 
 
 export default {
@@ -257,37 +258,43 @@ export default {
       roles: [],
       rolesChosen: [],
       preferredTime: -1,
-      avatars: [
-        "bear.jpg",
-        "bignose.jpg",
-        "blue-flower.jpg",
-        "cat.jpg",
-        "cheetah.jpg",
-        "dog.jpg",
-        "football.jpg",
-        "giraffe.jpg",
-        "goofy.jpg",
-        "hedgehog.jpg",
-        "kitty.jpg",
-        "koala.jpg",
-        "monkey.jpg",
-        "orange-flower.jpg",
-        "pink-flower.jpg",
-        "puppy.jpg",
-        "ski.jpg",
-        "smilie.jpg",
-        "sneaker.jpg",
-        "soccer.jpg",
-        "thumbs.jpg",
-        "tiger.jpg",
-        "xcski.jpg",
-        "yellow-flower.jpg"
-    ]
+      avatars: []
+    //     "bear.jpg",
+    //     "bignose.jpg",
+    //     "blue-flower.jpg",
+    //     "cat.jpg",
+    //     "cheetah.jpg",
+    //     "dog.jpg",
+    //     "football.jpg",
+    //     "giraffe.jpg",
+    //     "goofy.jpg",
+    //     "hedgehog.jpg",
+    //     "kitty.jpg",
+    //     "koala.jpg",
+    //     "monkey.jpg",
+    //     "orange-flower.jpg",
+    //     "pink-flower.jpg",
+    //     "puppy.jpg",
+    //     "ski.jpg",
+    //     "smilie.jpg",
+    //     "sneaker.jpg",
+    //     "soccer.jpg",
+    //     "thumbs.jpg",
+    //     "tiger.jpg",
+    //     "xcski.jpg",
+    //     "yellow-flower.jpg"
+    // ]
       // Save with and notWith features for future release
       // schedWith: [],
       // notWith: []
 
     }
+  },
+
+
+  created() {
+    // get list of avatars
+    this.avatars = getAvatars();
   },
 
 

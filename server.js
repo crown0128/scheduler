@@ -16,10 +16,10 @@ app.use(express.json());
 //   app.use(express.static("client/build"));
 // }
 
-// // app.use(express.static("public"));
+// app.use(express.static("public"));  // (Avatar) ??
 // app.use(express.static("client"));
 // Serve static files from the Vue app build directory
-app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use(express.static(path.join(__dirname, 'client/dist'))); // (Avatar)
 app.use(routes);
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/scheduledb", { useNewUrlParser: true, useUnifiedTopology: true });
@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/scheduledb", { 
 // matches other routes to compiled code in dist folder...entrypoint to client side.
 // all other routes must go above this one.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client/dist', 'index.html')); // (Avatar)
 });
 
 app.listen(PORT, () => {

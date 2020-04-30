@@ -240,7 +240,7 @@
 import axios from 'axios';
 import moment from 'moment';
 // import fcns from '../js/fcns.js';
-import {getRolesAndTimeSlots} from '../js/fcns.js';
+import {getRolesAndTimeSlots, getAvatars} from '../js/fcns.js';
 
 // for future release (or store in cloud)
 // import {avatars} from './avatars'
@@ -271,34 +271,39 @@ export default {
       rolesChosen: [],
       preferredTime: "",
       
-      avatars: [
-        "bear.jpg",
-        "bignose.jpg",
-        "blue-flower.jpg",
-        "cat.jpg",
-        "cheetah.jpg",
-        "dog.jpg",
-        "football.jpg",
-        "giraffe.jpg",
-        "goofy.jpg",
-        "hedgehog.jpg",
-        "kitty.jpg",
-        "koala.jpg",
-        "monkey.jpg",
-        "orange-flower.jpg",
-        "pink-flower.jpg",
-        "puppy.jpg",
-        "ski.jpg",
-        "smilie.jpg",
-        "sneaker.jpg",
-        "soccer.jpg",
-        "thumbs.jpg",
-        "tiger.jpg",
-        "xcski.jpg",
-        "yellow-flower.jpg"
-      ]
+      avatars: [],
+        // "bear.jpg",
+        // "bignose.jpg",
+        // "blue-flower.jpg",
+        // "cat.jpg",
+        // "cheetah.jpg",
+        // "dog.jpg",
+        // "football.jpg",
+        // "giraffe.jpg",
+        // "goofy.jpg",
+        // "hedgehog.jpg",
+        // "kitty.jpg",
+        // "koala.jpg",
+        // "monkey.jpg",
+        // "orange-flower.jpg",
+        // "pink-flower.jpg",
+        // "puppy.jpg",
+        // "ski.jpg",
+        // "smilie.jpg",
+        // "sneaker.jpg",
+        // "soccer.jpg",
+        // "thumbs.jpg",
+        // "tiger.jpg",
+        // "xcski.jpg",
+        // "yellow-flower.jpg"
+      // ]
 
     }
+  },
+
+  created() {
+    // get list of avatars
+    this.avatars = getAvatars();
   },
 
 

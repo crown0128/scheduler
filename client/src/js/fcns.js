@@ -70,4 +70,35 @@ module.exports = {
 //     return;
 //   }
 
+  getAvatars: function() {
+    // this list is used in multple places to choose or update an avatar for a volunteer.
+    return [
+        "bear.jpg",
+        "bignose.jpg",
+        "blue-flower.jpg",
+        "cat.jpg",
+        "cheetah.jpg",
+        "dog.jpg",
+        "football.jpg",
+        "giraffe.jpg",
+        "goofy.jpg",
+        "hedgehog.jpg",
+        "kitty.jpg",
+        "koala.jpg",
+        "monkey.jpg",
+        "orange-flower.jpg",
+        "pink-flower.jpg",
+        "puppy.jpg",
+        "ski.jpg",
+        "smilie.jpg",
+        "sneaker.jpg",
+        "soccer.jpg",
+        "thumbs.jpg",
+        "tiger.jpg",
+        "xcski.jpg",
+        "yellow-flower.jpg"
+    ];
+  },
+
+
 };
