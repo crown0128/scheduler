@@ -2,7 +2,7 @@
   <div class="home mb-12">
 
     <!-- welcome and brief instructions -->
-    <h1>Welcome to the Slavin Scheduler!</h1>
+    <h1>Welcome to the (DEVELOPMENT) Slavin Scheduler!</h1>
     <!-- basic instructions -->
     <p class="pa-0 font-s">
       Click Schedules icon to manage (edit, add, delete, or run) schedules,

@@ -17,7 +17,7 @@
 <script>
   import axios from 'axios';
   import EditVolunteer from '../views/EditVolunteer';
-  import fcns from '../js/fcns.js';  // added 4/26/2020
+  import fcns from '../js/fcns.js';  // functions used more than one place
 
   export default {
     name: 'NewVolunteer',

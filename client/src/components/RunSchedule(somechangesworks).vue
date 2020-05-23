@@ -157,9 +157,6 @@ export default {
             // In each of those arrays are the specific dates the events are to be held.
             this.dates = fillSlateFcns.getDates(this.schedule, moment);
 
-            // for testing
-            // fillSlateFcns.consoleLogVolunteers(this.volunteers); // MMS for testing
-
 // // Need estimate for ...
 // //    maximum times each volunteer will serve per role (per weekly event) (maxTimesServedPerRole),
 // //        maxTimesServedPerRole
@@ -193,274 +190,163 @@ export default {
             // set up empty slate with dates & properties
             let workingSlate = fillSlateFcns.buildSkeleton(this.dates, roles, this.schedule.weeklyEvents, moment);
 
-            //  Determine the Order the roles (umpire, refreshments, etc) will be assigned.
-            //  This will be an array of indices into the roles variable
-            //  Those with most constraints (dates to avoid, "with"s, "notWith") are done first.
-            const orderOfRoles = fillSlateFcns.getOrder(this.volunteers, roles, "roles", "");
-            console.log("MMS: orderOfRoles: ");
-            console.log(orderOfRoles);
-            
-            //  For each role (in order)
-            orderOfRoles.forEach(role_index => {
-                const role = roles[role_index];
+            // do schedule for each weekly event separately
+            this.schedule.weeklyEvents.forEach((weeklyEvent, we) => {
 
+                // dates where roster is full; need one array / role (even if empty) to start
+                let datesFilledPerRole = [];
+                roles.forEach(role => datesFilledPerRole.push([]));
 
-                // For each weekly event (i.e. 9am Masses)
-                this.schedule.weeklyEvents.forEach((weeklyEvent, we) => {
+                // initialize the number of volunteers available for each role
+                // this gets re-created for each weekly event
+                let numberVolunteers = [];
 
-                    // Get volunteers for this role and weekly event
-                    const roleAndWEVolunteers = fillSlateFcns.getRoleAndWEVolunteers(this.volunteers, role, weeklyEvent);
-                    if (roleAndWEVolunteers.length === 0) {
-                        alert("No " + role + " volunteers available for " + weeklyEvent.day + " at " + weeklyEvent.time);
-                    } else {
-                        if (roleAndWEVolunteers.length < volsNeeded[role_index]) {
-                            alert("Not enough " + role + " volunteers available for " + weeklyEvent.day + " at " + weeklyEvent.time);
+                // number of slots to be filled for a specific role for one recurring weekly event
+                //   for the whole schedule (i.e. how many ushers needed Sat 5pm for all dates)
+                let totalSlotsPerRole = [];
+                // get the number of volunteers available for each role
+                // (OK to ignore dates not available - it's an estimate to help
+                //    distribute volunteers evenly over the schedule)
+
+                // number of slots filled for each role for this weekly event
+                let slotsFilled = []; // No slots filled for this role in this recurring event, yet
+
+                // firstDate helps us make sure we still are working with the right day of the week.
+                const firstDate = this.dates[we][0];
+                // when numberDates = datesChecked.length, we've checked them all
+                const numberDates = weeks[we];
+
+                roles.forEach((role, r) => {
+
+                    slotsFilled.push(0); // No slots filled for this role in this recurring event, yet
+                    numberVolunteers.push(0); // add an element for this role.
+                    totalSlotsPerRole.push(0); // add an element for this role.
+
+                    this.volunteers.forEach(volunteer => {
+
+                        // if volunteer wants this event time (role, day and time match)
+                        if (
+                            (volunteer.roles.includes(role)) &&
+                            (volunteer.prefTimes[0].day === weeklyEvent.day) &&
+                            (volunteer.prefTimes[0].time === weeklyEvent.time)
+                        ) {
+                            numberVolunteers[r]++
                         };
-                        console.log("MMS: role:  " + role);
-                        console.log("MMS: day & time:" + weeklyEvent.day + ", " + weeklyEvent.time);
-                        console.log("MMS: roleAndWEVolunteers:");
-                        console.log(roleAndWEVolunteers);
-                        
 
-                        // Determine order of volunteers.  
-                        //   Those with most constraints (dates to avoid, "with"s, "notWith"s) go first
-                        // const orderOfVols = fillSlateFcns.getOrder(this.volunteers, [role], "volunteers", weeklyEvent);
-                        const orderOfVols = fillSlateFcns.getOrder(roleAndWEVolunteers, [role], "volunteers", weeklyEvent);
-                        console.log("MMS: orderOfVols: ");
-                        console.log(orderOfVols);
-                                    
-                        // Initialize current volunteer & it's index
-                        let orderIdx = 0;
-                        let currentVolunteerIdx = orderOfVols[orderIdx];
-                        let currentVolunteer = roleAndWEVolunteers[currentVolunteerIdx];
-                        console.log("MMS: currentVolunteerIdx");
-                        console.log(currentVolunteerIdx);
-                        console.log("MMS: currentVolunteer");
-                        console.log(currentVolunteer);
+                    }); // end of for each volunteer in volunteers
 
-                        // For each date (ie. 5/10/20, then 5/17/20...)
-                        console.log("MMS: this.dates[we]: (for we = " + we);
-                        console.log(this.dates[we]);
+                    totalSlotsPerRole[r] = (volsNeeded[r] * weeks[we]);
 
+                }); // end of for each role in roles
 
-                        this.dates[we].forEach(date => {
-                            console.log("************************");
-                            console.log("In for each date loop.  We have...");
-                            console.log("date: " + date);
-                            console.log("--- MMS: current weekly event index (we): " + we);
-                            console.log("--- MMS: current weekly event (weeklyEvent - from forEach): ");
-                            console.log(weeklyEvent);
-                            console.log("MMS: currentVolunteer:");
-                            console.log(currentVolunteer);
-                            console.log("MMS: currentVolunteerIdx: (index into roleAndWEVolunteers):  " + currentVolunteerIdx);
+                //  Need to calculate maxTimesServedPerRole and maxRepeatPerRole
+                let maxTimesServedPerRole = [];
+                let maxRepeatPerRole = [];
 
-                            // For the number of volunteers needed for an individual event for this role
-                            //   i.e. The number of people assigned to refreshments for one game
-                            //   Loop until enough volunteers are assigned (or you run out of volunteers)
-                            console.log("MMS: volsNeeded:");
-                            console.log(volsNeeded);
-                            console.log("MMS: currentVolunteer.firstName:  " + currentVolunteer.firstName);
-                            console.log("MMS: currentVolunteerIdx:  " + currentVolunteerIdx);
-                            console.log("vols needed -- volsNeeded[role_index]:  " + volsNeeded[role_index]);
+                // if there are more slots / week to be filled than there are volunteers, show error message;
+                //   don't run schedule.  noErrors is flag to avoid displaying slate
+                volsNeeded.forEach((slot, s) => {
+                    maxTimesServedPerRole.push((weeks[we] * volsNeeded[s]) / numberVolunteers[s]);
+                    if (maxTimesServedPerRole[s] > weeks[we]) {
+                        this.errorMessage = "There are not enough volunteers to complete a schedule.  New schedule not created.";
+                        this.notMsg = "not ";
+                        this.noErrors = false;
+                    } else {
+                        this.errorMessage = "";
+                        this.notMsg = "";
+                        this.noErrors = true;
+                    }; // end of if more slots need to be filled per week than volunteers available.
 
-                            // Future release: if can be assigned where there's a WITH volunteer assigned, do that,
-                            //      then get next volunteer.  How to keep track of number of volunteers still needed?
+                    // calculate the estimated 
+                    //    maxTimesServedPerRole: 
+                    //       (# events x slots)/# volunteers, rounded up 
+                    //          (round after next step)
+                    //    and maxRepeatPerRole: 
+                    //       # events / maxTimesServed (before rounding) rounded up
+                    maxRepeatPerRole.push(Math.ceil(weeks[we] / maxTimesServedPerRole[s]));
+                    maxTimesServedPerRole[s] = (Math.ceil(maxTimesServedPerRole[s]));
 
-                            // No volunteers assigned, yet for this role on this specific date.
-                            let volsAssigned = 0;
+                }); // end of for each slot in slots
 
-                            console.log("before while loop: volsAssigned < volsNeeded[role_index]:");
-                            console.log(volsAssigned + " < " + volsNeeded[role_index]);
-                            while (volsAssigned < volsNeeded[role_index]) {
-                                console.log("MMS: ------ Begin while loop ------ ");
-                                console.log("MMS: volsAssigned: " + volsAssigned);
+                // start filling in slate!!
 
+                // for each weekly event (still in that loop)
 
-                                if (fillSlateFcns.volCanBeAssigned(currentVolunteer, workingSlate)) {
-                                    workingSlate = fillSlateFcns.scheduleVolunteer(currentVolunteer, role, date, weeklyEvent.time, workingSlate);
-                                };
-                                volsAssigned++;
+                // gather volunteers in this weekly event
+                const volsInWeeklyEvent = this.volunteers.filter(volunteer =>
+                    ((volunteer.prefTimes[0].day === weeklyEvent.day) &&
+                        (volunteer.prefTimes[0].time === weeklyEvent.time)
+                    )
+                );
 
-                                // get next volunteer
-                                orderIdx++;
-                                // start at first volunteer again, if at the end of the list
-                                if (orderIdx >= roleAndWEVolunteers.length) orderIdx = 0;
-                                // get the index of the next volunteer from the orderOfVols
-                                currentVolunteerIdx = orderOfVols[orderIdx];
-                                // get the next volunteer
-                                currentVolunteer = roleAndWEVolunteers[currentVolunteerIdx];
-                                console.log("Next volunteer: " + currentVolunteer.firstName);
-                            };  // end of while volsAssigned < volsNeeded[role_index
+                // put each volunteer in the schedule max times 
+                //     (may be more, later, if dates not available makes other serve more often )
+                volsInWeeklyEvent.forEach(volunteer => {
 
+                    // r is the index for the role of the current volunteer
+                    //   note:  roles is an array for a future release when a volunteer can have 
+                    //          more than one possible role
+                    // if r is -1, we don't need the role of this volunteer in this schedule, skip the volunteer
+                    const r = roles.indexOf(volunteer.roles[0]);
+                    if (!(r === -1)) {  // volunteer's role needed in this schedule
+                        // this volunteer is scheduled 0 times so far
+                        let timesServed = 0;
+                        // keep track of dates checked for this volunteer in this weeklyevent
+                        let datesChecked = [];
 
-                        });  // End of each date
-                                console.log("MMS: workingSlate:");
-                                console.log(workingSlate);
-                    }; // end of else (no volunteers for this weekly event & role)
+                        // start with first date in weeklyevents  
 
-                });  // end of each weekly event
+                        // currDate Should be first date of weekly events
+                        let currDate = firstDate;
 
-            });  //  End of each role
+                        // Reminder, totalSlotsPerRole is how many needed for this recurring event 
+                        //    i.e. number of "ushers" needed at this weekly recurring event over the whole schedule
 
+                        // repeat below until scheduled maxTimesServedPerRole, all roles filled, 
+                        //    or all dates checked for this volunteer
 
+                        // do for multiple dates!
+                        // continue if ....haven't met max times served,
+                        //              && not all dates checked
+                        //              && not all the slots for this role have been filled.
+                        //              && currDate not = 0 () means no more possible dates found.
+                    
+                        while ( (timesServed < maxTimesServedPerRole[r])
+                            && (datesChecked.length < numberDates)
+                            && (slotsFilled[r] < totalSlotsPerRole[r]) 
+                            && (currDate != 0) ) {
 
-// do schedule for each weekly event separately
-// this.schedule.weeklyEvents.forEach((weeklyEvent, we) => {
+                            if (this.goodDate(volunteer, currDate, weeklyEvent.time, workingSlate, roles[r], volsNeeded[r], we)) {
+                                // keep track of which dates have been checked for this volunteer
+                                datesChecked.push(currDate);
+                                datesFilledPerRole[r] = this.scheduleVolunteer(volunteer, r, roles, volsNeeded, currDate, this.schedule.weeklyEvents[we].time, workingSlate, datesFilledPerRole);
 
-//     // dates where roster is full; need one array / role (even if empty) to start
-//     let datesFilledPerRole = [];
-//     roles.forEach(role => datesFilledPerRole.push([]));
+                                timesServed++;
+                                slotsFilled[r]++;
 
-//     // initialize the number of volunteers available for each role
-//     // this gets re-created for each weekly event
-//     let numberVolunteers = [];
+                                // increment date by maxRepeat.. if this was a good date.
+                                currDate = this.pickNewDate(currDate, maxRepeatPerRole[r], datesChecked, firstDate, numberDates);
+                            } else {
+                                // keep track of which dates have been checked for this volunteer
+                                datesChecked.push(currDate);
 
-//     // number of slots to be filled for a specific role for one recurring weekly event
-//     //   for the whole schedule (i.e. how many ushers needed Sat 5pm for all dates)
-//     let totalSlotsPerRole = [];
-//     // get the number of volunteers available for each role
-//     // (OK to ignore dates not available - it's an estimate to help
-//     //    distribute volunteers evenly over the schedule)
+                                // increment date by one week if this was a bad date
+                                currDate = this.pickNewDate(currDate, 1, datesChecked, firstDate, numberDates);
+                            };
 
-//     // number of slots filled for each role for this weekly event
-//     let slotsFilled = []; // No slots filled for this role in this recurring event, yet
+                            // if currDate of 0 returned, then pickNewDate couldn't find any more valid
+                            //  dates for this volunteer.  Set datesChecked to ALL the dates, to stop checking.
+                            if (currDate === 0) { 
+                                datesChecked = this.dates[we];
+                            };
 
-//     // firstDate helps us make sure we still are working with the right day of the week.
-//     const firstDate = this.dates[we][0];
-//     // when numberDates = datesChecked.length, we've checked them all
-//     const numberDates = weeks[we];
+                        }; // end of while loop to fill slots with this volunteer
 
-//     roles.forEach((role, r) => {
+                    }; // end of if volunteer's role needed.
 
-//         slotsFilled.push(0); // No slots filled for this role in this recurring event, yet
-//         numberVolunteers.push(0); // add an element for this role.
-//         totalSlotsPerRole.push(0); // add an element for this role.
+                }); // of for each volunteer in volsInWeeklyEvent
 
-//         this.volunteers.forEach(volunteer => {
-
-//             // if volunteer wants this event time (role, day and time match)
-//             if (
-//                 (volunteer.roles.includes(role)) &&
-//                 (volunteer.prefTimes[0].day === weeklyEvent.day) &&
-//                 (volunteer.prefTimes[0].time === weeklyEvent.time)
-//             ) {
-//                 numberVolunteers[r]++
-//             };
-
-//         }); // end of for each volunteer in volunteers
-
-//         totalSlotsPerRole[r] = (volsNeeded[r] * weeks[we]);
-
-//     }); // end of for each role in roles
-
-//     //  Need to calculate maxTimesServedPerRole and maxRepeatPerRole
-//     let maxTimesServedPerRole = [];
-//     let maxRepeatPerRole = [];
-
-//     // if there are more slots / week to be filled than there are volunteers, show error message;
-//     //   don't run schedule.  noErrors is flag to avoid displaying slate
-//     volsNeeded.forEach((slot, s) => {
-//         maxTimesServedPerRole.push((weeks[we] * volsNeeded[s]) / numberVolunteers[s]);
-//         if (maxTimesServedPerRole[s] > weeks[we]) {
-//             this.errorMessage = "There are not enough volunteers to complete a schedule.  New schedule not created.";
-//             this.notMsg = "not ";
-//             this.noErrors = false;
-//         } else {
-//             this.errorMessage = "";
-//             this.notMsg = "";
-//             this.noErrors = true;
-//         }; // end of if more slots need to be filled per week than volunteers available.
-
-//         // calculate the estimated 
-//         //    maxTimesServedPerRole: 
-//         //       (# events x slots)/# volunteers, rounded up 
-//         //          (round after next step)
-//         //    and maxRepeatPerRole: 
-//         //       # events / maxTimesServed (before rounding) rounded up
-//         maxRepeatPerRole.push(Math.ceil(weeks[we] / maxTimesServedPerRole[s]));
-//         maxTimesServedPerRole[s] = (Math.ceil(maxTimesServedPerRole[s]));
-
-//     }); // end of for each slot in slots
-
-//     // start filling in slate!!
-
-//     // for each weekly event (still in that loop)
-
-//     // gather volunteers in this weekly event
-//     const volsInWeeklyEvent = this.volunteers.filter(volunteer =>
-//         ((volunteer.prefTimes[0].day === weeklyEvent.day) &&
-//             (volunteer.prefTimes[0].time === weeklyEvent.time)
-//         )
-//     );
-
-//     // put each volunteer in the schedule max times 
-//     //     (may be more, later, if dates not available makes other serve more often )
-//     volsInWeeklyEvent.forEach(volunteer => {
-
-//         // r is the index for the role of the current volunteer
-//         //   note:  roles is an array for a future release when a volunteer can have 
-//         //          more than one possible role
-//         // if r is -1, we don't need the role of this volunteer in this schedule, skip the volunteer
-//         const r = roles.indexOf(volunteer.roles[0]);
-//         if (!(r === -1)) {  // volunteer's role needed in this schedule
-//             // this volunteer is scheduled 0 times so far
-//             let timesServed = 0;
-//             // keep track of dates checked for this volunteer in this weeklyevent
-//             let datesChecked = [];
-
-//             // start with first date in weeklyevents  
-
-//             // currDate Should be first date of weekly events
-//             let currDate = firstDate;
-
-//             // Reminder, totalSlotsPerRole is how many needed for this recurring event 
-//             //    i.e. number of "ushers" needed at this weekly recurring event over the whole schedule
-
-//             // repeat below until scheduled maxTimesServedPerRole, all roles filled, 
-//             //    or all dates checked for this volunteer
-
-//             // do for multiple dates!
-//             // continue if ....haven't met max times served,
-//             //              && not all dates checked
-//             //              && not all the slots for this role have been filled.
-//             //              && currDate not = 0 () means no more possible dates found.
-        
-//             while ( (timesServed < maxTimesServedPerRole[r])
-//                 && (datesChecked.length < numberDates)
-//                 && (slotsFilled[r] < totalSlotsPerRole[r]) 
-//                 && (currDate != 0) ) {
-
-//                 if (this.goodDate(volunteer, currDate, weeklyEvent.time, workingSlate, roles[r], volsNeeded[r], we)) {
-//                     // keep track of which dates have been checked for this volunteer
-//                     datesChecked.push(currDate);
-//                     datesFilledPerRole[r] = this.scheduleVolunteer(volunteer, r, roles, volsNeeded, currDate, this.schedule.weeklyEvents[we].time, workingSlate, datesFilledPerRole);
-
-//                     timesServed++;
-//                     slotsFilled[r]++;
-
-//                     // increment date by maxRepeat.. if this was a good date.
-//                     currDate = this.pickNewDate(currDate, maxRepeatPerRole[r], datesChecked, firstDate, numberDates);
-//                 } else {
-//                     // keep track of which dates have been checked for this volunteer
-//                     datesChecked.push(currDate);
-
-//                     // increment date by one week if this was a bad date
-//                     currDate = this.pickNewDate(currDate, 1, datesChecked, firstDate, numberDates);
-//                 };
-
-//                 // if currDate of 0 returned, then pickNewDate couldn't find any more valid
-//                 //  dates for this volunteer.  Set datesChecked to ALL the dates, to stop checking.
-//                 if (currDate === 0) { 
-//                     datesChecked = this.dates[we];
-//                 };
-
-//             }; // end of while loop to fill slots with this volunteer
-
-//         }; // end of if volunteer's role needed.
-
-//     }); // of for each volunteer in volsInWeeklyEvent
-
-// }); // of for each weekly event in weeklyEvents (we is index)
+            }); // of for each weekly event in weeklyEvents (we is index)
             return workingSlate;
         }, // end of fillSlate method
 

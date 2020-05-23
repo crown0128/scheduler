@@ -264,3 +264,11 @@ Vue components used and purposes of each:
   Generates and displays a slate of volunteer assignments for a schedule.  
   Includes button to save the slate as a PDF file.
   
+
+  ## To run in development
+
+  In the top level folder (scheduler), start "node serve".
+
+  In the Client folder, type "npm run server".
+
+  Save development copy before running "npm run build".

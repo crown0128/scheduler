@@ -277,6 +277,67 @@ getRoleAndWEVolunteers: function(volunteers, role, weeklyEvent) {
 },  // end of function getRoleAndWEVolunteers
 
 
+volCanBeAssigned: function(volunteer, slate) {
+    console.log("MMS - in volCanBeAssigned");
+    console.log("MMS: volunteer.firstName: " + volunteer.firstName);
+    console.log("MMS: always returns TRUE, for now.");
+// returns TRUE if ok to schedule this volunteer
+// 
+
+    // LEFT OFF HERE     all dates of first we for the first role gets assigned ok.
+
+// checks - 
+//      Available this date (don't need - already filtered out)
+//      Available this role (don't need - already filtered out)
+//      Not already assigned this weekend
+//      No notWith people already assigned
+    var canBeAssigned = true;
+ 
+    return canBeAssigned;
+},  // end of volCanBeAssigned function
+
+
+// scheduleVolunteer: function(volunteer, r, roles, volsNeeded, date, time, slate) {
+scheduleVolunteer: function(volunteer, role, date, time, slate) {
+    // assign volunteer a spot (put in slate)
+
+    // where to update the assignment in the array (which object)
+    const timeDateIndex = slate.findIndex(timeDate => 
+        timeDate.date === date && timeDate.time === time
+    );
+
+    // get volunteer name
+    let volunteerName = volunteer.firstName.concat(" ", volunteer.lastName);
+
+    // push the assignment.
+    // put a space before the name if it's not the first. Comma's get added automatically.
+    if (slate[timeDateIndex][role].length > 0) {
+        volunteerName = " " + volunteerName;
+    };
+    slate[timeDateIndex][role].push(volunteerName);
+
+    // // get the datesFilled for this role; it will be an array of dates.
+    // let datesFilled = datesFilledPerRole[r];
+
+    // volunteersScheduled is the number of volunteers in this slot
+    //    (for this role, on this date, in this weekly event)
+    // const volunteersScheduled = workingSlate[timeDateIndex][role].length;
+
+    // // if the number of people scheduled is at least the number needed (volsNeeded),
+    // //   then add this date to the datesFilled array
+    // if (volunteersScheduled >= volsNeeded[r]) { datesFilled.push(date) };
+
+    return slate;
+},  // of schedule volunteer
+
+
+//   examplefcn: function(parameters) {
+
+//  // code goes here
+ 
+//     return stuff;
+//   },
+
 //   examplefcn: function(parameters) {
 
 //  // code goes here
