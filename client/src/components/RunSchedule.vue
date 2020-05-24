@@ -157,26 +157,15 @@ export default {
             // In each of those arrays are the specific dates the events are to be held.
             this.dates = fillSlateFcns.getDates(this.schedule, moment);
 
-            // for testing
+            // for testing; console logs all volunteers
             // fillSlateFcns.consoleLogVolunteers(this.volunteers); // MMS for testing
 
-// // Need estimate for ...
-// //    maximum times each volunteer will serve per role (per weekly event) (maxTimesServedPerRole),
-// //        maxTimesServedPerRole
-// //    and max gap between roles (i.e. 2 for every other day) (maxRepeatPerRole).
-// //        maxRepeatPerRole
-// //     maxTimesServedPerRole and maxRepeatPerRole are both arrays, one number for each role, and
-// //        will be in the same order as roleNames in roles
-// // These are used to distribute the volunteer assignments evenly over time, 
-// //   and assign the volunteers about the same number of times
-
-            // MMS - "weeks" is used later - will it be needed when I'm done??
-            // get number of weekly events (may not be the same for each weekly event,
-            //   if, for example, the start & end dates don't include full weeks)
-            let weeks = [];
-            this.dates.forEach(date => {
-                weeks.push(date.length);
-            }); // end of forEach date in dates
+            // // get number of weekly events (may not be the same for each weekly event,
+            // //   if, for example, the start & end dates don't include full weeks)
+            // let weeks = [];
+            // this.dates.forEach(date => {
+            //     weeks.push(date.length);
+            // }); // end of forEach date in dates
 
             // get the roles needed, and
             // the number of volunteers needed for each role (volsNeeded)
@@ -244,6 +233,9 @@ export default {
 
 
                         this.dates[we].forEach(date => {
+                            // We will need the dates of the week this date is in.
+                            const searchDates = fillSlateFcns.datesThisWeek(date, moment);
+
                             console.log("************************");
                             console.log("In for each date loop.  We have...");
                             console.log("date: " + date);
@@ -275,8 +267,7 @@ export default {
                                 console.log("MMS: ------ Begin while loop ------ ");
                                 console.log("MMS: volsAssigned: " + volsAssigned);
 
-
-                                if (fillSlateFcns.volCanBeAssigned(currentVolunteer, workingSlate)) {
+                                if (fillSlateFcns.volCanBeAssigned(currentVolunteer, workingSlate, searchDates, roles, moment)) {
                                     workingSlate = fillSlateFcns.scheduleVolunteer(currentVolunteer, role, date, weeklyEvent.time, workingSlate);
                                 };
                                 volsAssigned++;

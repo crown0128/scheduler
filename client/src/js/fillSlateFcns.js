@@ -277,22 +277,83 @@ getRoleAndWEVolunteers: function(volunteers, role, weeklyEvent) {
 },  // end of function getRoleAndWEVolunteers
 
 
-volCanBeAssigned: function(volunteer, slate) {
-    console.log("MMS - in volCanBeAssigned");
-    console.log("MMS: volunteer.firstName: " + volunteer.firstName);
-    console.log("MMS: always returns TRUE, for now.");
-// returns TRUE if ok to schedule this volunteer
-// 
+// given a date, returns an array of all dates in that week.
+// assumes Monday is the first day of the week
+datesThisWeek: function(date, moment) {
+    // Get all dates for this week.  Week begins on Monday.  Find first day of the week,
+    //    then build array of dates to search.
 
-    // LEFT OFF HERE     all dates of first we for the first role gets assigned ok.
+    // day is the next day to add to the array
+    let day;
+
+    // searchDate is the date passed in (date) in the format needed.
+    const searchDate = moment(date).format("YYYY-MM-DD");
+    
+    // get the date of the Monday of the week "date" is in.
+    // moment returns a Sunday for the start of the week, we need a Monday,
+    // so add one day to the Sunday returned to get Monday
+    //   If "date" is a Sunday, use Saturday so moment returns the previous Sunday,
+    //   and adding one day gets the previous Monday (rather than the next day)
+    if (moment(date).format("ddd") === "Sun") {
+        day = moment(date).add(-1,"days").startOf("week").add(1,"days").format("YYYY-MM-DD");
+    } else {
+        day = moment(date).startOf("week").add(1,"days").format("YYYY-MM-DD");
+    };
+
+    // push the day found, plus the next 6 days (7 total) to get the whole week.
+    let datesThisWeek = [];
+    for (let i = 0; i < 7; i++) {
+        datesThisWeek.push(day);
+        day = moment(day).add(1,"days").format("YYYY-MM-DD");
+    };
+
+    console.log("++++  datesThisWeek for " + date);
+    console.log(datesThisWeek);
+    return datesThisWeek;
+}, // end of function datesThisWeek
+
 
 // checks - 
 //      Available this date (don't need - already filtered out)
 //      Available this role (don't need - already filtered out)
 //      Not already assigned this weekend
 //      No notWith people already assigned
+volCanBeAssigned: function(volunteer, slate, searchDates, roles, moment) {
+// returns TRUE if ok to schedule this volunteer
+
+    // assume good until proven otherwise
     var canBeAssigned = true;
- 
+
+    // Name to search for
+    const searchName = volunteer.firstName + " " + volunteer.lastName;
+
+    // A volunteer should only be scheduled once per recurring event.  
+    // This section looks for the given volunteer in the schedule for the given dates.
+
+    // Get part of slate for this set of dates (this week)
+    let thisWeekSlate = slate.filter(event => searchDates.includes(event.date));
+  
+    // Get elements with the names
+    let resultsNameSearch;
+    for (let thisWeekSlateIdx = 0; thisWeekSlateIdx < thisWeekSlate.length; thisWeekSlateIdx++) {
+        let thisOneEventSlate = thisWeekSlate[thisWeekSlateIdx];
+
+        for (let rolesIdx = 0; rolesIdx < roles.length; rolesIdx++) {
+            let role = roles[rolesIdx];
+            resultsNameSearch = thisOneEventSlate[role].includes(searchName);
+            if (resultsNameSearch != false) {
+                canBeAssigned = false;
+                break;
+            };
+        };
+        if (!canBeAssigned) break;
+    };  // of for thisWeekSlateIdx 0 to length of thisWeekSlate (each event in thisWeekSlate)
+
+    // LEFT OFF HERE 
+    // If canBeAssigned is still true, check to see if anyone is already assigned that this volunteer
+    //    shouldn't be assigned with    
+
+    console.log("RETURNING canBeAssigned: " + canBeAssigned);
     return canBeAssigned;
 },  // end of volCanBeAssigned function
 
