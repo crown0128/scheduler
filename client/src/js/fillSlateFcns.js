@@ -4,10 +4,10 @@ module.exports = {
     consoleLogVolunteers: function(volunteers) {
 
         console.log("VOLUNTEERS");
-        console.log("----------");
-        //  // code goes here
-        volunteers.forEach(volunteer => {
-            console.log("Name: " + volunteer.firstName + " " + volunteer.lastName);
+        volunteers.forEach((volunteer, v) => {
+            console.log("----------");
+            console.log("Name: " + volunteer.firstName + " " + volunteer.lastName + " (index is " + v + ")");
+            console.log("_id:  " + volunteer._id);
             console.log("Email address & image file: " + volunteer.email + "; " + volunteer.image);
 
             let text = "";
@@ -34,7 +34,7 @@ module.exports = {
 
         });
     
-    },
+    },  // end of function consoleLogVolunteers (for testing purposes)
 
 
   // Get the actual dates for each of the weekly events in the schedule:
@@ -307,8 +307,6 @@ datesThisWeek: function(date, moment) {
         day = moment(day).add(1,"days").format("YYYY-MM-DD");
     };
 
-    console.log("++++  datesThisWeek for " + date);
-    console.log(datesThisWeek);
     return datesThisWeek;
 }, // end of function datesThisWeek
 
@@ -318,42 +316,91 @@ datesThisWeek: function(date, moment) {
 //      Available this role (don't need - already filtered out)
 //      Not already assigned this weekend
 //      No notWith people already assigned
-volCanBeAssigned: function(volunteer, slate, searchDates, roles, moment) {
+volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, volunteers, moment) {
 // returns TRUE if ok to schedule this volunteer
 
-    // assume good until proven otherwise
-    var canBeAssigned = true;
+    function findNameInSlate(name, subSlate, roles) {
 
-    // Name to search for
-    const searchName = volunteer.firstName + " " + volunteer.lastName;
+        // The name hasn't been found, yet.
+        let found = false;
+
+        // Get elements with the names
+        let resultsNameSearch;
+
+        // for each event in the part of the slate passed in,
+        //    look for the given name in each role
+        for (let subSlateIdx = 0; subSlateIdx < subSlate.length; subSlateIdx++) {
+            let thisOneEventSlate = subSlate[subSlateIdx];
+
+            // For each role, look for the given name
+            for (let rolesIdx = 0; rolesIdx < roles.length; rolesIdx++) {
+                let role = roles[rolesIdx];
+                resultsNameSearch = thisOneEventSlate[role].includes(name);
+                // if at least one name is found, set found to true and exit for loop
+                if (resultsNameSearch != false) {
+                    found = true;
+                    break;
+                };
+            };  // of for each role
+
+            // no need to continue searching in other rolse if the name has been found
+            if (found) break;
+
+        };  // of for subSlateIdx 0 to length of subSlate (each event in subSlate)
+
+        return found;
+    };  // end of function findNameInSlate (defined in function volCanBeAssigned)
+
+
+    // Assume volunteer canBeAssigned until proven otherwise
+    let canBeAssigned = true;
 
     // A volunteer should only be scheduled once per recurring event.  
     // This section looks for the given volunteer in the schedule for the given dates.
+    
+    // Name to search for
+    const searchName = volunteer.firstName + " " + volunteer.lastName;
 
     // Get part of slate for this set of dates (this week)
     let thisWeekSlate = slate.filter(event => searchDates.includes(event.date));
+    // console.log("============ THIS WEEK SLATE (MMS) ============");
+    // thisWeekSlate.forEach(x => {
+    //     console.log(x);
+    //     console.log(x.date);
+    //     console.log(x.time);
+    //     console.log(x.EM);
+    // });
+
+    // findNameInSlate returns true if the given name is found in the part of the slate passed in.
+    let isNameInSubSlate;
+    isNameInSubSlate = findNameInSlate(searchName, thisWeekSlate, roles);
+
+    // if found, then volunteer is already scheduled this week, and can't be scheduled again.
+    if (isNameInSubSlate) return canBeAssigned = false;
   
-    // Get elements with the names
-    let resultsNameSearch;
-    for (let thisWeekSlateIdx = 0; thisWeekSlateIdx < thisWeekSlate.length; thisWeekSlateIdx++) {
-        let thisOneEventSlate = thisWeekSlate[thisWeekSlateIdx];
+    // Next, check to see if anyone is already assigned that this volunteer
+    //    shouldn't be assigned with
+    // There may be more than one "notWith", so get all the notWith names, and search for each one
+    
+    // Get names to be searched
+    let notWithNames = [];
+    let foundVol;
+    volunteer.notWith.forEach(volId => {
+        foundVol = volunteers.filter(vol => vol._id === volId);
+        // foundVol.forEach(x => console.log(JSON.parse(JSON.stringify(x))));
+        notWithNames.push(foundVol[0].firstName + " " + foundVol[0].lastName);
+    });
 
-        for (let rolesIdx = 0; rolesIdx < roles.length; rolesIdx++) {
-            let role = roles[rolesIdx];
-            resultsNameSearch = thisOneEventSlate[role].includes(searchName);
-            if (resultsNameSearch != false) {
-                canBeAssigned = false;
-                break;
-            };
-        };
-        if (!canBeAssigned) break;
-    };  // of for thisWeekSlateIdx 0 to length of thisWeekSlate (each event in thisWeekSlate)
+    // Only need to search this specific event.
+    const thisDateSlate = thisWeekSlate.filter(event => (event.date === date) && (event.time === time));
 
-    // LEFT OFF HERE 
-    // If canBeAssigned is still true, check to see if anyone is already assigned that this volunteer
-    //    shouldn't be assigned with    
+    // Search for each name.  If found, this volunteer can't be scheduled here. Return false.
+    notWithNames.forEach(name => {
+        isNameInSubSlate = findNameInSlate(name, thisDateSlate, roles);  // this doesn't seem to be working
+        if (isNameInSubSlate) return canBeAssigned = false;
+    })
 
-    console.log("RETURNING canBeAssigned: " + canBeAssigned);
+    // if we've made it to here, volunteer can be assigned.
     return canBeAssigned;
 },  // end of volCanBeAssigned function
 

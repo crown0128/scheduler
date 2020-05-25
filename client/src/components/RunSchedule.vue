@@ -152,11 +152,17 @@ export default {
 
         fillSlate() {
 
+
             // get actual dates needed.
             // dates is nested.  There is one array for each recurring weekly event.
             // In each of those arrays are the specific dates the events are to be held.
             this.dates = fillSlateFcns.getDates(this.schedule, moment);
 
+            // for testing;  MMS
+            // Felicia & Regina can't serve together...
+            // volunteers[2] is Felicia; [19] is Regina; [3] is Danielle
+            this.volunteers[2].notWith = [this.volunteers[19]._id, this.volunteers[3]._id];
+            this.volunteers[19].notWith = [this.volunteers[2]._id, this.volunteers[3]._id];
             // for testing; console logs all volunteers
             // fillSlateFcns.consoleLogVolunteers(this.volunteers); // MMS for testing
 
@@ -186,8 +192,6 @@ export default {
             //  This will be an array of indices into the roles variable
             //  Those with most constraints (dates to avoid, "with"s, "notWith") are done first.
             const orderOfRoles = fillSlateFcns.getOrder(this.volunteers, roles, "roles", "");
-            console.log("MMS: orderOfRoles: ");
-            console.log(orderOfRoles);
             
             //  For each role (in order)
             orderOfRoles.forEach(role_index => {
@@ -205,55 +209,25 @@ export default {
                         if (roleAndWEVolunteers.length < volsNeeded[role_index]) {
                             alert("Not enough " + role + " volunteers available for " + weeklyEvent.day + " at " + weeklyEvent.time);
                         };
-                        console.log("MMS: role:  " + role);
-                        console.log("MMS: day & time:" + weeklyEvent.day + ", " + weeklyEvent.time);
-                        console.log("MMS: roleAndWEVolunteers:");
-                        console.log(roleAndWEVolunteers);
-                        
 
                         // Determine order of volunteers.  
                         //   Those with most constraints (dates to avoid, "with"s, "notWith"s) go first
                         // const orderOfVols = fillSlateFcns.getOrder(this.volunteers, [role], "volunteers", weeklyEvent);
                         const orderOfVols = fillSlateFcns.getOrder(roleAndWEVolunteers, [role], "volunteers", weeklyEvent);
-                        console.log("MMS: orderOfVols: ");
-                        console.log(orderOfVols);
                                     
                         // Initialize current volunteer & it's index
                         let orderIdx = 0;
                         let currentVolunteerIdx = orderOfVols[orderIdx];
                         let currentVolunteer = roleAndWEVolunteers[currentVolunteerIdx];
-                        console.log("MMS: currentVolunteerIdx");
-                        console.log(currentVolunteerIdx);
-                        console.log("MMS: currentVolunteer");
-                        console.log(currentVolunteer);
 
                         // For each date (ie. 5/10/20, then 5/17/20...)
-                        console.log("MMS: this.dates[we]: (for we = " + we);
-                        console.log(this.dates[we]);
-
-
                         this.dates[we].forEach(date => {
                             // We will need the dates of the week this date is in.
                             const searchDates = fillSlateFcns.datesThisWeek(date, moment);
 
-                            console.log("************************");
-                            console.log("In for each date loop.  We have...");
-                            console.log("date: " + date);
-                            console.log("--- MMS: current weekly event index (we): " + we);
-                            console.log("--- MMS: current weekly event (weeklyEvent - from forEach): ");
-                            console.log(weeklyEvent);
-                            console.log("MMS: currentVolunteer:");
-                            console.log(currentVolunteer);
-                            console.log("MMS: currentVolunteerIdx: (index into roleAndWEVolunteers):  " + currentVolunteerIdx);
-
                             // For the number of volunteers needed for an individual event for this role
                             //   i.e. The number of people assigned to refreshments for one game
                             //   Loop until enough volunteers are assigned (or you run out of volunteers)
-                            console.log("MMS: volsNeeded:");
-                            console.log(volsNeeded);
-                            console.log("MMS: currentVolunteer.firstName:  " + currentVolunteer.firstName);
-                            console.log("MMS: currentVolunteerIdx:  " + currentVolunteerIdx);
-                            console.log("vols needed -- volsNeeded[role_index]:  " + volsNeeded[role_index]);
 
                             // Future release: if can be assigned where there's a WITH volunteer assigned, do that,
                             //      then get next volunteer.  How to keep track of number of volunteers still needed?
@@ -267,11 +241,16 @@ export default {
                                 console.log("MMS: ------ Begin while loop ------ ");
                                 console.log("MMS: volsAssigned: " + volsAssigned);
 
-                                if (fillSlateFcns.volCanBeAssigned(currentVolunteer, workingSlate, searchDates, roles, moment)) {
+                                if (fillSlateFcns.volCanBeAssigned(currentVolunteer, workingSlate, date, weeklyEvent.time, searchDates, roles, this.volunteers, moment)) {
+                                    console.log("MMS: in fillSlate, volCanBeAssigned returned  ****  TRUE  ****");
                                     workingSlate = fillSlateFcns.scheduleVolunteer(currentVolunteer, role, date, weeklyEvent.time, workingSlate);
+                                    volsAssigned++;
+                                } else { console.log("MMS: in fillSlate, volCanBeASsigned returned **** FALSE ****")
                                 };
-                                volsAssigned++;
 
+                                // LEFT OFF HERE - 
+                                //     TO DO - if volunteer is skipped over because of "notWith", go back to them.
+                                //          how to handle "with"
                                 // get next volunteer
                                 orderIdx++;
                                 // start at first volunteer again, if at the end of the list
