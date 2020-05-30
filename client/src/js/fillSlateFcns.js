@@ -17,7 +17,7 @@ module.exports = {
 
             text = "";
             volunteer.prefTimes.forEach(prefTime => {
-                text = text + "  " + prefTime.day + "/" + prefTime.time + " @ " + prefTime.percentPreferred + "%;";
+                text = text + "  " + prefTime.day + "/" + prefTime.time + " @ " + prefTime.percentPreferred + ";";
             });
             console.log("Preferred times:" + text);
 
@@ -335,9 +335,9 @@ module.exports = {
     orderedIdxes.forEach(idx => {
         volunteers[idx].prefTimes.forEach(prefTime => {
             if ((prefTime.day === weeklyEvent.day) && (prefTime.time === weeklyEvent.time)) {
-                availVols = availVols + (prefTime.percentPreferred/100);
+                availVols = availVols + (prefTime.percentPreferred);
             };
-            percentPref.push(prefTime.percentPreferred/100);
+            percentPref.push(prefTime.percentPreferred);
         });
     });
     // console.log("MMS: availVols for " + weeklyEvent.day + "; " + weeklyEvent.time + " is:  " + availVols);
@@ -505,7 +505,7 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
 
         // for each event in the part of the slate passed in,
         //    look for the given name in each role
-        // LEFT OFF - (just needs fixing) ...
+        // LEFT OFF - (just needs fixing for performance) ...
         //   ...if this volunteer isn't this role, no need to check everything!
         for (let subSlateIdx = 0; subSlateIdx < subSlate.length; subSlateIdx++) {
             let thisOneEventSlate = subSlate[subSlateIdx];
@@ -620,9 +620,6 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
     // AVAILABLE THIS DATE
     // volunteer is NOT available if the date is found 
     function isVolunteerAvailable(volunteer, date) {
-
-        // LEFT OFF - not working properly.  Use bigger test case.  Felicia not avail 4 dates.
-
         // Assume the volunteer is available, unless found otherwise
         let volAvail = true;
 

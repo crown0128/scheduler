@@ -129,6 +129,27 @@ export default {
         // }, // end of getDates
 
 
+        // NOTE TO SELF TO DO... (LEFT OFF - for searching purposes ... search for "LEFT OFF")
+        //   - Don't delete all ministries or all roles with delete.
+        //   - ONE alert for all volunteer deficiencies.
+        //   - Do "with"
+        //      ideas:
+        //          for each role & we, before any assignments, for those with a "with" person...
+        //              determine approx # of times they'll serve, and trunc (don't over-estimate),
+        //              look for when their "with" person is assigned,
+        //              if other conditions met (no notWith, not already assigned, available),
+        //                  then assign (remember to update number of times assigned)
+        //          then need to account for this when doing "regular" assignments
+        //              like in number of volunteers assigned for a specific date and role
+        //   - interface to enter and store With and notWith
+        //   - roles (like Sacristan) that can be doubled up
+        //          skip checking if already assigned in canVolBeAssigned for this case.
+        //   - ES linter
+        //   - tidy code (delete console.log's, indenting, etc.)
+        //   - also print to Excel or Word (to edit?)
+        //   - print stats of schedule at end - how many times each person scheduled...
+
+        //   
         // Get the volunteers from the database, create and fill slates,
         //  slates is an array of objects, where each object is the schedule 
         // with volunteer assignments for one specific event on a given date and time.

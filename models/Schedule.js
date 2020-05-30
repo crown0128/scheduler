@@ -60,6 +60,7 @@ const ScheduleSchema = new Schema({
   },
 
   // if more than one schedule run, use to append to the name
+  //   (for future release)
   version: {
     type: Number,
     default: 0

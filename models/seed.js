@@ -191,7 +191,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },         
             {
@@ -204,7 +204,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }],
                 'notAvailable': ["2020-03-08"]
             },         
@@ -218,7 +218,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },         
             {
@@ -231,7 +231,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },         
             {
@@ -244,7 +244,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -257,7 +257,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -270,7 +270,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -283,7 +283,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -296,7 +296,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Sunday",
                     'time': '11:15',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -309,7 +309,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },         
             {
@@ -322,7 +322,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },         
             {
@@ -335,7 +335,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },         
             {
@@ -348,7 +348,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },         
             {
@@ -361,7 +361,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -374,7 +374,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -387,7 +387,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -400,7 +400,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
             {
@@ -413,7 +413,7 @@ const data = [
                 'prefTimes': [{
                     'day': "Saturday",
                     'time': '17:00',
-                    'percentPreferred': 100
+                    'percentPreferred': 1
                 }]
             },
         ]

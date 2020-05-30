@@ -19,13 +19,19 @@ const prefTimesSchema = new Schema({
     required: true
   },
 
-  // This is always 100% for the initial release.
+  // This is always 100% (1.00) for the initial release.
   // For a future release, volunteers can choose multiple
-  //   preferences, and total should equal 100%
+  //   day of week & time (weekly event) preferences.
+  //   For example, available for both the Sunday 1pm and Wed 7pm events,
+  //   but prefers Wed: percentPreferred for Sunday: 0.25, and Wed: 0.75.
+  // Could add up to less than 100% (1.00) (i.e. if a volunteer 
+  //   is only assigned 1/4 of the time.),
+  // Shouldn't add up to more than 100% (1.00), but could, if someone is
+  //   serving more often than others.
   percentPreferred: {
     type: Number,
-    min: 0,
-    max: 100,
+    min: .01,
+    max: 1.00,
     required: true
   }
   

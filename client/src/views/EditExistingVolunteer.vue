@@ -346,7 +346,7 @@ export default {
         prefTimes: {
           day: this.timeSlots[this.preferredTime].day,
           time: this.timeSlots[this.preferredTime].time,
-          percentPreferred: 100
+          percentPreferred: 1
         },
         notAvailable: this.badDates,
         // Save with and notWith features for a future release
