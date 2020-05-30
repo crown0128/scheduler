@@ -73,6 +73,7 @@ Here is an example of the slate generated.  Clicking the area indicated will cre
 
 
 ## Database structure
+![Database diagram](client/documentation/dbdiagram.png)
 
 There are two tables in the database: one for Schedules, and one for Volunteers.
 
@@ -104,7 +105,7 @@ Volunteers:
   - _id: unique Mongo id
   - day: String, required  -  day of week (i.e. "Saturday")
   - time: String, required  // time of weekly event  -  time of day (i.e. "17:15")
-  - percentPreferred: Number between 0 and 100, required, default 100  -  (not being used, yet)
+  - percentPreferred: Number between 0.01 and 1.00, required, default 1.00  -  (not being used, yet)
   - with: array of:  -  who to schedule with (not used, yet)
     - ObjectId: (of volunteer to schedule with)
   - notWith: array of:  -  who to avoid scheduling with (not used, yet)

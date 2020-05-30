@@ -21,15 +21,13 @@ const WeeklyEventSchema = new Schema({
     
   // when does the event happen each week
   // one document for each week (day/time)
-  // 1 for Sunday... 7 for Saturday
   day: {
     type: String,
     required: "Date / time of event is required.",
     enum: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   },
 
-  // time of weekly event 
-  // so can't use time stamp / date datatype
+  // time of weekly event; expected in "hh:mm" 24 clock format
   time: {
     type: String,
     required: true
@@ -40,7 +38,8 @@ const WeeklyEventSchema = new Schema({
 
 const ScheduleSchema = new Schema({
     
-  // start date of schedule
+  // name of schedule
+  // default name is today's date.
   name: {
     type: String,
     required: Date.now.toString(),
@@ -53,7 +52,7 @@ const ScheduleSchema = new Schema({
     required: "Start date is required."
   },
 
-  // start date of schedule
+  // end date of schedule
   endDate: {
     type: String,
     required: "End date is required."

@@ -12,8 +12,7 @@ const prefTimesSchema = new Schema({
     enum: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
   },
 
-  // time of weekly event 
-  // so can't use time stamp / date datatype
+  // time of weekly event (expected in "hh:mm" 24 hr format)
   time: {
     type: String,
     required: true
@@ -86,7 +85,7 @@ const VolunteerSchema = new Schema({
     }
   ],
 
-  // array of eventInfo ids when the volunteer is NOT available
+  // array of dates in "yyyy-mm-dd" format when the volunteer is NOT available
   notAvailable: [{ type: String }]
 
 });
