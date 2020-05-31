@@ -17,6 +17,7 @@
         >
           <v-icon dark>mdi-arrow-left</v-icon>
         </v-btn>
+        Back
       </v-col>
 
     </v-row>
@@ -177,6 +178,7 @@
         <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
           <v-icon dark @click="handleSaveNewVolunteer(volunteers);"> mdi-content-save-outline</v-icon>
         </v-btn>
+        Save
       </v-col>
 
     </v-row>

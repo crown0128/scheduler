@@ -13,7 +13,7 @@
     <!-- List day of week and time of each weekly event -->
   <v-row id="edit-weekly">
     
-    <v-col cols="4" class="pr-1 offset-lg-1 daytimepicker">
+    <v-col cols="3" class="pr-1 offset-lg-1 daytimepicker">
       <!-- choose day of week -->
       <v-select 
         class="select"
@@ -61,7 +61,7 @@
     </v-col>
 
     <!-- icon to save new weekly event -->
-    <v-col cols="1" class="mt-3">
+    <v-col cols="2" class="mt-3">
       <v-btn 
         class="mr-0 ml-3" 
         fab dark x-small 
@@ -70,10 +70,11 @@
       >
         <v-icon dark>mdi-content-save-outline</v-icon>
       </v-btn>
+      <p class="ml-2">Save</p>
     </v-col>
 
     <!-- icon to return to schedules -->
-    <v-col cols="1" class="mt-3 ml-3">
+    <v-col cols="2" class="mt-3 ml-3">
       <v-btn
         v-if="!flags.addingNewSchedule" 
         class="mr-0 ml-3" 
@@ -83,6 +84,7 @@
       >
         <v-icon dark>mdi-arrow-left</v-icon>
       </v-btn>
+      <p class="ml-2">Back</p>
     </v-col>
 
   </v-row>
@@ -97,23 +99,23 @@
       :weeklyEvent="weeklyEvent">
 
       <v-row>
-        <v-col cols="6" class="offset-sm-1 mt-0">
+        <v-col cols="5" class="offset-sm-1 mt-0">
           <v-list-item class="pa-0">
               {{ weeklyEvent.day }} at {{ weeklyEvent.time }}            
           </v-list-item>
         </v-col>
 
-        <v-col cols="1">
+        <v-col cols="2">
           <v-btn 
             class="mr-0 small-dlt mt-3" 
             fab dark color="teal"
             @click="handleDeleteWeeklyEvent(schedules, scheduleIndex, i)"
           >
-          <v-icon 
-            dark
-          >
-            mdi-delete-circle
-          </v-icon>
+            <v-icon 
+              dark
+            >
+              mdi-delete-circle
+            </v-icon>
           </v-btn>
         </v-col>
 
@@ -185,7 +187,6 @@ export default {
     // Is this used other places?  Should it be modularized?
     // update the schedule object and update the database
     handleSaveWeeklyEvent(schedules, scheduleIndex) {
-
       schedules[scheduleIndex].weeklyEvents.push({
         day: this.day,
         time: this.newTime

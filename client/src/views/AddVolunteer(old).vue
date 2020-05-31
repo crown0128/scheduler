@@ -30,7 +30,7 @@
             <v-card-text class="py-0 px-1 inputCard">
               <v-form>
                 <v-text-field 
-                  label="First Name" 
+                  label="First (addvol) Name" 
                   class="py-0" 
                   v-model="firstName" 
                   autofocus
@@ -93,14 +93,13 @@
     </v-row>
 
 
-
-
     <v-row>
+      <!-- <ChooseRole  here -->
       <!-- choose roles & preferred times -->
       <v-col cols="6" class="white">
-        <p class="text-left">Choose role(s):</p>
-        <!-- to choose more than one in a future release
-        <checkbox class="ml-2 my-0 list-height" -->
+        <p class="text-left">Choose (addvol) role(s):</p>
+            <!-- to choose more than one in a future release
+            <checkbox class="ml-2 my-0 list-height" -->
         <v-radio-group class="ml-2"
           v-model="rolesChosen"
         ><v-radio
@@ -187,6 +186,42 @@
       </v-col>
 
     </v-row>
+
+    <!-- choose volunteers to schedule with, and to AVOID scheduling with -->
+    <!-- <v-row> -->
+      <!-- <v-col cols="6" class="white"> -->
+        <!-- <p class="text-left">Choose volunteers to schedule with:</p> -->
+        <!-- <v-radio-group class="ml-2" -->
+          <!-- v-model="with" -->
+        <!-- ><v-radio -->
+            <!-- class = "my-0 list-height" -->
+            <!-- v-for="(timeSlot, index) in timeSlots" -->
+            <!-- v-bind:key="index" -->
+            <!-- :label="formatTime(timeSlot)" -->
+            <!-- :value="`${index}`" -->
+            <!-- color="teal" -->
+          <!-- ></v-radio> -->
+        <!-- </v-radio-group> -->
+
+      <!-- </v-col> -->
+
+      <!-- <v-col cols="6" class="white"> -->
+        <!-- <p class="text-left">Choose volunteers avoid scheduling with:</p> -->
+        <!-- <v-radio-group class="ml-2" -->
+          <!-- v-model="notWith" -->
+        <!-- ><v-radio -->
+            <!-- class = "my-0 list-height" -->
+            <!-- v-for="(timeSlot, index) in timeSlots" -->
+            <!-- v-bind:key="index" -->
+            <!-- :label="formatTime(timeSlot)" -->
+            <!-- :value="`${index}`" -->
+            <!-- color="teal" -->
+          <!-- ></v-radio> -->
+        <!-- </v-radio-group> -->
+
+      <!-- </v-col> -->
+
+    <!-- </v-row> -->
 
 
     <!-- scheduling with and not-with saved for a future release -->

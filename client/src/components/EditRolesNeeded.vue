@@ -13,9 +13,9 @@
   
   <!-- enter new role name -->
   <v-row id="edit-role">
-    <v-col cols="5" class="pr-1 offset-lg-1 pb-0">
+    <v-col cols="4" class="pr-1 offset-lg-1 pb-0">
       <v-card class="inputCard">
-        <v-card-text class="py-0 px-1 inputCard">
+        <v-card-text class="py-0 inputCard">
           <v-form>
             <v-text-field label="New Role Name" class="py-0" v-model="newRole" autofocus>
             </v-text-field>
@@ -25,9 +25,9 @@
     </v-col>
 
     <!-- choose number of volunteers needed for that role -->
-    <v-col cols="3" class="pb-0">
+    <v-col cols="2" class="pb-0">
       <v-card class="inputCard">
-        <v-card-text class="py-0 px-1 inputCard">
+        <v-card-text class="py-0 inputCard">
           <v-form>
             <v-text-field type="number" placeholder="#" class="py-0" v-model="newNumNeeded">
             </v-text-field>
@@ -37,7 +37,7 @@
     </v-col>
 
     <!-- icon for save button to save new role -->
-    <v-col cols="1" class="mt-3">
+    <v-col cols="2" class="mt-3">
       <v-btn 
         class="mr-1" 
         fab dark x-small 
@@ -46,10 +46,11 @@
       >
         <v-icon dark>mdi-content-save-outline</v-icon>
       </v-btn>
+      Save
     </v-col>
     
     <!-- icon to return to schedules -->
-    <v-col cols="1" class="mt-3 ml-3">
+    <v-col cols="2" class="mt-3 ml-3">
       <v-btn 
         v-if="!flags.addingNewSchedule" 
         class="mr-1" 
@@ -59,6 +60,7 @@
       >
         <v-icon dark>mdi-arrow-left</v-icon>
       </v-btn>
+      Back
     </v-col>
 
   </v-row>
@@ -89,6 +91,7 @@
           >
             <v-icon dark>mdi-delete-circle</v-icon>
           </v-btn>
+          
         </v-col>
 
       </v-row>

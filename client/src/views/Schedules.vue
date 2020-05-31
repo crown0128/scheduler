@@ -18,6 +18,7 @@
         >
           <v-icon dark>mdi-arrow-left</v-icon>
         </v-btn>
+        Back
       </v-col>
 
     </v-row>
@@ -55,6 +56,7 @@
             >
               <v-icon dark>mdi-delete-circle</v-icon>
             </v-btn>
+            Delete
           </v-col>
         </v-row>
       </div>

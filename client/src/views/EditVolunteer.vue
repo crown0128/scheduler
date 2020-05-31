@@ -17,6 +17,7 @@
         >
           <v-icon dark>mdi-arrow-left</v-icon>
         </v-btn>
+        Back
       </v-col>
 
     </v-row>
@@ -26,7 +27,7 @@
         <!-- enter first name -->
         <v-col cols="3">
           <v-card class="inputCard">
-            <v-card-text class="py-0 px-1 inputCard">
+            <v-card-text class="py-0 inputCard">
               <v-form>
                 <v-text-field 
                   label="First Name" 
@@ -43,7 +44,7 @@
         <!-- enter last name -->
         <v-col cols="3">
           <v-card class="inputCard">
-            <v-card-text class="py-0 px-1 inputCard">
+            <v-card-text class="py-0 inputCard">
               <v-form>
                 <v-text-field 
                   label="Last Name" 
@@ -59,7 +60,7 @@
         <!-- enter email -->
         <v-col cols="3">
           <v-card class="inputCard">
-            <v-card-text class="py-0 px-1 inputCard">
+            <v-card-text class="py-0 inputCard">
               <v-form>
                 <v-text-field 
                   label="Email" 
@@ -76,7 +77,7 @@
         <!-- choose image file -->
         <v-col cols="3">
           <v-card class="inputCard">
-            <v-card-text class="py-0 px-1 inputCard">
+            <v-card-text class="py-0 inputCard">
               <v-form class='match-height'>
                 <v-select
                   label="Choose avatar image." 
@@ -135,9 +136,9 @@
 
     <v-row>
         <!-- choose availability -->
-      <v-col cols="11">
+      <v-col cols="12">
         <v-card class="inputCard">
-          <v-card-text class="py-0 px-1 inputCard">
+          <v-card-text class="py-0 inputCard">
 
 
             <v-dialog
@@ -177,54 +178,54 @@
         </v-card>
       </v-col>
 
+    </v-row>
+
+
+    <!-- scheduling with and not-with  -->
+
+    <v-row>
+        <!-- choose who to schedule with (or not) -->
+ 
+                   <!-- choose roles & preferred times -->
+      <!-- <v-col cols="5" class="white"> -->
+        <!-- <p class="text-left">Choose volunteers to schedule this person with:</p> -->
+        <!-- <v-checkbox class="ml-2 my-0 list-height" -->
+          <!-- v-for="(volunteer, volIndex) in volunteerNames" -->
+          <!-- v-bind:key="volIndex" -->
+          <!-- v-model="schedWith" -->
+          <!-- :value="`${volunteer.id}`" -->
+          <!-- :label="`${volunteer.name}`" -->
+          <!-- multiple -->
+          <!-- color="teal" -->
+        <!-- ></v-checkbox> -->
+        <!-- <p>{{ schedWith }}</p> -->
+
+      <!-- </v-col> -->
+
+      <!-- <v-col cols="5" offset="1" class="white"> -->
+        <!-- <p class="text-left">Choose volunteers to AVOID scheduling this person with:</p> -->
+        <!-- <v-checkbox class="ml-2 my-0 list-height" -->
+          <!-- v-for="(volunteer, volIndex) in volunteerNames" -->
+          <!-- v-bind:key="volIndex" -->
+          <!-- v-model="notWith" -->
+          <!-- :value="`${volunteer.id}`" -->
+          <!-- :label="`${volunteer.name}`" -->
+          <!-- multiple -->
+          <!-- color="teal" -->
+        <!-- ></v-checkbox> -->
+        <!-- <p>{{ notWith }}</p> -->
+
+      <!-- </v-col> -->
+
       <!-- save button -->
       <v-col cols="1"> 
         <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
           <v-icon dark @click="handleSaveNewVolunteer(volunteers);"> mdi-content-save-outline</v-icon>
         </v-btn>
+        Save
       </v-col>
 
     </v-row>
-
-
-    <!-- scheduling with and not-with saved for a future release -->
-
-    <!-- <v-row> -->
-        <!-- choose who to schedule with (or not) -->
- 
-                   <!-- choose roles & preferred times -->
-      <!-- <v-col cols="4" class="white">
-        <p class="text-left">Choose volunteers to schedule this person with:</p>
-        <v-checkbox class="ml-2 my-0 list-height"
-          v-for="(volunteer, volIndex) in volunteerNames"
-          v-bind:key="volIndex"
-          v-model="schedWith"
-          :value="`${volunteer.id}`"
-          :label="`${volunteer.name}`"
-          multiple
-          color="teal"
-        ></v-checkbox>
-        <p>{{ schedWith }}</p>
-
-      </v-col>
-
-      <v-col cols="4" offset="1" class="white">
-        <p class="text-left">Choose volunteers to AVOID scheduling this person with:</p>
-        <v-checkbox class="ml-2 my-0 list-height"
-          v-for="(volunteer, volIndex) in volunteerNames"
-          v-bind:key="volIndex"
-          v-model="notWith"
-          :value="`${volunteer.id}`"
-          :label="`${volunteer.name}`"
-          multiple
-          color="teal"
-        ></v-checkbox>
-        <p>{{ notWith }}</p>
-
-      </v-col>  -->
-
-
-    <!-- </v-row> -->
 
     <!-- volunteers[ {{ $route.params.id }} ].firstName  -->
 </v-container>

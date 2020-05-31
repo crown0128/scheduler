@@ -14,6 +14,7 @@
         >
           <v-icon dark>mdi-pencil</v-icon>
         </v-btn>
+        Edit
       </h2>
     </div>
   </div>

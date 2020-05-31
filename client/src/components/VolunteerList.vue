@@ -115,7 +115,7 @@ export default {
           { text: 'Last Name', value: 'lastName', sortable: true },
           { text: 'First Name', value: 'firstName', sortable: true },
           { text: 'Roles', value: 'roles', sortable: true },
-          { text: 'Actions', value: 'action', align: 'center', sortable: false },
+          { text: 'Edit / Delete', value: 'action', align: 'center', sortable: false },
         ];
       },
     }
