@@ -34,7 +34,6 @@
                   class="py-0" 
                   v-model="firstName" 
                   autofocus
-                  clearable
                 ></v-text-field>
               </v-form>
             </v-card-text>
@@ -50,7 +49,6 @@
                   label="Last Name" 
                   class="py-0" 
                   v-model="lastName" 
-                  clearable
                 ></v-text-field>
               </v-form>
             </v-card-text>
@@ -66,7 +64,6 @@
                   label="Email" 
                   class="py-0" 
                   v-model="email" 
-                  clearable
                 >
                 </v-text-field>
               </v-form>
@@ -184,38 +181,35 @@
     <!-- scheduling with and not-with  -->
 
     <v-row>
-        <!-- choose who to schedule with (or not) -->
- 
-                   <!-- choose roles & preferred times -->
-      <!-- <v-col cols="5" class="white"> -->
-        <!-- <p class="text-left">Choose volunteers to schedule this person with:</p> -->
-        <!-- <v-checkbox class="ml-2 my-0 list-height" -->
-          <!-- v-for="(volunteer, volIndex) in volunteerNames" -->
-          <!-- v-bind:key="volIndex" -->
-          <!-- v-model="schedWith" -->
-          <!-- :value="`${volunteer.id}`" -->
-          <!-- :label="`${volunteer.name}`" -->
-          <!-- multiple -->
-          <!-- color="teal" -->
-        <!-- ></v-checkbox> -->
-        <!-- <p>{{ schedWith }}</p> -->
 
-      <!-- </v-col> -->
+      <!-- choose who to schedule with -->
+      <v-col cols="5" class="white">
+        <p class="text-left">Choose volunteers to schedule this person WITH (not functional, yet, but will save in database):</p>
+        <v-checkbox class="ml-2 my-0 list-height"
+          v-for="(volunteer, volIndex) in volunteerNames"
+          v-bind:key="volIndex"
+          v-model="schedWith"
+          :value="`${volunteer.id}`"
+          :label="`${volunteer.name}`"
+          multiple
+          color="teal"
+        ></v-checkbox>
 
-      <!-- <v-col cols="5" offset="1" class="white"> -->
-        <!-- <p class="text-left">Choose volunteers to AVOID scheduling this person with:</p> -->
-        <!-- <v-checkbox class="ml-2 my-0 list-height" -->
-          <!-- v-for="(volunteer, volIndex) in volunteerNames" -->
-          <!-- v-bind:key="volIndex" -->
-          <!-- v-model="notWith" -->
-          <!-- :value="`${volunteer.id}`" -->
-          <!-- :label="`${volunteer.name}`" -->
-          <!-- multiple -->
-          <!-- color="teal" -->
-        <!-- ></v-checkbox> -->
-        <!-- <p>{{ notWith }}</p> -->
+      </v-col>
 
-      <!-- </v-col> -->
+      <!-- choose who NOT to schedule with -->
+      <v-col cols="5" offset="1" class="white">
+        <p class="text-left">Choose volunteers to AVOID scheduling this person with (not functional, yet, but will save in database):</p>
+        <v-checkbox class="ml-2 my-0 list-height"
+          v-for="(volunteer, volIndex) in volunteerNames"
+          v-bind:key="volIndex"
+          v-model="notWith"
+          :value="`${volunteer.id}`"
+          :label="`${volunteer.name}`"
+          multiple
+          color="teal"
+        ></v-checkbox>
+      </v-col>
 
       <!-- save button -->
       <v-col cols="1"> 
@@ -265,10 +259,10 @@ export default {
       eventTimes: [],
       rolesChosen: [],
       preferredTime: "",
-      avatars: []
+      avatars: [],
       // Save with and notWith features for future release
-      // schedWith: [],
-      // notWith: []
+      schedWith: [],
+      notWith: []
 
     }
   },
@@ -295,7 +289,7 @@ export default {
       return t;
     },
 
-    // save dates not available
+    // save dates the volunteer is not available
     save: function (date) {
       var index = this.badDates.findIndex(x => x===date)
 
@@ -315,6 +309,7 @@ export default {
 
     // build volunteer object and insert in volunteer table
     handleSaveNewVolunteer: function(volunteers) {
+
       this.image = this.image.toString();
       this.volunteer = {
         firstName: this.firstName,
@@ -329,8 +324,8 @@ export default {
         },
         notAvailable: this.badDates,
         // Save with and notWith features for a future release
-        // with: this.schedWith,
-        // notWith: this.notWith
+        with: this.schedWith,
+        notWith: this.notWith
       };
       // insert new volunteer in volunteer table
       this.createVolunteer(this.volunteer);

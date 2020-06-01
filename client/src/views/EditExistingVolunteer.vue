@@ -34,7 +34,6 @@
                   class="py-0" 
                   v-model="firstName" 
                   autofocus
-                  clearable
                 ></v-text-field>
               </v-form>
             </v-card-text>
@@ -50,7 +49,6 @@
                   label="Last Name" 
                   class="py-0" 
                   v-model="lastName" 
-                  clearable
                 ></v-text-field>
               </v-form>
             </v-card-text>
@@ -66,7 +64,6 @@
                   label="Email" 
                   class="py-0" 
                   v-model="email" 
-                  clearable
                 >
                 </v-text-field>
               </v-form>
@@ -176,7 +173,8 @@
       <!-- save button -->
       <v-col cols="1"> 
         <v-btn class="mx-1 my-1" fab right dark x-small color="teal">
-          <v-icon dark @click="handleSaveNewVolunteer(volunteers);"> mdi-content-save-outline</v-icon>
+          <!-- <v-icon dark @click="handleSaveNewVolunteer(volunteers);"> mdi-content-save-outline</v-icon> -->
+          <v-icon dark @click="handleSaveNewVolunteer();"> mdi-content-save-outline</v-icon>
         </v-btn>
         Save
       </v-col>
@@ -186,14 +184,14 @@
 
     <!-- scheduling with and not-with saved for a future release -->
 
-    <!-- <v-row> -->
+    <v-row>
         <!-- choose who to schedule with (or not) -->
  
                    <!-- choose roles & preferred times -->
-      <!-- <v-col cols="4" class="white">
-        <p class="text-left">Choose volunteers to schedule this person with:</p>
+      <v-col cols="4" class="white">
+        <p class="text-left">Choose volunteers to schedule this person WITH (not functional, yet, but will save in database):</p>
         <v-checkbox class="ml-2 my-0 list-height"
-          v-for="(volunteer, volIndex) in volunteerNames"
+          v-for="(volunteer, volIndex) in this.volunteerNames"
           v-bind:key="volIndex"
           v-model="schedWith"
           :value="`${volunteer.id}`"
@@ -205,9 +203,9 @@
       </v-col>
 
       <v-col cols="4" offset="1" class="white">
-        <p class="text-left">Choose volunteers to AVOID scheduling this person with:</p>
+        <p class="text-left">Choose volunteers to AVOID scheduling this person with (not functional, yet, but will save in database):</p>
         <v-checkbox class="ml-2 my-0 list-height"
-          v-for="(volunteer, volIndex) in volunteerNames"
+          v-for="(volunteer, volIndex) in this.volunteerNames"
           v-bind:key="volIndex"
           v-model="notWith"
           :value="`${volunteer.id}`"
@@ -216,11 +214,10 @@
           color="teal"
         ></v-checkbox>
 
-      </v-col>  -->
+      </v-col>
 
 
-    <!-- </v-row> -->
-
+    </v-row>
 </v-container>
 </v-app>
 
@@ -260,35 +257,10 @@ export default {
       roles: [],
       rolesChosen: [],
       preferredTime: -1,
-      avatars: []
-    //     "bear.jpg",
-    //     "bignose.jpg",
-    //     "blue-flower.jpg",
-    //     "cat.jpg",
-    //     "cheetah.jpg",
-    //     "dog.jpg",
-    //     "football.jpg",
-    //     "giraffe.jpg",
-    //     "goofy.jpg",
-    //     "hedgehog.jpg",
-    //     "kitty.jpg",
-    //     "koala.jpg",
-    //     "monkey.jpg",
-    //     "orange-flower.jpg",
-    //     "pink-flower.jpg",
-    //     "puppy.jpg",
-    //     "ski.jpg",
-    //     "smilie.jpg",
-    //     "sneaker.jpg",
-    //     "soccer.jpg",
-    //     "thumbs.jpg",
-    //     "tiger.jpg",
-    //     "xcski.jpg",
-    //     "yellow-flower.jpg"
-    // ]
-      // Save with and notWith features for future release
-      // schedWith: [],
-      // notWith: []
+      avatars: [],
+      volunteerNames: [],
+      schedWith: [],
+      notWith: []
 
     }
   },
@@ -334,7 +306,8 @@ export default {
     },
 
     // build object and insert in volunteers table
-    handleSaveNewVolunteer: function(volunteers) {
+    // handleSaveNewVolunteer: function(volunteers) {
+    handleSaveNewVolunteer: function() {
 
       this.image = this.image.toString();
 
@@ -351,9 +324,8 @@ export default {
           percentPreferred: 1
         },
         notAvailable: this.badDates,
-        // Save with and notWith features for a future release
-        // with: this.schedWith,
-        // notWith: this.notWith
+        with: this.schedWith,
+        notWith: this.notWith
       };
 
       // update in volunteers table
@@ -387,8 +359,6 @@ export default {
     // this is passed in --- duplicates should already have been removed.
     
     this.volunteers = this.$route.params.volunteers;
-    console.log('this.volunteers (passed in to EditExistingVolunteer);  id:  ' + id);
-    console.log(this.volunteers);
 
     // find where in the volunteers array this volunteer is
     let index = this.volunteers.findIndex(volunteer => volunteer._id === id);
@@ -403,14 +373,6 @@ export default {
     this.lastName = this.volunteers[index].lastName;
     this.email = this.volunteers[index].email;
     this.image = this.volunteers[index].image;
-console.log('this.volunteers[' + index + ']:');
-console.log(this.volunteers[index]);
-console.log('this.volunteers[index].prefTimes');
-console.log(this.volunteers[index].prefTimes);
-console.log('this.timeSlots');
-console.log(this.timeSlots);
-console.log(this.prefTimes);
-
 
     this.badDates = this.volunteers[index].notAvailable;
     this.prefTimes = this.volunteers[index].prefTimes;
@@ -423,8 +385,21 @@ console.log(this.prefTimes);
     // It needs to be a string to match the v-model and turn the radio button on
     this.preferredTime = this.preferredTime.toString();
 
+    this.schedWith = this.volunteers[index].with;
+    this.notWith = this.volunteers[index].notWith;
+
     // drop old dates (before today)
     this.badDates = this.badDates.filter(badDate => moment(badDate) >= moment(Date.now()));
+
+    // Get all volunteerNames
+    this.volunteerNames = [];
+    this.volunteers.forEach(volunteer => {
+      this.volunteerNames.push({
+        "id": volunteer._id,
+        "name": volunteer.firstName + " " + volunteer.lastName,
+      });
+    });
+
   },
 
 };

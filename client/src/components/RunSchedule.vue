@@ -48,8 +48,16 @@ export default {
 
         // FUTURE ENHANCEMENTS
         // NOTE TO SELF TO DO... (LEFT OFF - for searching purposes ... search for "LEFT OFF")
+
+        //   - bug - will sometimes schedule same person more than once at the same time.
+        
+        //   - Make sure notWIth is working.
+
+        //   - Error checking for entering with and notWith for a volunteer:
+        //        Self shouldn't be in list
+        //        Can't choose same volunteer in with and in notWith lists.
+        
         //   - ONE alert for all volunteer deficiencies.
-        //   - interface to enter and store With and notWith
         //   - Do "with"
         //      ideas:
         //          for each role & we, before any assignments, for those with a "with" person...
@@ -61,15 +69,18 @@ export default {
         //              like in number of volunteers assigned for a specific date and role
         //   - roles (like Sacristan) that can be doubled up
         //          skip checking if already assigned in canVolBeAssigned for this case.
+
+        //   - Choose multiple roles and weekly events.
+
         //   - ES linter
         //   - tidy code (delete console.log's, indenting, etc.)
         //   - also print to Excel or Word (to edit?)
         //   - print stats of schedule at end - how many times each person scheduled...
         //   - enable emailing the schedule to the volunteers
         //   - components for choosing a weekly event and choosing a role
-        //          and other places code is repeated.
+        //          and other places code is repeated.  Make components for them and re-use components.
 
-        //   
+           
         // Get the volunteers from the database, create and fill slates,
         //  slates is an array of objects, where each object is the schedule 
         // with volunteer assignments for one specific event on a given date and time.
