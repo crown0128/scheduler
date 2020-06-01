@@ -49,12 +49,6 @@ export default {
         // FUTURE ENHANCEMENTS
         // NOTE TO SELF TO DO... (LEFT OFF - for searching purposes ... search for "LEFT OFF")
 
-        //   - Error checking for entering with and notWith for a volunteer:
-        //        Self shouldn't be in list of volunteers to choose from.
-        //        Can't choose same volunteer in with and in notWith lists.
-        
-        //   - ONE alert for all volunteer deficiencies.
-
         //   - Do "with"
         //      ideas:
         //          for each role & we, before any assignments, for those with a "with" person...
@@ -69,6 +63,10 @@ export default {
 
         //   - Choose multiple roles and weekly events.
         //   - Identify roles that can be doubled up on, and make that functional.
+
+        //   - Error checking for entering with and notWith for a volunteer:
+        //        Self shouldn't be in list of volunteers to choose from.
+        //        Can't choose same volunteer in with and in notWith lists.
 
         //   - ES linter
         //   - tidy code (delete console.log's, indenting, etc.)
@@ -135,6 +133,9 @@ export default {
             // console.log("MMS: order of roles: ");
             // orderOfRoles.forEach(x => console.log(x));
 
+            // Gather text for warning alerts when there are too few volunteers.
+            let alertText = "";
+
             //  For each role (in order)
             orderOfRoles.forEach(roleIdx => {
                 const role = roles[roleIdx];
@@ -151,10 +152,10 @@ export default {
                     // roleAndWEVolunteerIdxes.forEach(idx => console.log(this.volunteers[idx].firstName));
 
                     if (roleAndWEVolunteerIdxes.length === 0) {
-                        alert("No " + role + " volunteers available for " + weeklyEvent.day + " at " + weeklyEvent.time);
+                        alertText = alertText + "\nNo " + role + " volunteers available for " + weeklyEvent.day + " at " + weeklyEvent.time;
                     } else {
                         if (roleAndWEVolunteerIdxes.length < volsNeeded[roleIdx]) {
-                            alert("Not enough " + role + " volunteers available for " + weeklyEvent.day + " at " + weeklyEvent.time);
+                            alertText = alertText + "\nNot enough " + role + " volunteers available for " + weeklyEvent.day + " at " + weeklyEvent.time;
                         };
 
                         // Determine order of volunteers.  
@@ -259,8 +260,8 @@ export default {
 
             });  //  End of each role
 
-
-
+            // Display all alerts at once, if there are any.
+            if (alertText.length !== 0) alert(alertText);
 
             return workingSlate;
         }, // end of fillSlate method
