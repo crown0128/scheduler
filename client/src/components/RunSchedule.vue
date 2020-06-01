@@ -49,15 +49,12 @@ export default {
         // FUTURE ENHANCEMENTS
         // NOTE TO SELF TO DO... (LEFT OFF - for searching purposes ... search for "LEFT OFF")
 
-        //   - bug - will sometimes schedule same person more than once at the same time.
-        
-        //   - Make sure notWIth is working.
-
         //   - Error checking for entering with and notWith for a volunteer:
-        //        Self shouldn't be in list
+        //        Self shouldn't be in list of volunteers to choose from.
         //        Can't choose same volunteer in with and in notWith lists.
         
         //   - ONE alert for all volunteer deficiencies.
+
         //   - Do "with"
         //      ideas:
         //          for each role & we, before any assignments, for those with a "with" person...
@@ -71,15 +68,15 @@ export default {
         //          skip checking if already assigned in canVolBeAssigned for this case.
 
         //   - Choose multiple roles and weekly events.
+        //   - Identify roles that can be doubled up on, and make that functional.
 
         //   - ES linter
         //   - tidy code (delete console.log's, indenting, etc.)
         //   - also print to Excel or Word (to edit?)
-        //   - print stats of schedule at end - how many times each person scheduled...
+        //   - print stats of schedule at end - how many times each person scheduled...(& what roles, # not available, with & who with?)
         //   - enable emailing the schedule to the volunteers
         //   - components for choosing a weekly event and choosing a role
         //          and other places code is repeated.  Make components for them and re-use components.
-        //   - report - # times each person is assigned (& what roles, # not available, with & who with?)
 
            
         // Get the volunteers from the database, create and fill slates,
@@ -113,12 +110,7 @@ export default {
             // In each of those arrays are the specific dates the events are to be held.
             this.dates = fillSlateFcns.getDates(this.schedule, moment);
 
-            // for testing;  MMS
-            // Felicia & Regina can't serve together...
-            // volunteers[2] is Felicia; [19] is Regina; [3] is Danielle; [1] is Maura
-            // this.volunteers[2].notWith = [this.volunteers[19]._id, this.volunteers[3]._id];
-            // this.volunteers[19].notWith = [this.volunteers[2]._id, this.volunteers[3]._id];
-            // for testing; console logs all volunteers
+            // MMS  for testing; console logs all volunteers
             // fillSlateFcns.consoleLogVolunteers(this.volunteers); // MMS for testing
             
             // get the roles needed, and
@@ -227,7 +219,7 @@ export default {
                                 // start at first volunteer again, if at the end of the list
                                 if (orderIdx >= roleAndWEVolunteerIdxes.length) {
                                     // REORDER volunteers (re-do orderOfVols) 
-                                    //   so those who didn't get assigned are first
+                                    //   so those who didn't get assigned are first, if needed
                                     orderOfVols = fillSlateFcns.adjVolOrder(orderOfVols, this.volunteers, weeklyEvent, volsNeeded[roleIdx], volsAvailableForWEAndRole, nthDate);
                                     // console.log("BACK in Run Schedule.  orderOfVols: " + orderOfVols);
                                     // orderOfVols.forEach(i => console.log(i));     

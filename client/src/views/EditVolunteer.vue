@@ -199,7 +199,7 @@
 
       <!-- choose who NOT to schedule with -->
       <v-col cols="5" offset="1" class="white">
-        <p class="text-left">Choose volunteers to AVOID scheduling this person with (not functional, yet, but will save in database):</p>
+        <p class="text-left">Choose volunteers to AVOID scheduling this person with (MUST note this for ALL volunteers involved):</p>
         <v-checkbox class="ml-2 my-0 list-height"
           v-for="(volunteer, volIndex) in volunteerNames"
           v-bind:key="volIndex"

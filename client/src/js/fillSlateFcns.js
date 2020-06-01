@@ -310,17 +310,23 @@ module.exports = {
 
   // put volunteers who have been assigned fewer times at the beginning.
   adjVolOrder: function(orderedIdxes, volunteers, weeklyEvent, numVolsNeededPerDate, volsAvailableForWEAndRole, datesDone) {
+    // If just one volunteer, no need to look at order
+    if (orderedIdxes.length === 1) return orderedIdxes;
 
-    // console.log("MMS ------------- just in adjVolOrder");
-    // console.log("orderedIdxes: ");
-    // orderedIdxes.forEach(o => console.log(o));
-    // console.log("volunteers:");
-    // console.log(volunteers);
-    // console.log("weeklyEvent: ");
-    // console.log(weeklyEvent.day + ";  " + weeklyEvent.time);
-    // console.log("MMS: numVolsNeededPerDate: " + numVolsNeededPerDate);
-    // console.log("MMS: datesDone: " + datesDone);
-    // console.log("MMS ------------ finished looking at what was passed in");
+    // If no constraints - (with, notWith, notAvailable), mixing up the order can result in
+    //    some volunteers being assigned more than others, so don't change.
+    // For each volunteer available...
+    let numVolunteersWithConstraints = 0;
+    orderedIdxes.forEach(index => {
+        // ... add the number of volunteers to look to schedule with, and...
+        numVolunteersWithConstraints += volunteers[index].with.length 
+        // ... add the number of volunteers to look to AVOID scheduling with, and...
+            + volunteers[index].notWith.length 
+        // ... add the number of dates not available.
+            + volunteers[index].notAvailable.length;
+    });
+    // If there are no constraints, return without changing the order.
+    if (numVolunteersWithConstraints === 0) return orderedIdxes;
 
     // Now, put volunteers who haven't been assigned their fair share
     //   at the beginning of order, so they are attempted first.
@@ -600,6 +606,7 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
     // (can't be assigned if someone they can't serve with has already been assigned)
     // Returns TRUE if there IS a conflict
     function isNotwithConflict(volunteer, slate, date, time) {
+
         // Assume there's no volunteer conflict, until one is found
         let isConflict = false;
 
@@ -612,19 +619,16 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
             // foundVol.forEach(x => console.log(JSON.parse(JSON.stringify(x))));
             notWithNames.push(foundVol[0].firstName + " " + foundVol[0].lastName);
         });
-        // console.log("$$$ MMS: notWithNames:  " + notWithNames);
+
 
         // Only need to search this specific event.
         // const thisDateSlate = thisWeekSlate.filter(event => (event.date === date) && (event.time === time));
         const thisDateSlate = slate.filter(event => (event.date === date) && (event.time === time));
-        // console.log("$$$ MMS: thisDateSlate:  ");
-        // thisDateSlate.forEach(x => console.log(x));
 
         // Search for each name.  If found, this volunteer can't be scheduled here. Return false.
         notWithNames.forEach(name => {
             const isNameInSubSlate = findNameInSlate(name, thisDateSlate, roles);  // this doesn't seem to be working
             if (isNameInSubSlate) return isConflict = true;
-            // console.log("$$$ MMS:  isNameInSubSlate:  " + isNameInSubSlate);
         })
 
         return isConflict;  // will be false if we get here - no conflicts found
