@@ -494,6 +494,7 @@ datesThisWeek: function(date, moment) {
 volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, volunteers, moment) {
 // returns TRUE if ok to schedule this volunteer
     // console.log("$$$ MMS: In volCanBeAssigned - findName $$$");
+    // console.log("$$$ MMS: volunteer.firstName:  " + volunteer.firstName);
 
     function findNameInSlate(name, subSlate, roles) {
         // console.log("$$$ MMS: In findNameInSlate - findName $$$");
@@ -502,6 +503,12 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
 
         // Get elements with the names
         let resultsNameSearch;
+        // console.log("$$$ MMS: In findNameInSlate (in volCanBeAssigned)");
+        // console.log("$$$ MMS: name: " + name);
+        // console.log("$$$ MMS: subSlate: " + subSlate);
+        // subSlate.forEach(x => console.log(x));
+        // console.log("$$$ MMS: roles: ");
+        // roles.forEach(role => console.log(role));
 
         // for each event in the part of the slate passed in,
         //    look for the given name in each role
@@ -509,6 +516,7 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
         //   ...if this volunteer isn't this role, no need to check everything!
         for (let subSlateIdx = 0; subSlateIdx < subSlate.length; subSlateIdx++) {
             let thisOneEventSlate = subSlate[subSlateIdx];
+            // console.log("$$$$$$$$$$$ new subSlate");
             // console.log("subSlateIdx: " + subSlateIdx);
             // console.log("subSlate: ");
             // subSlate.forEach(x => console.log(x));
@@ -516,14 +524,19 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
             // For each role, look for the given name
             for (let rolesIdx = 0; rolesIdx < roles.length; rolesIdx++) {
                 let role = roles[rolesIdx];
+                // Is name in the current part of the slate for this role?
                 resultsNameSearch = thisOneEventSlate[role].includes(name);
+                // Also check with a space before the name (added to display nicely in slate)
+                resultsNameSearch = resultsNameSearch + thisOneEventSlate[role].includes(" " + name);
+                // console.log("$$$$$$$$$$$$$$$$$$$$$$ just in for each roles $$$$$$$$$$");
+                // console.log("@@@ MMM: resultsNameSearch: " + resultsNameSearch);
                 // console.log("$$$ MMS: subSlateIdx: " + subSlateIdx);
                 // console.log("$$$ MMS: thisOneEventSlate:  " + thisOneEventSlate);
                 // console.log("$$$ MMS: thisOneEventSlate.date:  " + thisOneEventSlate.date);
                 // console.log("$$$ MMS: thisOneEventSlate.time:  " + thisOneEventSlate.time);
-                // console.log("$$$ MMS: thisOneEventSlate.EM:  " + thisOneEventSlate.EM);
-                // // thisOneEventSlate.forEach(x => console.log(x));
                 // console.log("$$$ MMS: thisOneEventSlate[" + role + "]:  " + thisOneEventSlate[role]);
+                // console.log("$$$ MMS: thisOneEventSlate[" + role + "].length:  " + thisOneEventSlate[role].length);
+                // thisOneEventSlate[role].forEach(x => console.log(x));
                 // console.log("$$$ MMS: role:  " + role);
                 // console.log("$$$ MMS: name:  " + name);
                 // console.log("$$$ MMS: resultsNameSearch:  " + resultsNameSearch);
@@ -532,6 +545,7 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
                     found = true;
                     rolesIdx = roles.length; // force loop to end
                 };
+                // console.log("$$$ MMS: found: " + found);
             };  // of for each role
 
             // no need to continue searching in other roles if the name has been found
@@ -539,7 +553,7 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
             if (found) console.log("ERROR ERROR ERROR ERROR  this should never console.log!!");
 
         };  // of for subSlateIdx 0 to length of subSlate (each event in subSlate)
-
+        
         return found;
     };  // end of function findNameInSlate (defined in function volCanBeAssigned)
 

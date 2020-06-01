@@ -79,6 +79,7 @@ export default {
         //   - enable emailing the schedule to the volunteers
         //   - components for choosing a weekly event and choosing a role
         //          and other places code is repeated.  Make components for them and re-use components.
+        //   - report - # times each person is assigned (& what roles, # not available, with & who with?)
 
            
         // Get the volunteers from the database, create and fill slates,
