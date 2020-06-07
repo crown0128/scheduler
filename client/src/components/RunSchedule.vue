@@ -51,13 +51,23 @@ export default {
 
         //   - Do "with"
         //      ideas:
-        //          for each role & we, before any assignments, for those with a "with" person...
-        //              determine approx # of times they'll serve, and trunc (don't over-estimate),
-        //              look for when their "with" person is assigned,
-        //              if other conditions met (no notWith, not already assigned, available),
-        //                  then assign (remember to update number of times assigned)
+        //          (this needs more thinking about)
+         //          (Do for all roles (could be in same role: i.e. if altar servers together) )
+        //     2     when assigning someone, look for a "with person" (WP) in roles not yet done or in current role.
+        //              If the "with person" (WP) can be assigned,
+        //                  put them in the slate with "(with?)" designation.
+        //          
+        //     1     when starting to assign roles for a new we (weekly event),
+        //              put volunteers with "(with?)" in slate first for the first time through.
+        //              
+        //          make sure "(with?)" designations are removed when no longer needed.
+        //
         //          then need to account for this when doing "regular" assignments
         //              like in number of volunteers assigned for a specific date and role
+        // LEFT OFF making this change to the slate variable
+        // FIRST - to make this work well, change assignments in slate to an array of names.  
+        //  Change to string after all assignments made, but before slate is displayed
+
         //   - roles (like Sacristan) that can be doubled up
         //          skip checking if already assigned in canVolBeAssigned for this case.
 
@@ -68,6 +78,8 @@ export default {
         //        Self shouldn't be in list of volunteers to choose from.
         //        Can't choose same volunteer in with and in notWith lists.
 
+        //   - Edit dates on current schedule (and/or copy schedule)
+        
         //   - ES linter
         //   - tidy code (delete console.log's, indenting, etc.)
         //   - also print to Excel or Word (to edit?)
@@ -146,8 +158,7 @@ export default {
                     // console.log("MMS:  Beginning iteration forEach loop for each weekly event (ie Sat 5pm).");
 
                     // Get indices for volunteers for this role and weekly event
-                    // const [roleAndWEVolunteers, roleAndWEVolTimesAssigned] = fillSlateFcns.getRoleAndWEVolunteers(this.volunteers, role, weeklyEvent);
-                    const [roleAndWEVolunteerIdxes, volsAvailableForWEAndRole] = fillSlateFcns.getRoleAndWEVolunteerIdxes(this.volunteers, role, weeklyEvent);
+                    const [roleAndWEVolunteerIdxes, numVolsAvailableForWEandRole] = fillSlateFcns.getRoleAndWEVolunteerIdxes(this.volunteers, role, weeklyEvent);
                     // console.log("Role and WE Volunteers...  ***************************");
                     // roleAndWEVolunteerIdxes.forEach(idx => console.log(this.volunteers[idx].firstName));
 
@@ -194,21 +205,21 @@ export default {
                             //      then get next volunteer.  How to keep track of number of volunteers still needed?
 
                             // No volunteers assigned, yet for this role on this specific date.
-                            let volsAssignedThisRole = 0;
+                            let numvolsAssignedThisRole = 0;
 
                             // repeat while there are still spots to fill
-                            // console.log("before while loop: volsAssignedThisRole < volsNeeded[roleIdx]:");
-                            // console.log(volsAssignedThisRole + " < " + volsNeeded[roleIdx]);
-                            while (volsAssignedThisRole < volsNeeded[roleIdx]) {
+                            // console.log("before while loop: numvolsAssignedThisRole < volsNeeded[roleIdx]:");
+                            // console.log(numvolsAssignedThisRole + " < " + volsNeeded[roleIdx]);
+                            while (numvolsAssignedThisRole < volsNeeded[roleIdx]) {
                                 // console.log("MMS: ------ Begin while loop iteration ------ ");
-                                // console.log("MMS: volsAssignedThisRole: " + volsAssignedThisRole);
+                                // console.log("MMS: numvolsAssignedThisRole: " + numvolsAssignedThisRole);
 
                                 if (fillSlateFcns.volCanBeAssigned(currentVolunteer, workingSlate, date, weeklyEvent.time, searchDates, roles, this.volunteers, moment)) {
                                     // console.log("MMS: ****  TRUE  **** in fillSlate, volCanBeAssigned returned   (" + currentVolunteer.firstName + ")");
                                     // [workingSlate, timesEachVolAssigned] = fillSlateFcns.scheduleVolunteer(currentVolunteer, role, date, weeklyEvent.time, workingSlate, timesEachVolAssigned, currentVolunteerIdx);
                                     // Only the number of times a volunteer is assigned changes in this.volunteers (indices are still valid).
                                     [workingSlate, this.volunteers] = fillSlateFcns.scheduleVolunteer(currentVolunteer, role, date, weeklyEvent.time, workingSlate, this.volunteers, currentVolunteerIdx);
-                                    volsAssignedThisRole++;
+                                    numvolsAssignedThisRole++;
                                 } else { 
                                     // console.log("MMS: **** FALSE **** in fillSlate, volCanBeASsigned returned ")
                                 };  // end of else volCanBeAssigned
@@ -221,7 +232,7 @@ export default {
                                 if (orderIdx >= roleAndWEVolunteerIdxes.length) {
                                     // REORDER volunteers (re-do orderOfVols) 
                                     //   so those who didn't get assigned are first, if needed
-                                    orderOfVols = fillSlateFcns.adjVolOrder(orderOfVols, this.volunteers, weeklyEvent, volsNeeded[roleIdx], volsAvailableForWEAndRole, nthDate);
+                                    orderOfVols = fillSlateFcns.adjVolOrder(orderOfVols, this.volunteers, weeklyEvent, volsNeeded[roleIdx], numVolsAvailableForWEandRole, nthDate);
                                     // console.log("BACK in Run Schedule.  orderOfVols: " + orderOfVols);
                                     // orderOfVols.forEach(i => console.log(i));     
                                     orderIdx = 0;
@@ -246,7 +257,7 @@ export default {
                                 currentVolunteer = this.volunteers[currentVolunteerIdx];
                                 // console.log("MMS: Next volunteer - " + currentVolunteer.firstName);
 
-                            };  // end of while volsAssignedThisRole < volsNeeded[roleIdx]
+                            };  // end of while numvolsAssignedThisRole < volsNeeded[roleIdx]
                             // MMS testing - what does volunteers look like after first role?
                             // fillSlateFcns.consoleLogVolunteers(this.volunteers);
 
@@ -262,6 +273,12 @@ export default {
 
             // Display all alerts at once, if there are any.
             if (alertText.length !== 0) alert(alertText);
+
+            // the withFlag is no longer needed, and may be confusing when displaying/printing
+            //   the schedule.  Drop it, and add a space before all volunteers except the first
+            //   for each time slot in the slate.
+            // The roles are keys in the slate, so we need them.
+            workingSlate = fillSlateFcns.dropWithFlag(workingSlate, roles);
 
             return workingSlate;
         }, // end of fillSlate method

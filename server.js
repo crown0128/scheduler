@@ -5,7 +5,6 @@ const app = express();
 const path = require('path');
 const routes = require('./routes/schedulerroutes.js');  // to handle api calls
 
-
 const PORT = process.env.PORT || 3000;
 app.use(logger("dev"));
 

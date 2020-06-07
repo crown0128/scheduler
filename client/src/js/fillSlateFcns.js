@@ -309,7 +309,7 @@ module.exports = {
 
 
   // put volunteers who have been assigned fewer times at the beginning.
-  adjVolOrder: function(orderedIdxes, volunteers, weeklyEvent, numVolsNeededPerDate, volsAvailableForWEAndRole, datesDone) {
+  adjVolOrder: function(orderedIdxes, volunteers, weeklyEvent, numVolsNeededPerDate, numVolsAvailableForWEandRole, datesDone) {
     // If just one volunteer, no need to look at order
     if (orderedIdxes.length === 1) return orderedIdxes;
 
@@ -358,8 +358,8 @@ module.exports = {
     // Everyone should be close to (thus, truncating) the number of spots so far/available people
     // This might not happen, yet, if there were constraints that prevented it 
     //    i.e. they haven't been available for enough dates, yet
-    const targetNumAssignments = Math.trunc(numSpotsSoFar/volsAvailableForWEAndRole);
-    // console.log("MMS: volsAvailableForWEAndRole: " + volsAvailableForWEAndRole);
+    const targetNumAssignments = Math.trunc(numSpotsSoFar/numVolsAvailableForWEandRole);
+    // console.log("MMS: numVolsAvailableForWEandRole: " + numVolsAvailableForWEandRole);
     // console.log("MMS: targetNumAssignments:  " + targetNumAssignments + " (trunc: numSpots... / volsAvail...)");
 
     const orderCopy = [...orderedIdxes];
@@ -428,9 +428,9 @@ getRoleAndWEVolunteerIdxes: function(volunteers, role, weeklyEvent) {
 
     // push the index for each volunteer available for this day/time and role
     let roleAndWEVolunteerIdxes = [];
-    // volsAvailableForWEAndRole starts at 0; add each volunteer (can be a fraction)
+    // numVolsAvailableForWEandRole starts at 0; add each volunteer (can be a fraction)
     //    as you find volunteers available for this weekly event and role
-    let volsAvailableForWEAndRole = 0;
+    let numVolsAvailableForWEandRole = 0;
 
     // check each volunteer to see if they are available this day of week & time, 
     //   and for this role
@@ -444,15 +444,15 @@ getRoleAndWEVolunteerIdxes: function(volunteers, role, weeklyEvent) {
         if (volDayTime.includes(currDayTime) && volunteer.roles.includes(role)) {
             // then add the index for this volunteer to roleAndWEVolunteerIdxes array
             roleAndWEVolunteerIdxes.push(v);
-            // and add to volsAvailableForWEAndRole (proportional to # roles)
-            volsAvailableForWEAndRole = volsAvailableForWEAndRole + (1/volunteer.roles.length);
+            // and add to numVolsAvailableForWEandRole (proportional to # roles)
+            numVolsAvailableForWEandRole = numVolsAvailableForWEandRole + (1/volunteer.roles.length);
         };  // end of if day/time included and role included
     });  // end of for each volunteer
 
     // console.log("MMS in getRoleAndWEVolunteerIdxes:");
     // roleAndWEVolunteerIdxes.forEach(idx => console.log(idx)); // MMS testing
 
-    return [roleAndWEVolunteerIdxes, volsAvailableForWEAndRole];
+    return [roleAndWEVolunteerIdxes, numVolsAvailableForWEandRole];
 },  // end of function getRoleAndWEVolunteerIdxes
 
 
@@ -530,10 +530,16 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
             // For each role, look for the given name
             for (let rolesIdx = 0; rolesIdx < roles.length; rolesIdx++) {
                 let role = roles[rolesIdx];
+
+                // Get volunters to search from thisOneEventSlate (leaving out withFlag)
+                let volunteers = thisOneEventSlate[role].map(vol => vol.name);
+
                 // Is name in the current part of the slate for this role?
-                resultsNameSearch = thisOneEventSlate[role].includes(name);
+                resultsNameSearch = volunteers.includes(name);
+
                 // Also check with a space before the name (added to display nicely in slate)
-                resultsNameSearch = resultsNameSearch + thisOneEventSlate[role].includes(" " + name);
+                resultsNameSearch = resultsNameSearch + volunteers.includes(" " + name);
+                
                 // console.log("$$$$$$$$$$$$$$$$$$$$$$ just in for each roles $$$$$$$$$$");
                 // console.log("@@@ MMM: resultsNameSearch: " + resultsNameSearch);
                 // console.log("$$$ MMS: subSlateIdx: " + subSlateIdx);
@@ -713,11 +719,12 @@ scheduleVolunteer: function(volunteer, role, date, time, slate, volunteers, curr
     let volunteerName = volunteer.firstName.concat(" ", volunteer.lastName);
 
     // push the assignment.
-    // put a space before the name if it's not the first. Comma's get added automatically.
-    if (slate[timeDateIndex][role].length > 0) {
-        volunteerName = " " + volunteerName;
-    };
-    slate[timeDateIndex][role].push(volunteerName);
+    // withFlag is used when "penciling in" a volunteer that might be assigned
+    //   based on another volunteer's assignment (when they are supposed to be scheduled together)
+    slate[timeDateIndex][role].push({
+        name: volunteerName,
+        withFlag: false
+    });
 
     // increment the number of times this volunteer has been scheduled.
     volunteers[currentVolunteerIdx].numTimesAssigned++;
@@ -737,22 +744,41 @@ scheduleVolunteer: function(volunteer, role, date, time, slate, volunteers, curr
 },  // of scheduleVolunteer function
 
 
-//   examplefcn: function(parameters) {
 
-//  // code goes here
- 
-//     return stuff;
-//   },
+// the withFlag is no longer needed, and may be confusing when displaying/printing
+//   the schedule.  Drop it, and add a space before all volunteers except the first
+//   for each time slot in the slate.
+// The roles are keys in the slate, so we need them.
 
-//   examplefcn: function(parameters) {
+dropWithFlag: function(slate, roles) {
 
-//  // code goes here
- 
-//     return stuff;
-//   },
+    // For each "line" (volunteer assignments for one date/time event - one line of the displayed slate)...
+    slate.forEach(lineOfSlate => {
+        // and for each role in that line,
+        // replace the object for each volunteer (with "name" and "withFlag" keys) with
+        //    a string with the volunteer's name (appended with a space if it's not the first)
+        roles.forEach(role => {
+            let volunteers = [];
 
+            // build the array of volunteers without the withFlag,
+            //   and appending a space before all volunteers but the first
+            //   (commas get appended after the names automatically later when the table is built to display)
+            lineOfSlate[role].forEach((volunteer, v) => {
+                if (v === 0) {
+                    volunteers.push(volunteer.name)
+                } else {
+                    volunteers.push(" " + volunteer.name)
+                };
+            });
 
-  
+            // replace old list of volunteers (were objects with withFlag) with
+            //  simple array of volunteer names (with spaces appended to all but the first name)
+            lineOfSlate[role] = volunteers;
+        });
+    });
+    
+    return slate;
+}  // end of dropWithFlag function
 
 
 };
