@@ -42,6 +42,23 @@ module.exports = {
     },  // end of function consoleLogVolunteers (for testing purposes)
 
 
+  // MMS for testing
+  consoleLogSlate: function(slate) {
+    console.log("@@@@   SLATE   @@@@");
+    slate.forEach((event, e) => {
+        console.log("    Date: " + event.date + ";  Time:  " + event.time + "; (event " + e + ")");
+        Object.keys(event).forEach(role => {
+            if ((role !== "date") && ( role !== "time")) {
+                for (let person = 0; person < event[role].length; person++) {
+                    console.log("        " + role + ":  Name:  " + event[role][person].name + ";  flag:  " + event[role][person].withFlag);
+                };
+            };
+        });
+    }); // of forEach line of the slate
+  },   // end of function consoleLogSlate (for testing purposes);
+
+
+
   // Get the actual dates for each of the weekly events in the schedule:
   //  If there are two weekly events, Sat and Mon, from May 1 to May 17, GetDates returns eventDates:
   //  eventDates = [   ["2020-05-02", "2020-05-09", "2020-05-16"],  // the Saturday dates
@@ -280,10 +297,11 @@ module.exports = {
         let times = [];
         volunteers[idx].prefTimes.forEach(prefTime => times.push(prefTime.day + prefTime.time) );
         if ( times.includes(weeklyEvent.day + weeklyEvent.time)) {
-        // note: index is v; one for each volunteer
+        // note: index is v; one for each volunteer (heavily weight "with").
+        //   Gets re-adjusted after first time through all available volunteers.
         numberOfConstraintsForEach[v] = numberOfConstraintsForEach[v] +
             volunteers[idx].notAvailable.length +
-            volunteers[idx].with.length +
+            (volunteers[idx].with.length * 5) +
             volunteers[idx].notWith.length;
         };
     });  // end of for each volunteer
@@ -310,6 +328,7 @@ module.exports = {
 
   // put volunteers who have been assigned fewer times at the beginning.
   adjVolOrder: function(orderedIdxes, volunteers, weeklyEvent, numVolsNeededPerDate, numVolsAvailableForWEandRole, datesDone) {
+    // console.log("BEGIN adjVolOrder: " + orderedIdxes); // mms
     // If just one volunteer, no need to look at order
     if (orderedIdxes.length === 1) return orderedIdxes;
 
@@ -383,13 +402,14 @@ module.exports = {
         // console.log("  percentPref[i]:  " + percentPref[i]);
 
         if (volunteers[idx].numTimesAssigned < (targetNumAssignments * percentPref[i])) {
-            // console.log("  TRUE - moving " + idx + " to beginning");
+            // console.log("  TRUE - moving " + idx + " to beginning");  // mms
             // Remove one element from position i (should have a value of idx).
             orderCopy.splice(i, 1);
             // Remove 0 elements, then insert idx in position 0 (at beginning).
             orderCopy.splice(0, 0, idx);
         };
     };  // end of forEach idx in orderedIdxes
+    // console.log("After putting lesser scheduled first (adjVolOrder): " + orderCopy); // mms
 
     // console.log("Length of orderedIdxes " + orderedIdxes.length);
     // orderedIdxes.forEach(x => console.log(x + "; "));
@@ -406,14 +426,14 @@ module.exports = {
     // orderCopy.forEach(idx => {
     //     orderedIdxes[idx] = orderCopy[idx];
     // });
-    for (let idx = 0; idx < orderCopy.length; idx++) {
-        orderedIdxes[idx] = orderCopy[idx];
-    };
+    // for (let idx = 0; idx < orderCopy.length; idx++) {
+    //     orderedIdxes[idx] = orderCopy[idx];
+    // };
 
     // console.log("MMS: returning - orderedIdxes (in adjVolOrder)");
     // console.log(orderedIdxes);
 
-    return orderedIdxes;
+    return orderCopy;
 },  // end of function adjVolOrder
 
 
@@ -499,47 +519,45 @@ datesThisWeek: function(date, moment) {
 //      Available this date
 volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, volunteers, moment) {
 // returns TRUE if ok to schedule this volunteer
+    // console.log(" ");
+    // console.log(" ");
     // console.log("$$$ MMS: In volCanBeAssigned - findName $$$");
     // console.log("$$$ MMS: volunteer.firstName:  " + volunteer.firstName);
 
     function findNameInSlate(name, subSlate, roles) {
-        // console.log("$$$ MMS: In findNameInSlate - findName $$$");
         // The name hasn't been found, yet.
         let found = false;
 
         // Get elements with the names
         let resultsNameSearch;
-        // console.log("$$$ MMS: In findNameInSlate (in volCanBeAssigned)");
-        // console.log("$$$ MMS: name: " + name);
-        // console.log("$$$ MMS: subSlate: " + subSlate);
-        // subSlate.forEach(x => console.log(x));
-        // console.log("$$$ MMS: roles: ");
-        // roles.forEach(role => console.log(role));
+        // console.log("$$$ MMS: In findNameInSlate (in volCanBeAssigned)");     // mms
+        // console.log("$$$ MMS: name: " + name);     // mms
+        // console.log("$$$ MMS: subSlate: ");     // mms
+        // subSlate.forEach(x => console.log(x));     // mms
+        // console.log("$$$ MMS: roles: ");     // mms
+        // roles.forEach(role => console.log(role));     // mms
 
         // for each event in the part of the slate passed in,
         //    look for the given name in each role
-        // LEFT OFF - (just needs fixing for performance) ...
+        // LEFT OFF - (just needs fixing for performance) ...                // MMS - did I do that??
         //   ...if this volunteer isn't this role, no need to check everything!
         for (let subSlateIdx = 0; subSlateIdx < subSlate.length; subSlateIdx++) {
             let thisOneEventSlate = subSlate[subSlateIdx];
-            // console.log("$$$$$$$$$$$ new subSlate");
-            // console.log("subSlateIdx: " + subSlateIdx);
-            // console.log("subSlate: ");
-            // subSlate.forEach(x => console.log(x));
+            // console.log("$$$$$$$$$$$ new subSlate");     // mms
+            // console.log("subSlateIdx: " + subSlateIdx);     // mms
+            // console.log("subSlate: ");     // mms
+            // subSlate.forEach(x => console.log(x));     // mms
 
             // For each role, look for the given name
             for (let rolesIdx = 0; rolesIdx < roles.length; rolesIdx++) {
                 let role = roles[rolesIdx];
 
                 // Get volunters to search from thisOneEventSlate (leaving out withFlag)
-                let volunteers = thisOneEventSlate[role].map(vol => vol.name);
+                let volunteers = thisOneEventSlate[role].map(vol => {if (!vol.withFlag) {return vol.name};});
 
                 // Is name in the current part of the slate for this role?
                 resultsNameSearch = volunteers.includes(name);
 
-                // Also check with a space before the name (added to display nicely in slate)
-                resultsNameSearch = resultsNameSearch + volunteers.includes(" " + name);
-                
                 // console.log("$$$$$$$$$$$$$$$$$$$$$$ just in for each roles $$$$$$$$$$");
                 // console.log("@@@ MMM: resultsNameSearch: " + resultsNameSearch);
                 // console.log("$$$ MMS: subSlateIdx: " + subSlateIdx);
@@ -548,7 +566,7 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
                 // console.log("$$$ MMS: thisOneEventSlate.time:  " + thisOneEventSlate.time);
                 // console.log("$$$ MMS: thisOneEventSlate[" + role + "]:  " + thisOneEventSlate[role]);
                 // console.log("$$$ MMS: thisOneEventSlate[" + role + "].length:  " + thisOneEventSlate[role].length);
-                // thisOneEventSlate[role].forEach(x => console.log(x));
+                // thisOneEventSlate[role].forEach(x => console.log(x));  // mms
                 // console.log("$$$ MMS: role:  " + role);
                 // console.log("$$$ MMS: name:  " + name);
                 // console.log("$$$ MMS: resultsNameSearch:  " + resultsNameSearch);
@@ -561,6 +579,7 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
             };  // of for each role
 
             // no need to continue searching in other roles if the name has been found
+            // if (found) console.log(name + " already in slate."); // mms
             if (found) break;
             if (found) console.log("ERROR ERROR ERROR ERROR  this should never console.log!!");
 
@@ -586,23 +605,21 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
         // Get part of slate for this set of dates (this week)
         let thisWeekSlate = slate.filter(event => dates.includes(event.date));
         // console.log("$$$ MMS:  ============ THIS WEEK SLATE (MMS) ============");
-        // thisWeekSlate.forEach(x => {
-        //     console.log(x);
-        //     console.log(x.date);
-        //     console.log(x.time);
-        //     console.log(x.EM);
-        // });
+        // thisWeekSlate.forEach(x => {  // mms
+            // console.log(x);        // mms
+            // console.log(x.date);   // mms
+            // console.log(x.time);   // mms
+            // x.EM.forEach(y => console.log(y));  // mms
+        // });  // mms
 
         // findNameInSlate returns true if the given name is found in the part of the slate passed in.
         let isNameInSlate;
         isNameInSlate = findNameInSlate(searchName, thisWeekSlate, roles);
+        // console.log("isNameInSlate: " + isNameInSlate); // MMS
+        // if (isNameInSlate) console.log(volunteer.firstName + " is already in assigned.");
 
         // if found, then volunteer is already scheduled this week, and can't be scheduled again.
-        if (isNameInSlate) {
-            isAlreadyAssigned = true;
-        } else {
-            isAlreadyAssigned = false;
-        };
+        isAlreadyAssigned = isNameInSlate;        
 
         return isAlreadyAssigned;
     };  // end of function checkAlreadyAssigned (defined in function volCanBeAssigned)
@@ -633,7 +650,8 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
 
         // Search for each name.  If found, this volunteer can't be scheduled here. Return false.
         notWithNames.forEach(name => {
-            const isNameInSubSlate = findNameInSlate(name, thisDateSlate, roles);  // this doesn't seem to be working
+            const isNameInSubSlate = findNameInSlate(name, thisDateSlate, roles); 
+            // if (isNameInSubSlate) console.log(name + " has a notWith conflict.");  // mms
             if (isNameInSubSlate) return isConflict = true;
         })
 
@@ -671,6 +689,8 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
             volAvail = false;
         };
             
+        // if (!volAvail) console.log(volunteer.firstName + " is not available on this date.");  // mms
+
         // volAvail is true if the volunteer is available to serve this date.
         return volAvail;
     };  // end of function isVolunteerAvailable (defined in function volCanBeAssigned)
@@ -706,9 +726,10 @@ volCanBeAssigned: function(volunteer, slate, date, time, searchDates, roles, vol
 },  // end of volCanBeAssigned function
 
 
-// scheduleVolunteer: function(volunteer, r, roles, volsNeeded, date, time, slate) {
+// assign volunteer a spot (put in slate),
+//   and "pencil in" (put in schedul with withFlag on) possible "with" volunteers
+//    -- If this volunteer scheduled has "with" volunteers noted, pencil them in where they might be able to be scheduled.
 scheduleVolunteer: function(volunteer, role, date, time, slate, volunteers, currentVolunteerIdx) {
-    // assign volunteer a spot (put in slate)
 
     // where to update the assignment in the array (which object)
     const timeDateIndex = slate.findIndex(timeDate => 
@@ -729,19 +750,73 @@ scheduleVolunteer: function(volunteer, role, date, time, slate, volunteers, curr
     // increment the number of times this volunteer has been scheduled.
     volunteers[currentVolunteerIdx].numTimesAssigned++;
 
-    // // get the datesFilled for this role; it will be an array of dates.
-    // let datesFilled = datesFilledPerRole[r];
-
-    // volunteersScheduled is the number of volunteers in this slot
-    //    (for this role, on this date, in this weekly event)
-    // const volunteersScheduled = workingSlate[timeDateIndex][role].length;
-
-    // // if the number of people scheduled is at least the number needed (volsNeeded),
-    // //   then add this date to the datesFilled array
-    // if (volunteersScheduled >= volsNeeded[r]) { datesFilled.push(date) };
-
     return [slate, volunteers];
 },  // of scheduleVolunteer function
+
+
+
+// "Pencil in" "with" volunteers.
+pencilInWithVolunteers: function(slate, volunteers, currentVolunteerIdx, volIdxes, date, time, searchDates, roles, role, moment) {
+    // Is there any with volunteers?  If not, return
+    // If there are, findWithVolunteers returns the indices of those volunteers
+    // const withVolIds = this.findWithVolunteers(currentVolunteerIdx, volunteers);
+    const withVolIds = volunteers[currentVolunteerIdx].with;
+    console.log("withVolIds for " + volunteers[currentVolunteerIdx].firstName + ":");
+    console.log(withVolIds);
+    console.log("Length of withVolIds: " + withVolIds.length);
+
+    // if (withVolIds.length === 0) return slate;
+
+    // for each vol found...
+    withVolIds.forEach(volId => {
+        console.log("volId (looking for): " + volId);
+        let found = false, id = 0, volIdx;
+        // get volunteer index into volunteers for that volunteer
+        // for (let id = 0; id < volIdxes.length; id++) {
+        while ((!found) && id < volIdxes.length) {
+            console.log("--- id: " + id);
+            console.log("--- volunteers[id].firstName: " + volunteers[id].firstName);
+            console.log("--- volunteers[id]._id: " + volunteers[id]._id);
+            
+            if (volunteers[id]._id === volId) {
+                console.log("Found! " + id);
+                found = true;
+                volIdx = id;
+            };
+
+            id++;
+        };
+
+        console.log("after 'while'; volIdx: " + volIdx + "; ");
+        console.log("volunteer name: " + volunteers[volIdx].firstName);
+        // if that volunteer could be assigned
+        if (this.volCanBeAssigned(volunteers[volIdx], slate, date, time, searchDates, roles, volunteers, moment)) {
+            console.log("Volunteer " + volunteers[volIdx].firstName + " can be assigned.");
+            // then pencil in (put in slate with flag)
+
+            // where to update the assignment in the array (which object)
+            const timeDateIndex = slate.findIndex(timeDate => 
+                timeDate.date === date && timeDate.time === time
+            );
+
+            // get volunteer name
+            let volunteerName = volunteers[volIdx].firstName.concat(" ", volunteers[volIdx].lastName);
+
+            // push the assignment.
+            // withFlag is used when "penciling in" a volunteer that might be assigned
+            //   based on another volunteer's assignment (when they are supposed to be scheduled together)
+            slate[timeDateIndex][role].push({
+                name: volunteerName,
+                withFlag: true
+            });
+
+        };
+
+    });
+
+    return slate;
+    // i/0;// mms
+},  // of pencilInWithVolunteers function
 
 
 
@@ -761,13 +836,16 @@ dropWithFlag: function(slate, roles) {
             let volunteers = [];
 
             // build the array of volunteers without the withFlag,
+            //   dropping those with the flag, as well as the flag itself for everyone,
             //   and appending a space before all volunteers but the first
             //   (commas get appended after the names automatically later when the table is built to display)
             lineOfSlate[role].forEach((volunteer, v) => {
-                if (v === 0) {
-                    volunteers.push(volunteer.name)
-                } else {
-                    volunteers.push(" " + volunteer.name)
+                if (!volunteer.withFlag) {
+                    if (v === 0) {
+                        volunteers.push(volunteer.name)
+                    } else {
+                        volunteers.push(" " + volunteer.name)
+                    };
                 };
             });
 

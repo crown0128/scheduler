@@ -49,24 +49,27 @@ export default {
         // FUTURE ENHANCEMENTS
         // NOTE TO SELF TO DO... (LEFT OFF - for searching purposes ... search for "LEFT OFF")
 
+        //  LEFT OFF...
+
         //   - Do "with"
+        //  Have withFlag, set to false for everyone.
         //      ideas:
         //          (this needs more thinking about)
          //          (Do for all roles (could be in same role: i.e. if altar servers together) )
-        //     2     when assigning someone, look for a "with person" (WP) in roles not yet done or in current role.
-        //              If the "with person" (WP) can be assigned,
-        //                  put them in the slate with "(with?)" designation.
+        //     2     when assigning someone, if they have a "with", put that in the slate with the withFlag
+        //              turned on
         //          
-        //     1     when starting to assign roles for a new we (weekly event),
+        //     1     when assign roles for a new we (weekly event),
         //              put volunteers with "(with?)" in slate first for the first time through.
         //              
+        //      3    when going through the volunteers to make an assignment, look for "with" spots.
+        //              how to handle this if an assignment gets done out of order?
+        //
         //          make sure "(with?)" designations are removed when no longer needed.
+        //              It is dropped (along with slate entries with the withFlag) when slate is done.
         //
         //          then need to account for this when doing "regular" assignments
         //              like in number of volunteers assigned for a specific date and role
-        // LEFT OFF making this change to the slate variable
-        // FIRST - to make this work well, change assignments in slate to an array of names.  
-        //  Change to string after all assignments made, but before slate is displayed
 
         //   - roles (like Sacristan) that can be doubled up
         //          skip checking if already assigned in canVolBeAssigned for this case.
@@ -80,6 +83,8 @@ export default {
 
         //   - Edit dates on current schedule (and/or copy schedule)
         
+        //   - Put ALERT messages in PDF & displayed slate.
+
         //   - ES linter
         //   - tidy code (delete console.log's, indenting, etc.)
         //   - also print to Excel or Word (to edit?)
@@ -121,7 +126,7 @@ export default {
             this.dates = fillSlateFcns.getDates(this.schedule, moment);
 
             // MMS  for testing; console logs all volunteers
-            // fillSlateFcns.consoleLogVolunteers(this.volunteers); // MMS for testing
+            fillSlateFcns.consoleLogVolunteers(this.volunteers); // MMS for testing
             
             // get the roles needed, and
             // the number of volunteers needed for each role (volsNeeded)
@@ -137,13 +142,13 @@ export default {
 
             // set up empty slate with dates & properties
             let workingSlate = fillSlateFcns.buildSkeleton(this.dates, roles, this.schedule.weeklyEvents, moment);
-
+            // console.log("Build Skeleton done");  // mms
             //  Determine the Order the roles (umpire, refreshments, etc) will be assigned.
             //  This will be an array of indices into the roles variable
             //  Those with most constraints (dates to avoid, "with"s, "notWith") are done first.
             const orderOfRoles = fillSlateFcns.getRolesOrder(this.volunteers, roles);
-            // console.log("MMS: order of roles: ");
-            // orderOfRoles.forEach(x => console.log(x));
+            // console.log("MMS: order of roles: ");  // mms
+            // orderOfRoles.forEach(x => console.log(x));  //  mms
 
             // Gather text for warning alerts when there are too few volunteers.
             let alertText = "";
@@ -151,16 +156,16 @@ export default {
             //  For each role (in order)
             orderOfRoles.forEach(roleIdx => {
                 const role = roles[roleIdx];
-                // console.log("MMS:  Starting role:  " + role);
+                // console.log("MMS:  Starting role:  " + role);  // mms
 
                 // For each weekly event (i.e. 9am Masses)
                 this.schedule.weeklyEvents.forEach((weeklyEvent, we) => {
-                    // console.log("MMS:  Beginning iteration forEach loop for each weekly event (ie Sat 5pm).");
+                    // console.log("MMS:  Beginning iteration forEach loop for weekly event " + weeklyEvent.day + " and " + weeklyEvent.time); // mms
 
                     // Get indices for volunteers for this role and weekly event
                     const [roleAndWEVolunteerIdxes, numVolsAvailableForWEandRole] = fillSlateFcns.getRoleAndWEVolunteerIdxes(this.volunteers, role, weeklyEvent);
-                    // console.log("Role and WE Volunteers...  ***************************");
-                    // roleAndWEVolunteerIdxes.forEach(idx => console.log(this.volunteers[idx].firstName));
+                    // console.log("Role and WE Volunteers...  ***************************");  // mms
+                    // roleAndWEVolunteerIdxes.forEach(idx => console.log(this.volunteers[idx].firstName));  // mms
 
                     if (roleAndWEVolunteerIdxes.length === 0) {
                         alertText = alertText + "\nNo " + role + " volunteers available for " + weeklyEvent.day + " at " + weeklyEvent.time;
@@ -172,15 +177,14 @@ export default {
                         // Determine order of volunteers.  
                         //   Those with most constraints (dates to avoid, "with"s, "notWith"s) go first
                         let orderOfVols = fillSlateFcns.getVolOrder(roleAndWEVolunteerIdxes, this.volunteers, weeklyEvent);
-                        // console.log("MMS: (after of getVolOrder -- orderOfVols:");
-                        // orderOfVols.forEach(i => console.log(i));     
+                        // console.log("MMS: (after of getVolOrder -- orderOfVols:");  // mms
+                        // orderOfVols.forEach(i => {console.log(i + ": " + this.volunteers[i].firstName)});     // mms 
 
                         // Initialize current volunteer & it's index
                         let orderIdx = 0;
                         let currentVolunteerIdx = orderOfVols[orderIdx];
-                        // let currentVolunteer = roleAndWEVolunteers[currentVolunteerIdx];
                         let currentVolunteer = this.volunteers[currentVolunteerIdx];
-                        // console.log("MMS: Start with " + currentVolunteer.firstName);
+                        // console.log("MMS: Start with " + currentVolunteer.firstName);  // mms
 
                         // For each date (ie. 5/10/20, then 5/17/20...)
                         // nthDate is the number of dates completed for this weekly event.
@@ -205,23 +209,36 @@ export default {
                             //      then get next volunteer.  How to keep track of number of volunteers still needed?
 
                             // No volunteers assigned, yet for this role on this specific date.
-                            let numvolsAssignedThisRole = 0;
+                            let numVolsAssignedThisRole = 0;
+                            // Keep track of how many times all volunteers checked.  If checked all the volunteers at least once,
+                            //   but not all the slots filled, then need to display a warning message.
+                            let numTimesCheckVols = 0;
 
                             // repeat while there are still spots to fill
-                            // console.log("before while loop: numvolsAssignedThisRole < volsNeeded[roleIdx]:");
-                            // console.log(numvolsAssignedThisRole + " < " + volsNeeded[roleIdx]);
-                            while (numvolsAssignedThisRole < volsNeeded[roleIdx]) {
+                            // console.log("before while loop: numVolsAssignedThisRole < volsNeeded[roleIdx]:");
+                            // console.log(numVolsAssignedThisRole + " < " + volsNeeded[roleIdx]);
+                            while (numVolsAssignedThisRole < volsNeeded[roleIdx]) {
                                 // console.log("MMS: ------ Begin while loop iteration ------ ");
-                                // console.log("MMS: numvolsAssignedThisRole: " + numvolsAssignedThisRole);
+                                // console.log("MMS: numVolsAssignedThisRole: " + numVolsAssignedThisRole);
 
                                 if (fillSlateFcns.volCanBeAssigned(currentVolunteer, workingSlate, date, weeklyEvent.time, searchDates, roles, this.volunteers, moment)) {
                                     // console.log("MMS: ****  TRUE  **** in fillSlate, volCanBeAssigned returned   (" + currentVolunteer.firstName + ")");
                                     // [workingSlate, timesEachVolAssigned] = fillSlateFcns.scheduleVolunteer(currentVolunteer, role, date, weeklyEvent.time, workingSlate, timesEachVolAssigned, currentVolunteerIdx);
                                     // Only the number of times a volunteer is assigned changes in this.volunteers (indices are still valid).
                                     [workingSlate, this.volunteers] = fillSlateFcns.scheduleVolunteer(currentVolunteer, role, date, weeklyEvent.time, workingSlate, this.volunteers, currentVolunteerIdx);
-                                    numvolsAssignedThisRole++;
+                                    // if there is a "with" person listed, plug them in with the "withFlag" on,
+                                    //    as potential places to schedule those volunteers
+                                    // console.log("MMS: Slate before pencilling in 'with' volunteers");  // MMS
+                                    // this.consoleLogSlate(slate); // MMS testing
+
+                                    workingSlate = fillSlateFcns.pencilInWithVolunteers(workingSlate, this.volunteers, currentVolunteerIdx, orderOfVols, date, weeklyEvent.time, searchDates, roles, role, moment);
+
+                                    // console.log("Slate AFTER pencilling in 'with' volunteers"); // MMS
+                                    // this.consoleLogSlate(slate); // MMS testing
+                                    fillSlateFcns.consoleLogSlate(workingSlate); // MMS test
+                                    numVolsAssignedThisRole++;
                                 } else { 
-                                    // console.log("MMS: **** FALSE **** in fillSlate, volCanBeASsigned returned ")
+                                    // console.log("MMS: **** FALSE **** in fillSlate, volCanBeASsigned returned   (" + currentVolunteer.firstName + ") ");
                                 };  // end of else volCanBeAssigned
 
                                 // get next volunteer
@@ -229,13 +246,26 @@ export default {
                                 // console.log("orderIdx after incrementing: " + orderIdx);
 
                                 // start at first volunteer again, if at the end of the list
+                                // console.log("roleAndWEVolunteerIdxes.length:  " + roleAndWEVolunteerIdxes.length);
                                 if (orderIdx >= roleAndWEVolunteerIdxes.length) {
                                     // REORDER volunteers (re-do orderOfVols) 
                                     //   so those who didn't get assigned are first, if needed
                                     orderOfVols = fillSlateFcns.adjVolOrder(orderOfVols, this.volunteers, weeklyEvent, volsNeeded[roleIdx], numVolsAvailableForWEandRole, nthDate);
                                     // console.log("BACK in Run Schedule.  orderOfVols: " + orderOfVols);
-                                    // orderOfVols.forEach(i => console.log(i));     
+                                    // orderOfVols.forEach(i => {console.log(i + ": " + this.volunteers[i].firstName)});     // mms 
                                     orderIdx = 0;
+
+                                    // If numTimesCheckVols is 2 (or more), then all the volunteers have been checked at
+                                    //  least once, and not enough can be found.
+                                    numTimesCheckVols++;
+
+                                    // If all the volunteers have been checked,
+                                    //   flag an error, set numVolsAssignedThisRole to those needed to force exiting the loop.
+                                    if (numTimesCheckVols > 1) {
+                                        alertText = alertText + "\nUnable to fill all " + role + " volunteers for " + weeklyEvent.day + " at " + weeklyEvent.time + " on " + date + ".";
+                                        numVolsAssignedThisRole = volsNeeded[roleIdx];
+                                    };    
+
                                 };
 
                                 // console.log("AFTER IF in Run Schedule.  orderOfVols: " + orderOfVols);
@@ -257,7 +287,7 @@ export default {
                                 currentVolunteer = this.volunteers[currentVolunteerIdx];
                                 // console.log("MMS: Next volunteer - " + currentVolunteer.firstName);
 
-                            };  // end of while numvolsAssignedThisRole < volsNeeded[roleIdx]
+                            };  // end of while numVolsAssignedThisRole < volsNeeded[roleIdx]
                             // MMS testing - what does volunteers look like after first role?
                             // fillSlateFcns.consoleLogVolunteers(this.volunteers);
 
